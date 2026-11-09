@@ -80,13 +80,26 @@ The global rules at `~/.config/opencode/instructions.md` hold the full rule set.
 
 ## 3. Project rules
 
-1. Push to the remote only with `py push_personal.py`. Read `PUSH_RULES.md` before the first push.
-2. Do not run `git push`, `git fetch`, `git pull`, or any other command that touches a remote.
+1. Push with normal `git push` to the connected remote `origin`. The user retired the `push_personal.py` token flow on 2026-11-09 because the token file is outdated. Push only once, after all granular commits are complete.
+2. Make one separate commit for every file creation and for every file modification. Do not combine several files into one commit. This is the granular commit rule.
 3. Keep `SKELETON.md` up to date. It is the source of truth for this repository.
-4. Follow the engineering method in Part 5 of the global rules file. Load the `intention-engineering` skill first.
+4. Follow the engineering method in Part 5 of the global rules file. Load the `intention-engineering` skill first when that skill is available in the session.
 5. Compare the databases with a Topological Query Language (TQL) query. A TQL query is a declarative query over a cellular complex.
 6. Give the TQL text, the native equivalent, and the measured time for each engine in the comparison.
 7. State a TQL optimizer cost as an estimate. Do not state it as an execution time. The TQL-to-fiber execution bridge (OPT-004) is not built.
+
+---
+
+## 3b. Next-generation stack rules (user instruction, 2026-11-09)
+
+These rules govern the SheafDB next-generation implementation on the `combined-stack-feature-improvement` branch.
+
+1. No code file exceeds 500 lines.
+2. Add new features as new code files. Do not grow existing files to hold new features.
+3. Use an object-oriented, SOLID structure. Separate interfaces from implementations.
+4. Use the right language at the right tier: C++23 for math kernels, Zig for physical storage, C11 for the WAL and hardware paths, Rust for orchestration and ingress, Lean 4 for proofs.
+5. Keep the folder structure logical and navigatable. Write comment lines that explain the logic.
+6. Write native code even when its toolchain is not installed yet. The user installs the toolchains later. Keep the Rust workspace buildable without them through fallback backends.
 
 ---
 
