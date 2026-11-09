@@ -29,6 +29,8 @@ fn main() {
     println!("cargo:rerun-if-changed={}", include_dir.display());
     println!("cargo:rerun-if-env-changed=SHEAF_KERNEL_CXX");
     println!("cargo:rerun-if-env-changed=SHEAF_NATIVE_DISABLE");
+    // Declare the custom cfg so rustc does not warn about unexpected cfgs.
+    println!("cargo:rustc-check-cfg=cfg(sheaf_native_kernel)");
 
     if env::var("CARGO_FEATURE_FORCE_FALLBACK").is_ok()
         || env::var("SHEAF_NATIVE_DISABLE").map(|v| v == "1").unwrap_or(false)
