@@ -1,0 +1,25 @@
+# sheaf-native - the FFI boundary crate between Rust orchestration (Tier 3)
+# and the native hardware tiers (C++23 kernel, Zig storage, C WAL).
+#
+# SOLID layout:
+#   - Each tier exposes a trait (the port). Native FFI and pure-Rust
+#     fallback are interchangeable adapters behind that trait.
+#   - Callers depend on the trait, never on a concrete backend.
+#
+# The crate has zero external dependencies so the workspace builds even
+# when no native toolchain is installed. build.rs compiles the native
+# sources when it finds zig, clang++, or g++, and sets cfg sheaf_native_kernel.
+
+[package]
+name = "sheaf-native"
+version = "0.1.0"
+edition = "2021"
+description = "FFI boundary and fallback backends for the SheafDB native hardware tiers"
+
+[dependencies]
+
+[features]
+default = []
+# Ignore any detected native toolchain and use the Rust fallback. This lets
+# the parity tests compare both adapters on a machine that has a compiler.
+force-fallback = []
