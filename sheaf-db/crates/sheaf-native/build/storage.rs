@@ -61,8 +61,7 @@ pub fn build(native_root: &Path, out_dir: &Path) {
         cmd.arg("-target");
         cmd.arg(target);
     }
-    cmd.arg("-femit-bin");
-    cmd.arg(&lib);
+    cmd.arg(format!("-femit-bin={}", lib.display()));
     // The export layer links no C library explicitly. -lc keeps the
     // archive self-contained on every host that has Zig installed.
     cmd.arg("-lc");
