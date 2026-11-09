@@ -59,6 +59,24 @@ void xor_accum(uint8_t* out, const uint8_t* src, size_t n) {
     xor_scalar(out, src, n);
 }
 
+#if SHEAF_X86 && (SHEAF_TARGET_SIMD_OK >= 2 || defined(__GNUC__) || defined(__clang__))
+// AVX-512 encode loop. The marked helper owns the target feature so the
+// exported entry point needs no attribute. Returns the byte offset where
+// the 64-byte blocks end and the scalar tail begins.
+SHEAF_TARGET_AVX512
+size_t encode_avx512(const uint8_t* base, const uint8_t* target,
+                     size_t len, uint8_t* delta_out) {
+    size_t i = 0;
+    for (; i + 64 <= len; i += 64) {
+        const __m512i a = _mm512_loadu_si512(reinterpret_cast<const __m512i*>(base + i));
+        const __m512i b = _mm512_loadu_si512(reinterpret_cast<const __m512i*>(target + i));
+        _mm512_storeu_si512(reinterpret_cast<__m512i*>(delta_out + i),
+                            _mm512_xor_si512(a, b));
+    }
+    return i;
+}
+#endif
+
 }  // namespace
 }  // namespace sheaf::kernel
 
@@ -88,12 +106,7 @@ extern "C" int sheaf_xor_delta_encode(const uint8_t* base, const uint8_t* target
     size_t i = 0;
 #if SHEAF_X86 && (SHEAF_TARGET_SIMD_OK >= 2 || defined(__GNUC__) || defined(__clang__))
     if (has_avx512()) {
-        for (; i + 64 <= len; i += 64) {
-            const __m512i a = _mm512_loadu_si512(reinterpret_cast<const __m512i*>(base + i));
-            const __m512i b = _mm512_loadu_si512(reinterpret_cast<const __m512i*>(target + i));
-            _mm512_storeu_si512(reinterpret_cast<__m512i*>(delta_out + i),
-                                _mm512_xor_si512(a, b));
-        }
+        i = encode_avx512(base, target, len, delta_out);
     }
 #endif
     for (; i < len; ++i) delta_out[i] = base[i] ^ target[i];
