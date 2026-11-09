@@ -121,10 +121,17 @@ fn assert_close(a: &[f32], b: &[f32], tol: f32, ctx: &str) {
 
 // Every available backend runs through the same gate.
 fn backends() -> Vec<Box<dyn KernelBackend>> {
-    let mut list: Vec<Box<dyn KernelBackend>> = vec![Box::new(FallbackKernel)];
     #[cfg(sheaf_native_kernel)]
-    list.push(Box::new(sheaf_native::kernel::native::NativeKernel));
-    list
+    {
+        vec![
+            Box::new(FallbackKernel),
+            Box::new(sheaf_native::kernel::native::NativeKernel),
+        ]
+    }
+    #[cfg(not(sheaf_native_kernel))]
+    {
+        vec![Box::new(FallbackKernel)]
+    }
 }
 
 #[test]
@@ -262,7 +269,7 @@ fn validity_compaction_matches_bit_filter() {
     let values: Vec<f32> = (0..count).map(|i| i as f32).collect();
     let mut mask = vec![0u64; count.div_ceil(64)];
     for i in 0..count {
-        if rng.next_u32() % 3 != 0 {
+        if !rng.next_u32().is_multiple_of(3) {
             mask[i / 64] |= 1u64 << (i % 64);
         }
     }
@@ -325,8 +332,8 @@ fn chebyshev_reduces_residual_on_consistent_system() {
         // Power iteration estimates lambda_max for the spectral window.
         let mut probe = vec![0.0f32; n];
         let mut lmax = 0.0f32;
-        for i in 0..n {
-            probe[i] = 1.0 + (i % 5) as f32 * 0.1;
+        for (i, p) in probe.iter_mut().enumerate() {
+            *p = 1.0 + (i % 5) as f32 * 0.1;
         }
         for _ in 0..40 {
             let mut lp = vec![0.0f32; n];
