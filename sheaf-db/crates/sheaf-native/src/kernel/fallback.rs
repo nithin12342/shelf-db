@@ -214,7 +214,15 @@ impl KernelBackend for FallbackKernel {
         if scratch.len() < self.chebyshev_scratch_floats(cx) {
             return Err(KernelError::ScratchTooSmall);
         }
-        if !(lambda_min > 0.0) || lambda_max <= lambda_min || !(tol > 0.0) {
+        // Reject NaN and infinite bounds explicitly. A plain `<=` test
+        // would silently accept NaN, which then poisons every iterate.
+        if !lambda_min.is_finite()
+            || !lambda_max.is_finite()
+            || !tol.is_finite()
+            || lambda_min <= 0.0
+            || lambda_max <= lambda_min
+            || tol <= 0.0
+        {
             return Err(KernelError::InvalidArgument);
         }
 
