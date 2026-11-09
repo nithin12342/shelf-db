@@ -53,11 +53,11 @@ pub fn pack(
     hashes: [*]const u8,
     offsets: [*]const u64,
     flags: [*]const u32,
-    count: u32,
+    n_cells: u32,
 ) bool {
-    if (count > SPINE_CELLS) return false;
+    if (n_cells > SPINE_CELLS) return false;
     var i: u32 = 0;
-    while (i < count) : (i += 1) {
+    while (i < n_cells) : (i += 1) {
         out.cell_ids[i] = cell_ids[i];
         const src = (hashes + i * HASH_BYTES)[0..HASH_BYTES];
         @memcpy(&out.stalk_hashes[i], src);
