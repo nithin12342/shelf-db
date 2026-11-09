@@ -1,12 +1,19 @@
 // chebyshev.cpp - Chebyshev semi-iteration for L x = b (spec Pillar 1/6).
 //
-// The solver accelerates Richardson iteration with the optimal three-term
-// Chebyshev recurrence over the spectral window [lambda_min, lambda_max]:
+// Exact Saad three-term recurrence over the window [lambda_min, lambda_max]:
+//   sigma = d/c, rho_0 = 1/sigma, rho_k = 1/(2 sigma - rho_{k-1})
+//   beta_k = rho_{k-1} rho_k , alpha_0 = 1/d , alpha_k = (1 + beta_k)/d
 //   x_{k+1} = x_k + alpha_k r_k + beta_k (x_k - x_{k-1})
-//   beta_k  = (c * alpha_{k-1} / 2)^2 ,  alpha_k = 1 / (d - beta_k / alpha_{k-1})
-// with d = (lmax + lmin) / 2 and c = (lmax - lmin) / 2. The parameters give
-// monotonic energy decay when the bounds contain the true spectrum, which
-// the Lean 4 verification tier certifies (proofs/Sheaf/Cohomology.lean).
+// with d = (lmax + lmin)/2 and c = (lmax - lmin)/2. The inexact variant
+// beta_k = (c alpha_{k-1}/2)^2 stalls near rel 0.04; the production Rust
+// solver in sheaf-kernel recorded that failure, so this tier uses the
+// exact rho form from the start.
+//
+// Contract: lambda_min must be a POSITIVE lower bound. A sheaf Laplacian
+// has a zero eigenvalue (global sections). Callers either solve the
+// Tikhonov-shifted system (L + mu I) with lambda_min = mu, or pass the
+// smallest positive eigenvalue when b lies in range(L). With lmin = 0 the
+// window ratio d/c equals 1 and the iteration is marginally stable.
 //
 // Scratch layout (all f32, caller owned):
 //   [ r: n ][ x_prev: n ][ lx: n ][ edge cochain: m ]
@@ -73,8 +80,7 @@ extern "C" int sheaf_chebyshev_solve(const SheafComplexDesc* cx, const float* b,
                                      float* scratch) {
     if (!desc_ok(cx) || b == nullptr || x == nullptr || scratch == nullptr)
         return SHEAF_KERNEL_EINVAL;
-    if (!(lambda_max > 0.0f) || lambda_min < 0.0f ||
-        lambda_max < lambda_min || !(tol > 0.0f))
+    if (!(lambda_min > 0.0f) || lambda_max <= lambda_min || !(tol > 0.0f))
         return SHEAF_KERNEL_EINVAL;
 
     const size_t n = static_cast<size_t>(cx->num_vertices) * cx->stalk_dim;
@@ -93,7 +99,9 @@ extern "C" int sheaf_chebyshev_solve(const SheafComplexDesc* cx, const float* b,
     const float target = tol * (b_norm > 1e-30f ? b_norm : 1e-30f);
     const float target2 = target * target;
 
-    float alpha_prev = 1.0f / center;
+    const float sigma = center / half_width;
+    float rho_old = 1.0f / sigma;
+    const float alpha0 = 1.0f / center;
     bool first = true;
 
     for (uint32_t k = 0; k < max_iters; ++k) {
@@ -105,14 +113,14 @@ extern "C" int sheaf_chebyshev_solve(const SheafComplexDesc* cx, const float* b,
         if (dot(r, r, n) <= target2) return static_cast<int>(k);
 
         float beta = 0.0f;
-        float alpha = alpha_prev;
+        float alpha = alpha0;
         if (!first) {
-            const float t = 0.5f * half_width * alpha_prev;
-            beta = t * t;
-            alpha = 1.0f / (center - beta / alpha_prev);
+            const float rho_new = 1.0f / (2.0f * sigma - rho_old);
+            beta = rho_old * rho_new;
+            alpha = (1.0f + beta) / center;
+            rho_old = rho_new;
         }
         update_step(x, x_prev, r, alpha, beta, n);
-        alpha_prev = alpha;
         first = false;
     }
     return SHEAF_KERNEL_ENOCONV;
