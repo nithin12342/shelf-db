@@ -137,6 +137,10 @@ pub trait KernelBackend: Send + Sync {
     fn chebyshev_scratch_floats(&self, cx: &ComplexSpec<'_>) -> usize;
 
     /// Chebyshev semi-iteration for L x = b. Returns the iteration count.
+    /// lambda_min must be a positive lower bound on the eigenvalues present
+    /// in the residual. For a consistent singular system (b in range(L))
+    /// the residual has no kernel component, so pass the smallest positive
+    /// eigenvalue. Passing 0 makes the window ratio 1 and the iteration stalls.
     #[allow(clippy::too_many_arguments)]
     fn chebyshev_solve(
         &self, cx: &ComplexSpec<'_>, b: &[f32], x: &mut [f32],
