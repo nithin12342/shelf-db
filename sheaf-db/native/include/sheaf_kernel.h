@@ -123,6 +123,12 @@ size_t sheaf_chebyshev_scratch_floats(const SheafComplexDesc* cx);
  * Chebyshev semi-iteration for L x = b with spectral bounds
  * [lambda_min, lambda_max]. x must hold the initial guess on entry.
  * scratch holds sheaf_chebyshev_scratch_floats(cx) floats.
+ *
+ * lambda_min must be positive. A sheaf Laplacian has a zero eigenvalue,
+ * so callers either solve the Tikhonov-shifted system (L + mu I) with
+ * lambda_min = mu, or pass the smallest positive eigenvalue when b lies
+ * in range(L). The recurrence is the exact Saad rho form.
+ *
  * Returns the iteration count on convergence, or a negative error code.
  */
 int sheaf_chebyshev_solve(const SheafComplexDesc* cx, const float* b,
