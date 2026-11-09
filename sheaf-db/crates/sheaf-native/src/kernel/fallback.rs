@@ -214,7 +214,7 @@ impl KernelBackend for FallbackKernel {
         if scratch.len() < self.chebyshev_scratch_floats(cx) {
             return Err(KernelError::ScratchTooSmall);
         }
-        if !(lambda_max > 0.0) || lambda_min < 0.0 || lambda_max < lambda_min || !(tol > 0.0) {
+        if !(lambda_min > 0.0) || lambda_max <= lambda_min || !(tol > 0.0) {
             return Err(KernelError::InvalidArgument);
         }
 
@@ -229,7 +229,12 @@ impl KernelBackend for FallbackKernel {
         let target = tol * b_norm.max(1e-30);
         let target2 = target * target;
 
-        let mut alpha_prev = 1.0 / center;
+        // Exact Saad recurrence (same form as the C++23 tier and the
+        // production sheaf-kernel solver). lambda_min must be positive:
+        // callers use a Tikhonov shift or the smallest positive eigenvalue.
+        let sigma = center / half_width;
+        let mut rho_old = 1.0 / sigma;
+        let alpha0 = 1.0 / center;
         let mut first = true;
         for k in 0..max_iters {
             self.laplacian_apply(cx, x, edge_scratch, lx)?;
@@ -240,18 +245,18 @@ impl KernelBackend for FallbackKernel {
                 return Ok(k);
             }
             let (beta, alpha) = if first {
-                (0.0, alpha_prev)
+                (0.0, alpha0)
             } else {
-                let t = 0.5 * half_width * alpha_prev;
-                let beta = t * t;
-                (beta, 1.0 / (center - beta / alpha_prev))
+                let rho_new = 1.0 / (2.0 * sigma - rho_old);
+                let beta = rho_old * rho_new;
+                rho_old = rho_new;
+                (beta, (1.0 + beta) / center)
             };
             for i in 0..n {
                 let old = x[i];
                 x[i] = old + alpha * r[i] + beta * (old - x_prev[i]);
                 x_prev[i] = old;
             }
-            alpha_prev = alpha;
             first = false;
         }
         Err(KernelError::NoConvergence)
