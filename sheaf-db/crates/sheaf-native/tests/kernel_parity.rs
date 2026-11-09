@@ -344,8 +344,12 @@ fn chebyshev_reduces_residual_on_consistent_system() {
 
         let mut x = vec![0.0f32; n];
         let mut arena = vec![0.0f32; be.chebyshev_scratch_floats(&cx)];
+        // lambda_min must be positive. The ring-plus-chords graph has
+        // algebraic connectivity >= 2 - 2 cos(pi/6) ~ 0.268, so 0.1 is a
+        // safe lower bound on the positive spectrum. The residual of a
+        // consistent system lives in range(L) and never sees eigenvalue 0.
         let iters = be
-            .chebyshev_solve(&cx, &b, &mut x, 600, 1e-5, 0.0, lmax, &mut arena)
+            .chebyshev_solve(&cx, &b, &mut x, 600, 1e-5, 0.1, lmax, &mut arena)
             .unwrap_or_else(|e| panic!("{} chebyshev failed: {e}", be.name()));
         let mut lx = vec![0.0f32; n];
         be.laplacian_apply(&cx, &x, &mut scratch, &mut lx).unwrap();
