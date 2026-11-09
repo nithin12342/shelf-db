@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/sheaf-core", "crates/sheaf-storage", "crates/sheaf-kernel", "crates/sheaf-engine", "crates/sheaf-query"]
+members = ["crates/sheaf-core", "crates/sheaf-storage", "crates/sheaf-kernel", "crates/sheaf-engine", "crates/sheaf-query", "crates/sheaf-native"]
 resolver = "2"
 
 # Release tuning (measured, Phase-3 E2E): LTO + single codegen unit let the
