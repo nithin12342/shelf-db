@@ -12,6 +12,7 @@
 #include "../include/sheaf_kernel.h"
 
 #include <atomic>
+#include <cmath>
 #include <cstring>
 
 #if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
@@ -23,7 +24,7 @@
 
 #if defined(__GNUC__) || defined(__clang__)
 #define SHEAF_TARGET_AVX2   __attribute__((target("avx2,fma")))
-#define SHEAF_TARGET_AVX512 __attribute__((target("avx512f,avx512bw,avx512vl,fma")))
+#define SHEAF_TARGET_AVX512 __attribute__((target("avx512f,avx512bw,avx512vl,fma,popcnt")))
 #define SHEAF_TARGET_SIMD_OK 1
 #elif defined(_MSC_VER)
 #define SHEAF_TARGET_AVX2
