@@ -1,0 +1,12 @@
+{
+  "stamp": "2026-10-23 13:09 UTC+05:30",
+  "summary": {
+    "sqlite": "OK",
+    "duckdb": "OK",
+    "redis": "OK",
+    "mariadb": "OK",
+    "pg": "SERVER-FAIL",
+    "neo4j": "SKIP-NO-DOCKER",
+    "scylladb": "SKIP-NO-DOCKER"
+  }
+}

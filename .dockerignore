@@ -1,0 +1,9 @@
+sheaf-db/target
+sheaf-db/tests/e2e/realtime_bench/data
+sheaf-db/tests/e2e/realtime_bench/datasets
+sheaf-db/tests/e2e/realtime_bench/build
+sheaf-db/tests/e2e/realtime_bench/results/*.json
+sheaf-db/tests/e2e/realtime_bench/results/*.log
+dist
+.git
+*.zip

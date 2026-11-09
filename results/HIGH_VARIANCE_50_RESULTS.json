@@ -1,0 +1,4052 @@
+[
+  {
+    "id": "TC-01",
+    "name": "Strict High-Value Risk Equality",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 5000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, m.category, c.code, t.amount, t.risk, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 1,
+      "inner_execution_us": 12,
+      "container_latency_ms": 1749.542,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 1749541.6,
+        "latency_ms": 1749.542,
+        "cpu_user_ms": 31.25,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 163.27,
+        "nvme_read_bytes": 186710528,
+        "nvme_write_bytes": 154325504
+      }
+    },
+    "duckdb": {
+      "latency_us": 61257.2,
+      "latency_ms": 61.257,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 164.51,
+      "nvme_read_bytes": 4124672,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "sqlite": {
+      "latency_us": 2067.3,
+      "latency_ms": 2.067,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 164.78,
+      "nvme_read_bytes": 65536,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "postgres": {
+      "latency_us": 25079.8,
+      "latency_ms": 25.08,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 164.78,
+      "nvme_read_bytes": 5656576,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "mariadb": {
+      "latency_us": 85670.8,
+      "latency_ms": 85.671,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 164.79,
+      "nvme_read_bytes": 20938752,
+      "nvme_write_bytes": 8921088,
+      "match_count": 3
+    },
+    "redis": {
+      "latency_us": 29791.4,
+      "latency_ms": 29.791,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 164.79,
+      "nvme_read_bytes": 8421376,
+      "nvme_write_bytes": 7573504,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 28521.0,
+      "latency_ms": 28.521,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 164.8,
+      "nvme_read_bytes": 7438336,
+      "nvme_write_bytes": 8122368,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-02",
+    "name": "Single Point Exact Account",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE a.acct_id == 1001 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 1,
+      "inner_execution_us": 29,
+      "container_latency_ms": 773.863,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 773862.8,
+        "latency_ms": 773.863,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 164.81,
+        "nvme_read_bytes": 5707776,
+        "nvme_write_bytes": 13482496
+      }
+    },
+    "duckdb": {
+      "latency_us": 6501.1,
+      "latency_ms": 6.501,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.25,
+      "nvme_read_bytes": 32768,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "sqlite": {
+      "latency_us": 1990.3,
+      "latency_ms": 1.99,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.27,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "postgres": {
+      "latency_us": 2795.9,
+      "latency_ms": 2.796,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.27,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "mariadb": {
+      "latency_us": 1875.3,
+      "latency_ms": 1.875,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.27,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "redis": {
+      "latency_us": 1967.3,
+      "latency_ms": 1.967,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.27,
+      "nvme_read_bytes": 12288,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 10609.5,
+      "latency_ms": 10.61,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.27,
+      "nvme_read_bytes": 8192,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-03",
+    "name": "Ultra-High Outlier Amount",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 15000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 658.889,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 658888.9,
+        "latency_ms": 658.889,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 165.31,
+        "nvme_read_bytes": 4579328,
+        "nvme_write_bytes": 3457024
+      }
+    },
+    "duckdb": {
+      "latency_us": 7867.9,
+      "latency_ms": 7.868,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.34,
+      "nvme_read_bytes": 16384,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "sqlite": {
+      "latency_us": 411.7,
+      "latency_ms": 0.412,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "postgres": {
+      "latency_us": 1969.2,
+      "latency_ms": 1.969,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 165.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "mariadb": {
+      "latency_us": 1470.5,
+      "latency_ms": 1.471,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "redis": {
+      "latency_us": 1847.0,
+      "latency_ms": 1.847,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 8102.5,
+      "latency_ms": 8.102,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-04",
+    "name": "Zero-Match Null Filtering",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 50000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 762.03,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 762030.2,
+        "latency_ms": 762.03,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 165.34,
+        "nvme_read_bytes": 1597440,
+        "nvme_write_bytes": 2754560
+      }
+    },
+    "duckdb": {
+      "latency_us": 10283.7,
+      "latency_ms": 10.284,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.36,
+      "nvme_read_bytes": 114688,
+      "nvme_write_bytes": 0,
+      "match_count": 0
+    },
+    "sqlite": {
+      "latency_us": 491.2,
+      "latency_ms": 0.491,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.36,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 0
+    },
+    "postgres": {
+      "latency_us": 2130.6,
+      "latency_ms": 2.131,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.36,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 0
+    },
+    "mariadb": {
+      "latency_us": 1521.2,
+      "latency_ms": 1.521,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.36,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 0
+    },
+    "redis": {
+      "latency_us": 4044.8,
+      "latency_ms": 4.045,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.36,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 16044.7,
+      "latency_ms": 16.045,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.36,
+      "nvme_read_bytes": 16384,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-05",
+    "name": "Compound Balance Disjunction",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE a.balance > 8000 OR m.category == \"travel\" SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, a.balance, m.category, t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 2,
+      "container_latency_ms": 652.47,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 652470.1,
+        "latency_ms": 652.47,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 165.37,
+        "nvme_read_bytes": 1783296,
+        "nvme_write_bytes": 2658304
+      }
+    },
+    "duckdb": {
+      "latency_us": 13673.3,
+      "latency_ms": 13.673,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.07,
+      "nvme_read_bytes": 479232,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 1009.4,
+      "latency_ms": 1.009,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.26,
+      "nvme_read_bytes": 16384,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 2577.0,
+      "latency_ms": 2.577,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.26,
+      "nvme_read_bytes": 385024,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 5794.0,
+      "latency_ms": 5.794,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.26,
+      "nvme_read_bytes": 139264,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 6043.2,
+      "latency_ms": 6.043,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.27,
+      "nvme_read_bytes": 28672,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 13886.6,
+      "latency_ms": 13.887,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.27,
+      "nvme_read_bytes": 32768,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-06",
+    "name": "Rooted Merchant Attack Pattern",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE m.is_rooted == true AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { m.category, t.amount, t.risk, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 668.371,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 668370.5,
+        "latency_ms": 668.371,
+        "cpu_user_ms": 31.25,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 165.32,
+        "nvme_read_bytes": 184320,
+        "nvme_write_bytes": 4959744
+      }
+    },
+    "duckdb": {
+      "latency_us": 6693.7,
+      "latency_ms": 6.694,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.91,
+      "nvme_read_bytes": 110592,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "sqlite": {
+      "latency_us": 379.5,
+      "latency_ms": 0.38,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.93,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "postgres": {
+      "latency_us": 1890.0,
+      "latency_ms": 1.89,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.93,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "mariadb": {
+      "latency_us": 1458.1,
+      "latency_ms": 1.458,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.94,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "redis": {
+      "latency_us": 4684.7,
+      "latency_ms": 4.685,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.94,
+      "nvme_read_bytes": 12288,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 16599.4,
+      "latency_ms": 16.599,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 165.94,
+      "nvme_read_bytes": 8192,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-07",
+    "name": "Regional European Filtering",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE c.region == \"eu\" SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, c.code, c.region, t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 2,
+      "container_latency_ms": 671.875,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 671874.9,
+        "latency_ms": 671.875,
+        "cpu_user_ms": 62.5,
+        "cpu_sys_ms": 31.25,
+        "ram_rss_mb": 165.95,
+        "nvme_read_bytes": 1114112,
+        "nvme_write_bytes": 2617344
+      }
+    },
+    "duckdb": {
+      "latency_us": 4649.4,
+      "latency_ms": 4.649,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 31.25,
+      "ram_rss_mb": 166.4,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 1364.2,
+      "latency_ms": 1.364,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 5442.9,
+      "latency_ms": 5.443,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 3844.0,
+      "latency_ms": 3.844,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.52,
+      "nvme_read_bytes": 122880,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 1669.8,
+      "latency_ms": 1.67,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 19138.2,
+      "latency_ms": 19.138,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-08",
+    "name": "Category String Exact Match",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE m.category == \"grocery\" SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { m.category, a.name, t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 5,
+      "container_latency_ms": 793.477,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 793477.4,
+        "latency_ms": 793.477,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 166.53,
+        "nvme_read_bytes": 3354624,
+        "nvme_write_bytes": 5460992
+      }
+    },
+    "duckdb": {
+      "latency_us": 5153.6,
+      "latency_ms": 5.154,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.73,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "sqlite": {
+      "latency_us": 2631.4,
+      "latency_ms": 2.631,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.73,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "postgres": {
+      "latency_us": 2118.9,
+      "latency_ms": 2.119,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.73,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "mariadb": {
+      "latency_us": 2972.8,
+      "latency_ms": 2.973,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.73,
+      "nvme_read_bytes": 8192,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "redis": {
+      "latency_us": 1710.1,
+      "latency_ms": 1.71,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.73,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 22885.8,
+      "latency_ms": 22.886,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.73,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-09",
+    "name": "Negative Risk Exclusion",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 AND t.risk == 0 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, t.risk, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 1,
+      "inner_execution_us": 9,
+      "container_latency_ms": 736.336,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 736335.7,
+        "latency_ms": 736.336,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 31.25,
+        "ram_rss_mb": 166.73,
+        "nvme_read_bytes": 11860992,
+        "nvme_write_bytes": 2792448
+      }
+    },
+    "duckdb": {
+      "latency_us": 5167.5,
+      "latency_ms": 5.167,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.32,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "sqlite": {
+      "latency_us": 650.8,
+      "latency_ms": 0.651,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "postgres": {
+      "latency_us": 6249.0,
+      "latency_ms": 6.249,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "mariadb": {
+      "latency_us": 2131.0,
+      "latency_ms": 2.131,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "redis": {
+      "latency_us": 2437.0,
+      "latency_ms": 2.437,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 14518.8,
+      "latency_ms": 14.519,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.55,
+      "nvme_read_bytes": 401408,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-10",
+    "name": "Multi-Variable Range & Inequality",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE a.balance >= 5000 AND t.amount <= 10000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, a.balance, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 1,
+      "container_latency_ms": 2206.617,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 2206617.2,
+        "latency_ms": 2206.617,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 166.61,
+        "nvme_read_bytes": 32584192,
+        "nvme_write_bytes": 2973184
+      }
+    },
+    "duckdb": {
+      "latency_us": 10338.0,
+      "latency_ms": 10.338,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.91,
+      "nvme_read_bytes": 57344,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "sqlite": {
+      "latency_us": 508.4,
+      "latency_ms": 0.508,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.91,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "postgres": {
+      "latency_us": 2040.5,
+      "latency_ms": 2.04,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.91,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "mariadb": {
+      "latency_us": 1704.0,
+      "latency_ms": 1.704,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.91,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 3
+    },
+    "redis": {
+      "latency_us": 4452.6,
+      "latency_ms": 4.453,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.91,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 12247.4,
+      "latency_ms": 12.247,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.91,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-11",
+    "name": "Regularization Lambda Scaling (0.0001)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.0001, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 4,
+      "container_latency_ms": 692.169,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 692169.1,
+        "latency_ms": 692.169,
+        "cpu_user_ms": 31.25,
+        "cpu_sys_ms": 31.25,
+        "ram_rss_mb": 166.91,
+        "nvme_read_bytes": 1127936,
+        "nvme_write_bytes": 4939776
+      }
+    },
+    "duckdb": {
+      "latency_us": 4216.0,
+      "latency_ms": 4.216,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.2,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 477.2,
+      "latency_ms": 0.477,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.39,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 4132.9,
+      "latency_ms": 4.133,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.39,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 2546.2,
+      "latency_ms": 2.546,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.39,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 2188.7,
+      "latency_ms": 2.189,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.39,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 13425.8,
+      "latency_ms": 13.426,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.39,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-12",
+    "name": "Regularization Lambda Scaling (0.0005)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.0005, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 3,
+      "container_latency_ms": 652.915,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 652915.5,
+        "latency_ms": 652.915,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 166.48,
+        "nvme_read_bytes": 184320,
+        "nvme_write_bytes": 2502656
+      }
+    },
+    "duckdb": {
+      "latency_us": 5112.2,
+      "latency_ms": 5.112,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 379.3,
+      "latency_ms": 0.379,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.67,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 1769.4,
+      "latency_ms": 1.769,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.67,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 4080.2,
+      "latency_ms": 4.08,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.68,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 3109.8,
+      "latency_ms": 3.11,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.68,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 12011.8,
+      "latency_ms": 12.012,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.68,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-13",
+    "name": "Regularization Lambda Scaling (0.001)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.001, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 3,
+      "container_latency_ms": 702.022,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 702022.0,
+        "latency_ms": 702.022,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 166.73,
+        "nvme_read_bytes": 10703360,
+        "nvme_write_bytes": 61541376
+      }
+    },
+    "duckdb": {
+      "latency_us": 4950.4,
+      "latency_ms": 4.95,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.65,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 341.2,
+      "latency_ms": 0.341,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.81,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 2152.1,
+      "latency_ms": 2.152,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.82,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 3510.9,
+      "latency_ms": 3.511,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.82,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 1981.0,
+      "latency_ms": 1.981,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.82,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 14060.4,
+      "latency_ms": 14.06,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.82,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-14",
+    "name": "Regularization Lambda Scaling (0.005)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.005, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 7,
+      "container_latency_ms": 791.412,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 791412.2,
+        "latency_ms": 791.412,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 166.85,
+        "nvme_read_bytes": 192512,
+        "nvme_write_bytes": 2580480
+      }
+    },
+    "duckdb": {
+      "latency_us": 3710.1,
+      "latency_ms": 3.71,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.68,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 769.0,
+      "latency_ms": 0.769,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.84,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 3586.9,
+      "latency_ms": 3.587,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.84,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 1441.9,
+      "latency_ms": 1.442,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.84,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 1697.1,
+      "latency_ms": 1.697,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.84,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 7937.9,
+      "latency_ms": 7.938,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 166.84,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-15",
+    "name": "Regularization Lambda Scaling (0.02)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.02, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 3,
+      "container_latency_ms": 677.406,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 677406.0,
+        "latency_ms": 677.406,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 166.93,
+        "nvme_read_bytes": 147456,
+        "nvme_write_bytes": 2703360
+      }
+    },
+    "duckdb": {
+      "latency_us": 7758.8,
+      "latency_ms": 7.759,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.15,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 318.9,
+      "latency_ms": 0.319,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.31,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 2041.9,
+      "latency_ms": 2.042,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.31,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 1502.5,
+      "latency_ms": 1.503,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.31,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 1558.4,
+      "latency_ms": 1.558,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.31,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 8876.6,
+      "latency_ms": 8.877,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.31,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-16",
+    "name": "Regularization Lambda Scaling (0.05)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.05, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 4,
+      "container_latency_ms": 635.453,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 635452.6,
+        "latency_ms": 635.453,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.32,
+        "nvme_read_bytes": 352256,
+        "nvme_write_bytes": 2535424
+      }
+    },
+    "duckdb": {
+      "latency_us": 5928.2,
+      "latency_ms": 5.928,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.87,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 404.5,
+      "latency_ms": 0.405,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.96,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 6467.6,
+      "latency_ms": 6.468,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.96,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 2557.0,
+      "latency_ms": 2.557,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.96,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 2858.0,
+      "latency_ms": 2.858,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.96,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 9756.5,
+      "latency_ms": 9.756,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.96,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-17",
+    "name": "Regularization Lambda Scaling (0.1)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.1, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 2,
+      "container_latency_ms": 768.293,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 768293.1,
+        "latency_ms": 768.293,
+        "cpu_user_ms": 31.25,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 166.96,
+        "nvme_read_bytes": 14000640,
+        "nvme_write_bytes": 3192320
+      }
+    },
+    "duckdb": {
+      "latency_us": 4863.0,
+      "latency_ms": 4.863,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.71,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 370.4,
+      "latency_ms": 0.37,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.87,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 1852.0,
+      "latency_ms": 1.852,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.87,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 1685.4,
+      "latency_ms": 1.685,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.87,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 6487.7,
+      "latency_ms": 6.488,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.87,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 20583.8,
+      "latency_ms": 20.584,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.87,
+      "nvme_read_bytes": 19968,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-18",
+    "name": "Regularization Lambda Scaling (0.25)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.25, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 1,
+      "container_latency_ms": 738.046,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 738046.4,
+        "latency_ms": 738.046,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 166.92,
+        "nvme_read_bytes": 241664,
+        "nvme_write_bytes": 4399104
+      }
+    },
+    "duckdb": {
+      "latency_us": 14216.9,
+      "latency_ms": 14.217,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.02,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 427.3,
+      "latency_ms": 0.427,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.09,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 6935.8,
+      "latency_ms": 6.936,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.09,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 2043.5,
+      "latency_ms": 2.043,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.09,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 2181.5,
+      "latency_ms": 2.182,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.09,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 19839.2,
+      "latency_ms": 19.839,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.1,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-19",
+    "name": "Regularization Lambda Scaling (0.5)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.5, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 2,
+      "container_latency_ms": 715.565,
+      "cohomology_state": "UNBOUNDED",
+      "telemetry": {
+        "latency_us": 715564.8,
+        "latency_ms": 715.565,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.11,
+        "nvme_read_bytes": 2141696,
+        "nvme_write_bytes": 2621440
+      }
+    },
+    "duckdb": {
+      "latency_us": 8969.6,
+      "latency_ms": 8.97,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.8,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 428.6,
+      "latency_ms": 0.429,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.05,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 1728.8,
+      "latency_ms": 1.729,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.05,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 1782.8,
+      "latency_ms": 1.783,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.05,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 1874.4,
+      "latency_ms": 1.874,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.05,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 12994.2,
+      "latency_ms": 12.994,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 167.05,
+      "nvme_read_bytes": 122880,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-20",
+    "name": "Regularization Lambda Scaling (1.0)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 1.0, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 2,
+      "container_latency_ms": 698.957,
+      "cohomology_state": "UNBOUNDED",
+      "telemetry": {
+        "latency_us": 698957.0,
+        "latency_ms": 698.957,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 167.07,
+        "nvme_read_bytes": 2904576,
+        "nvme_write_bytes": 4089856
+      }
+    },
+    "duckdb": {
+      "latency_us": 4633.1,
+      "latency_ms": 4.633,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.83,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 368.8,
+      "latency_ms": 0.369,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.99,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 1892.8,
+      "latency_ms": 1.893,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.99,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 2803.8,
+      "latency_ms": 2.804,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.0,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 1932.2,
+      "latency_ms": 1.932,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.0,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 14178.2,
+      "latency_ms": 14.178,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.0,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-21",
+    "name": "Iteration Bound Scaling (1 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 1, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 3,
+      "container_latency_ms": 788.037,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 788036.9,
+        "latency_ms": 788.037,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.04,
+        "nvme_read_bytes": 294912,
+        "nvme_write_bytes": 2928640
+      }
+    },
+    "duckdb": {
+      "latency_us": 11888.9,
+      "latency_ms": 11.889,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.26,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 1038.2,
+      "latency_ms": 1.038,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.33,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 2250.4,
+      "latency_ms": 2.25,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.33,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 1817.7,
+      "latency_ms": 1.818,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.33,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 4148.9,
+      "latency_ms": 4.149,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 19405.9,
+      "latency_ms": 19.406,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-22",
+    "name": "Iteration Bound Scaling (2 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 2, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 3,
+      "container_latency_ms": 701.878,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 701877.8,
+        "latency_ms": 701.878,
+        "cpu_user_ms": 31.25,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.34,
+        "nvme_read_bytes": 6569984,
+        "nvme_write_bytes": 2732544
+      }
+    },
+    "duckdb": {
+      "latency_us": 5252.9,
+      "latency_ms": 5.253,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.62,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 267.2,
+      "latency_ms": 0.267,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.62,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 4147.6,
+      "latency_ms": 4.148,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.62,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 2121.9,
+      "latency_ms": 2.122,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.62,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 1718.1,
+      "latency_ms": 1.718,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.62,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 7555.5,
+      "latency_ms": 7.556,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.62,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-23",
+    "name": "Iteration Bound Scaling (3 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 3, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 5,
+      "container_latency_ms": 728.537,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 728536.8,
+        "latency_ms": 728.537,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 167.62,
+        "nvme_read_bytes": 12288,
+        "nvme_write_bytes": 2609152
+      }
+    },
+    "duckdb": {
+      "latency_us": 7383.4,
+      "latency_ms": 7.383,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 423.8,
+      "latency_ms": 0.424,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 2350.0,
+      "latency_ms": 2.35,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 2011.0,
+      "latency_ms": 2.011,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 2523.5,
+      "latency_ms": 2.524,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 9444.0,
+      "latency_ms": 9.444,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-24",
+    "name": "Iteration Bound Scaling (5 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 5, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 3,
+      "container_latency_ms": 805.437,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 805437.1,
+        "latency_ms": 805.437,
+        "cpu_user_ms": 31.25,
+        "cpu_sys_ms": 31.25,
+        "ram_rss_mb": 167.72,
+        "nvme_read_bytes": 274432,
+        "nvme_write_bytes": 2741760
+      }
+    },
+    "duckdb": {
+      "latency_us": 10498.0,
+      "latency_ms": 10.498,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 167.83,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 394.4,
+      "latency_ms": 0.394,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.83,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 2055.3,
+      "latency_ms": 2.055,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.83,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 1627.4,
+      "latency_ms": 1.627,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.83,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 1830.4,
+      "latency_ms": 1.83,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.83,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 9014.8,
+      "latency_ms": 9.015,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.84,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-25",
+    "name": "Iteration Bound Scaling (8 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 8, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 2,
+      "container_latency_ms": 717.851,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 717850.8,
+        "latency_ms": 717.851,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 167.84,
+        "nvme_read_bytes": 26836992,
+        "nvme_write_bytes": 3624448
+      }
+    },
+    "duckdb": {
+      "latency_us": 4324.4,
+      "latency_ms": 4.324,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.98,
+      "nvme_read_bytes": 970752,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 290.8,
+      "latency_ms": 0.291,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.98,
+      "nvme_read_bytes": 61440,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 2135.7,
+      "latency_ms": 2.136,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.98,
+      "nvme_read_bytes": 397312,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 5946.1,
+      "latency_ms": 5.946,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.98,
+      "nvme_read_bytes": 737280,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 2553.0,
+      "latency_ms": 2.553,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.98,
+      "nvme_read_bytes": 552960,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 13894.6,
+      "latency_ms": 13.895,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.98,
+      "nvme_read_bytes": 983040,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-26",
+    "name": "Iteration Bound Scaling (12 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 12, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 2,
+      "container_latency_ms": 695.04,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 695039.9,
+        "latency_ms": 695.04,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 168.02,
+        "nvme_read_bytes": 356352,
+        "nvme_write_bytes": 3502080
+      }
+    },
+    "duckdb": {
+      "latency_us": 5144.1,
+      "latency_ms": 5.144,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 168.18,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 290.5,
+      "latency_ms": 0.291,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.18,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 2787.4,
+      "latency_ms": 2.787,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.18,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 2037.9,
+      "latency_ms": 2.038,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.18,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 6488.8,
+      "latency_ms": 6.489,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.18,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 7707.8,
+      "latency_ms": 7.708,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.18,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-27",
+    "name": "Iteration Bound Scaling (18 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 18, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 2,
+      "container_latency_ms": 659.62,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 659620.4,
+        "latency_ms": 659.62,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 168.19,
+        "nvme_read_bytes": 156160,
+        "nvme_write_bytes": 2782720
+      }
+    },
+    "duckdb": {
+      "latency_us": 4245.9,
+      "latency_ms": 4.246,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.2,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 260.6,
+      "latency_ms": 0.261,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.21,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 1502.2,
+      "latency_ms": 1.502,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 168.21,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 1527.6,
+      "latency_ms": 1.528,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.21,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 4622.4,
+      "latency_ms": 4.622,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.21,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 10030.1,
+      "latency_ms": 10.03,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.21,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-28",
+    "name": "Iteration Bound Scaling (35 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 35, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 5,
+      "container_latency_ms": 767.354,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 767353.5,
+        "latency_ms": 767.354,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 168.21,
+        "nvme_read_bytes": 1880064,
+        "nvme_write_bytes": 2560000
+      }
+    },
+    "duckdb": {
+      "latency_us": 10158.8,
+      "latency_ms": 10.159,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.22,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 258.0,
+      "latency_ms": 0.258,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.22,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 1510.0,
+      "latency_ms": 1.51,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.22,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 1697.8,
+      "latency_ms": 1.698,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.22,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 2686.6,
+      "latency_ms": 2.687,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.22,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 14378.1,
+      "latency_ms": 14.378,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.23,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-29",
+    "name": "Iteration Bound Scaling (50 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 50, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 3,
+      "container_latency_ms": 723.091,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 723090.8,
+        "latency_ms": 723.091,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 31.25,
+        "ram_rss_mb": 168.23,
+        "nvme_read_bytes": 4354048,
+        "nvme_write_bytes": 4824576
+      }
+    },
+    "duckdb": {
+      "latency_us": 4937.2,
+      "latency_ms": 4.937,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.25,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 265.0,
+      "latency_ms": 0.265,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.25,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 1668.3,
+      "latency_ms": 1.668,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.25,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 3363.9,
+      "latency_ms": 3.364,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.25,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 2767.9,
+      "latency_ms": 2.768,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.25,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 10409.8,
+      "latency_ms": 10.41,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.25,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-30",
+    "name": "Iteration Bound Scaling (100 Iters)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 3000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 100, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 2,
+      "container_latency_ms": 743.118,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 743117.6,
+        "latency_ms": 743.118,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 168.25,
+        "nvme_read_bytes": 409600,
+        "nvme_write_bytes": 2613248
+      }
+    },
+    "duckdb": {
+      "latency_us": 10659.9,
+      "latency_ms": 10.66,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.25,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "sqlite": {
+      "latency_us": 333.6,
+      "latency_ms": 0.334,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.29,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "postgres": {
+      "latency_us": 1473.5,
+      "latency_ms": 1.473,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.29,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "mariadb": {
+      "latency_us": 1650.8,
+      "latency_ms": 1.651,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.29,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 6
+    },
+    "redis": {
+      "latency_us": 1794.1,
+      "latency_ms": 1.794,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.29,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 17577.9,
+      "latency_ms": 17.578,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.29,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-31",
+    "name": "Energy Threshold Certificate (1e-06)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 1e-06) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 643.126,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 643125.7,
+        "latency_ms": 643.126,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 168.29,
+        "nvme_read_bytes": 2240512,
+        "nvme_write_bytes": 4924928
+      }
+    },
+    "duckdb": {
+      "latency_us": 6379.7,
+      "latency_ms": 6.38,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 168.43,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 1797.0,
+      "latency_ms": 1.797,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.44,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 3076.1,
+      "latency_ms": 3.076,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.44,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 2882.4,
+      "latency_ms": 2.882,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.45,
+      "nvme_read_bytes": 2297856,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 2053.6,
+      "latency_ms": 2.054,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.45,
+      "nvme_read_bytes": 1429504,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 13400.0,
+      "latency_ms": 13.4,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.45,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-32",
+    "name": "Energy Threshold Certificate (5e-06)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 5e-06) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 674.914,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 674914.0,
+        "latency_ms": 674.914,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 168.45,
+        "nvme_read_bytes": 2347008,
+        "nvme_write_bytes": 4734976
+      }
+    },
+    "duckdb": {
+      "latency_us": 7091.4,
+      "latency_ms": 7.091,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.48,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 359.1,
+      "latency_ms": 0.359,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.48,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 1947.2,
+      "latency_ms": 1.947,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.48,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 2914.2,
+      "latency_ms": 2.914,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.48,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 2809.1,
+      "latency_ms": 2.809,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.48,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 8152.4,
+      "latency_ms": 8.152,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.48,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-33",
+    "name": "Energy Threshold Certificate (1e-05)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 1e-05) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 636.772,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 636772.0,
+        "latency_ms": 636.772,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 168.5,
+        "nvme_read_bytes": 20480,
+        "nvme_write_bytes": 2695680
+      }
+    },
+    "duckdb": {
+      "latency_us": 8353.3,
+      "latency_ms": 8.353,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.54,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 279.3,
+      "latency_ms": 0.279,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.54,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 2008.2,
+      "latency_ms": 2.008,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.54,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 1774.5,
+      "latency_ms": 1.774,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.54,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 4329.2,
+      "latency_ms": 4.329,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 168.54,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 6502.5,
+      "latency_ms": 6.503,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.54,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-34",
+    "name": "Energy Threshold Certificate (5e-05)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 5e-05) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 659.902,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 659901.7,
+        "latency_ms": 659.902,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 168.54,
+        "nvme_read_bytes": 78336,
+        "nvme_write_bytes": 2568704
+      }
+    },
+    "duckdb": {
+      "latency_us": 5156.2,
+      "latency_ms": 5.156,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 351.9,
+      "latency_ms": 0.352,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 2021.1,
+      "latency_ms": 2.021,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 1502.3,
+      "latency_ms": 1.502,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 5637.2,
+      "latency_ms": 5.637,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 17012.7,
+      "latency_ms": 17.013,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 168.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-35",
+    "name": "Energy Threshold Certificate (0.0001)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.0001) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 2,
+      "container_latency_ms": 621.412,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 621411.9,
+        "latency_ms": 621.412,
+        "cpu_user_ms": 62.5,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 168.55,
+        "nvme_read_bytes": 106496,
+        "nvme_write_bytes": 2811904
+      }
+    },
+    "duckdb": {
+      "latency_us": 6376.7,
+      "latency_ms": 6.377,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.91,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 496.2,
+      "latency_ms": 0.496,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.07,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 2584.7,
+      "latency_ms": 2.585,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.07,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 1813.5,
+      "latency_ms": 1.814,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.08,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 1821.5,
+      "latency_ms": 1.822,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.08,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 12999.3,
+      "latency_ms": 12.999,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.08,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-36",
+    "name": "Energy Threshold Certificate (0.0005)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.0005) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 3,
+      "container_latency_ms": 682.787,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 682787.2,
+        "latency_ms": 682.787,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.15,
+        "nvme_read_bytes": 12288,
+        "nvme_write_bytes": 2666496
+      }
+    },
+    "duckdb": {
+      "latency_us": 6389.3,
+      "latency_ms": 6.389,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.16,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 462.1,
+      "latency_ms": 0.462,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.17,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 5310.2,
+      "latency_ms": 5.31,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.17,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 2850.3,
+      "latency_ms": 2.85,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.17,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 1939.5,
+      "latency_ms": 1.939,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.17,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 11213.9,
+      "latency_ms": 11.214,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.17,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-37",
+    "name": "Energy Threshold Certificate (0.001)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.001) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 4,
+      "container_latency_ms": 705.334,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 705333.6,
+        "latency_ms": 705.334,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.19,
+        "nvme_read_bytes": 0,
+        "nvme_write_bytes": 2629632
+      }
+    },
+    "duckdb": {
+      "latency_us": 6424.2,
+      "latency_ms": 6.424,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.39,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 731.3,
+      "latency_ms": 0.731,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 1895.6,
+      "latency_ms": 1.896,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 1901.3,
+      "latency_ms": 1.901,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 1750.5,
+      "latency_ms": 1.751,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 10088.9,
+      "latency_ms": 10.089,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-38",
+    "name": "Energy Threshold Certificate (0.005)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 4,
+      "container_latency_ms": 689.844,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 689843.9,
+        "latency_ms": 689.844,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 167.47,
+        "nvme_read_bytes": 12288,
+        "nvme_write_bytes": 2584576
+      }
+    },
+    "duckdb": {
+      "latency_us": 4059.2,
+      "latency_ms": 4.059,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 262.9,
+      "latency_ms": 0.263,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 3686.9,
+      "latency_ms": 3.687,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 1962.8,
+      "latency_ms": 1.963,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 2887.8,
+      "latency_ms": 2.888,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 15624.0,
+      "latency_ms": 15.624,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.47,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-39",
+    "name": "Energy Threshold Certificate (0.01)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.01) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 4,
+      "container_latency_ms": 698.047,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 698046.7,
+        "latency_ms": 698.047,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.47,
+        "nvme_read_bytes": 106496,
+        "nvme_write_bytes": 2725888
+      }
+    },
+    "duckdb": {
+      "latency_us": 4514.0,
+      "latency_ms": 4.514,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.51,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 293.5,
+      "latency_ms": 0.294,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.51,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 1681.6,
+      "latency_ms": 1.682,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.51,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 1509.9,
+      "latency_ms": 1.51,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 4314.1,
+      "latency_ms": 4.314,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 16268.0,
+      "latency_ms": 16.268,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 167.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-40",
+    "name": "Energy Threshold Certificate (0.05)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 2000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.05) EMIT SECTION { t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 1,
+      "container_latency_ms": 703.786,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 703786.2,
+        "latency_ms": 703.786,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 167.55,
+        "nvme_read_bytes": 96256,
+        "nvme_write_bytes": 2535424
+      }
+    },
+    "duckdb": {
+      "latency_us": 4134.0,
+      "latency_ms": 4.134,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.57,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 311.4,
+      "latency_ms": 0.311,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.65,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 1435.0,
+      "latency_ms": 1.435,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.65,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 4879.1,
+      "latency_ms": 4.879,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.65,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 2125.8,
+      "latency_ms": 2.126,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 167.65,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 8564.3,
+      "latency_ms": 8.564,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.65,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-41",
+    "name": "Discrete Only Projection (Zero Spectral Emission)",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 5000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, m.category, t.amount };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 5,
+      "container_latency_ms": 684.0,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 684000.5,
+        "latency_ms": 684.0,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 167.65,
+        "nvme_read_bytes": 8704,
+        "nvme_write_bytes": 2758656
+      }
+    },
+    "duckdb": {
+      "latency_us": 4585.0,
+      "latency_ms": 4.585,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.82,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 5
+    },
+    "sqlite": {
+      "latency_us": 463.2,
+      "latency_ms": 0.463,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.86,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 5
+    },
+    "postgres": {
+      "latency_us": 1701.0,
+      "latency_ms": 1.701,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.86,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 5
+    },
+    "mariadb": {
+      "latency_us": 1964.9,
+      "latency_ms": 1.965,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.86,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 5
+    },
+    "redis": {
+      "latency_us": 4871.7,
+      "latency_ms": 4.872,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.87,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 9883.0,
+      "latency_ms": 9.883,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.87,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-42",
+    "name": "Spectral Certification Only",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 1000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 3,
+      "inner_execution_us": 2,
+      "container_latency_ms": 716.474,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 716474.2,
+        "latency_ms": 716.474,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.88,
+        "nvme_read_bytes": 344064,
+        "nvme_write_bytes": 2879488
+      }
+    },
+    "duckdb": {
+      "latency_us": 5956.7,
+      "latency_ms": 5.957,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.0,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "sqlite": {
+      "latency_us": 466.9,
+      "latency_ms": 0.467,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.24,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "postgres": {
+      "latency_us": 2059.8,
+      "latency_ms": 2.06,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.24,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "mariadb": {
+      "latency_us": 1523.8,
+      "latency_ms": 1.524,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.24,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 7
+    },
+    "redis": {
+      "latency_us": 1582.1,
+      "latency_ms": 1.582,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.24,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 8349.6,
+      "latency_ms": 8.35,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.25,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-43",
+    "name": "Cross-Border APAC Region Flow",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE c.region == \"apac\" SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, c.code, t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 661.518,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 661518.0,
+        "latency_ms": 661.518,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 168.25,
+        "nvme_read_bytes": 40960,
+        "nvme_write_bytes": 2778112
+      }
+    },
+    "duckdb": {
+      "latency_us": 7297.0,
+      "latency_ms": 7.297,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.27,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "sqlite": {
+      "latency_us": 745.5,
+      "latency_ms": 0.746,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "postgres": {
+      "latency_us": 1927.3,
+      "latency_ms": 1.927,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "mariadb": {
+      "latency_us": 2064.6,
+      "latency_ms": 2.065,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "redis": {
+      "latency_us": 3482.9,
+      "latency_ms": 3.483,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.34,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 23842.2,
+      "latency_ms": 23.842,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.35,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-44",
+    "name": "Low Balance High Transaction Anomaly",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE a.balance < 1000 AND t.amount > 500 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, a.balance, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 1,
+      "inner_execution_us": 6,
+      "container_latency_ms": 652.418,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 652418.2,
+        "latency_ms": 652.418,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 168.35,
+        "nvme_read_bytes": 24576,
+        "nvme_write_bytes": 2711552
+      }
+    },
+    "duckdb": {
+      "latency_us": 8526.8,
+      "latency_ms": 8.527,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 166.95,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "sqlite": {
+      "latency_us": 645.9,
+      "latency_ms": 0.646,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.16,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "postgres": {
+      "latency_us": 2848.5,
+      "latency_ms": 2.848,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.16,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "mariadb": {
+      "latency_us": 1881.5,
+      "latency_ms": 1.882,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.17,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "redis": {
+      "latency_us": 1692.9,
+      "latency_ms": 1.693,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.17,
+      "nvme_read_bytes": 4096,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 16108.9,
+      "latency_ms": 16.109,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.17,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 472576,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-45",
+    "name": "High Balance Wealth Verification",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE a.balance > 10000 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, a.balance, t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 1,
+      "inner_execution_us": 6,
+      "container_latency_ms": 664.221,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 664221.5,
+        "latency_ms": 664.221,
+        "cpu_user_ms": 31.25,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 167.18,
+        "nvme_read_bytes": 233472,
+        "nvme_write_bytes": 2498560
+      }
+    },
+    "duckdb": {
+      "latency_us": 5111.6,
+      "latency_ms": 5.112,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.52,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "sqlite": {
+      "latency_us": 2557.5,
+      "latency_ms": 2.557,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.66,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "postgres": {
+      "latency_us": 2188.9,
+      "latency_ms": 2.189,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.66,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "mariadb": {
+      "latency_us": 1637.0,
+      "latency_ms": 1.637,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.66,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "redis": {
+      "latency_us": 1519.2,
+      "latency_ms": 1.519,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.66,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 12963.0,
+      "latency_ms": 12.963,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.66,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-46",
+    "name": "Gaming Merchant Micro-Payments",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE m.category == \"gaming\" SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, m.category, t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 866.237,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 866237.5,
+        "latency_ms": 866.237,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 167.66,
+        "nvme_read_bytes": 159744,
+        "nvme_write_bytes": 5222912
+      }
+    },
+    "duckdb": {
+      "latency_us": 6249.8,
+      "latency_ms": 6.25,
+      "cpu_user_ms": 31.25,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.71,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "sqlite": {
+      "latency_us": 410.8,
+      "latency_ms": 0.411,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "postgres": {
+      "latency_us": 7905.2,
+      "latency_ms": 7.905,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "mariadb": {
+      "latency_us": 2049.5,
+      "latency_ms": 2.049,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 2
+    },
+    "redis": {
+      "latency_us": 3139.8,
+      "latency_ms": 3.14,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 17653.9,
+      "latency_ms": 17.654,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.72,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-47",
+    "name": "Luxury Low-Risk Channel",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE m.category == \"luxury\" AND t.risk == 0 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { m.category, c.code, t.amount, SECTION_ENERGY };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 682.389,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 682388.8,
+        "latency_ms": 682.389,
+        "cpu_user_ms": 31.25,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.74,
+        "nvme_read_bytes": 16384,
+        "nvme_write_bytes": 2555904
+      }
+    },
+    "duckdb": {
+      "latency_us": 7429.3,
+      "latency_ms": 7.429,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.76,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "sqlite": {
+      "latency_us": 525.0,
+      "latency_ms": 0.525,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.79,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "postgres": {
+      "latency_us": 2041.3,
+      "latency_ms": 2.041,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.79,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "mariadb": {
+      "latency_us": 3400.3,
+      "latency_ms": 3.4,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.79,
+      "nvme_read_bytes": 24576,
+      "nvme_write_bytes": 0,
+      "match_count": 1
+    },
+    "redis": {
+      "latency_us": 1824.2,
+      "latency_ms": 1.824,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.79,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 18032.2,
+      "latency_ms": 18.032,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.79,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-48",
+    "name": "All European Rooted Channels",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE c.region == \"eu\" AND m.is_rooted == true SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, m.category, c.code, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 2,
+      "inner_execution_us": 5,
+      "container_latency_ms": 741.782,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 741782.4,
+        "latency_ms": 741.782,
+        "cpu_user_ms": 0.0,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.8,
+        "nvme_read_bytes": 205312,
+        "nvme_write_bytes": 2945536
+      }
+    },
+    "duckdb": {
+      "latency_us": 4760.5,
+      "latency_ms": 4.76,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 46.875,
+      "ram_rss_mb": 168.22,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 332.4,
+      "latency_ms": 0.332,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.3,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 3072.7,
+      "latency_ms": 3.073,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.3,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 2278.0,
+      "latency_ms": 2.278,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.3,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 1994.2,
+      "latency_ms": 1.994,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.3,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 15429.3,
+      "latency_ms": 15.429,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 168.3,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-49",
+    "name": "Maximum Solver Tightness Stress Test",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount > 4000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.0001, MAX_ITERATIONS: 100, ENERGY_THRESHOLD: 1e-06) EMIT SECTION { a.name, t.amount, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 0,
+      "inner_execution_us": 0,
+      "container_latency_ms": 706.273,
+      "cohomology_state": "UNKNOWN",
+      "telemetry": {
+        "latency_us": 706273.5,
+        "latency_ms": 706.273,
+        "cpu_user_ms": 15.625,
+        "cpu_sys_ms": 15.625,
+        "ram_rss_mb": 168.32,
+        "nvme_read_bytes": 1011712,
+        "nvme_write_bytes": 4972544
+      }
+    },
+    "duckdb": {
+      "latency_us": 12116.9,
+      "latency_ms": 12.117,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 167.75,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 110592,
+      "match_count": 4
+    },
+    "sqlite": {
+      "latency_us": 581.0,
+      "latency_ms": 0.581,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.8,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "postgres": {
+      "latency_us": 2221.3,
+      "latency_ms": 2.221,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.8,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "mariadb": {
+      "latency_us": 2302.1,
+      "latency_ms": 2.302,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.81,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 4
+    },
+    "redis": {
+      "latency_us": 8432.4,
+      "latency_ms": 8.432,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.81,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 17291.5,
+      "latency_ms": 17.291,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.81,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  },
+  {
+    "id": "TC-50",
+    "name": "Universal Boundary Full-Coverage Scan",
+    "tql": "MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE t.amount >= 300 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.name, m.category, c.code, t.amount, t.risk, SECTION_ENERGY, COHOMOLOGY_STATE };",
+    "shelfdb": {
+      "matched_hypercells": 5,
+      "inner_execution_us": 1,
+      "container_latency_ms": 2445.303,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "telemetry": {
+        "latency_us": 2445303.4,
+        "latency_ms": 2445.303,
+        "cpu_user_ms": 93.75,
+        "cpu_sys_ms": 0.0,
+        "ram_rss_mb": 167.83,
+        "nvme_read_bytes": 15923712,
+        "nvme_write_bytes": 2748928
+      }
+    },
+    "duckdb": {
+      "latency_us": 7278.3,
+      "latency_ms": 7.278,
+      "cpu_user_ms": 15.625,
+      "cpu_sys_ms": 15.625,
+      "ram_rss_mb": 167.29,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "sqlite": {
+      "latency_us": 684.5,
+      "latency_ms": 0.684,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "postgres": {
+      "latency_us": 4069.8,
+      "latency_ms": 4.07,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "mariadb": {
+      "latency_us": 2263.4,
+      "latency_ms": 2.263,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.55,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "redis": {
+      "latency_us": 2690.9,
+      "latency_ms": 2.691,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.56,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    },
+    "neo4j": null,
+    "scylladb": {
+      "latency_us": 9683.1,
+      "latency_ms": 9.683,
+      "cpu_user_ms": 0.0,
+      "cpu_sys_ms": 0.0,
+      "ram_rss_mb": 167.57,
+      "nvme_read_bytes": 0,
+      "nvme_write_bytes": 0,
+      "match_count": 10
+    }
+  }
+]

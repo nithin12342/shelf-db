@@ -1,0 +1,99 @@
+{
+  "tsv_dir": "D:\\d2\\data\\imdb",
+  "tables": [
+    "title.basics",
+    "title.akas",
+    "title.crew",
+    "title.episode",
+    "title.principals",
+    "title.ratings",
+    "name.basics"
+  ],
+  "duckdb_load_s": 0.1,
+  "counts": {
+    "title_basics": 12866375,
+    "title_akas": 59774094,
+    "title_crew": 12866977,
+    "title_episode": 9950953,
+    "title_principals": 102312263,
+    "title_ratings": 1721477,
+    "name_basics": 15738257
+  },
+  "pg_load_s": 52.8,
+  "queries": {
+    "q1": {
+      "rows": 1,
+      "md5": "ef1ff0d1d03f7ed4955f7f0c3daf8705",
+      "duckdb_ms": 553.3,
+      "pg_ms": 2674.1,
+      "expected_count": 44906,
+      "expected_avg_rating": 8.145506168440681,
+      "expected_sum_votes": 294435444
+    },
+    "q2": {
+      "rows": 10,
+      "md5": "1b4d1d945e6515c82a8d84b500584db2",
+      "duckdb_ms": 4466.3,
+      "pg_ms": 37727.1,
+      "expected_rows_compact": "Grey DeLisle,2137;Yuri Lowenthal,1295;Johnny Yong Bosch,1212;Dan Green,1198;Eric Bauza,1125;Luci Christian,1045;Laura Bailey,1021;Jun Fukuyama,975;Tara Strong,969;Sam Vincent,874"
+    },
+    "q3": {
+      "rows": 8,
+      "md5": "139b61173a59f1419d3d83cd9b5350fe",
+      "duckdb_ms": 1837.4,
+      "pg_ms": 19029.6,
+      "expected_rows": [
+        [
+          1950,
+          3464,
+          7.592118937644341
+        ],
+        [
+          1960,
+          4519,
+          7.577738437707456
+        ],
+        [
+          1970,
+          5769,
+          7.2996706534928
+        ],
+        [
+          1980,
+          9048,
+          7.109958001768349
+        ],
+        [
+          1990,
+          20278,
+          6.974075352598865
+        ],
+        [
+          2000,
+          40961,
+          7.098750030516812
+        ],
+        [
+          2010,
+          76368,
+          7.212721296878275
+        ],
+        [
+          2020,
+          46974,
+          7.07401115510705
+        ]
+      ],
+      "expected_rows_compact": "1950,3464,7.5921189376;1960,4519,7.5777384377;1970,5769,7.2996706535;1980,9048,7.1099580018;1990,20278,6.9740753526;2000,40961,7.0987500305;2010,76368,7.2127212969;2020,46974,7.0740111551"
+    },
+    "q4": {
+      "rows": 10,
+      "md5": "d83e1a931abed7bdfa5595b6889baa0f",
+      "duckdb_ms": 1506.7,
+      "pg_ms": 20147.3,
+      "expected_rows_compact": "Mark Ruffalo,13;Scarlett Johansson,12;Aamir Khan,10;Robert Downey Jr.,10;Leonardo DiCaprio,9;Tom Hanks,9;Matt Damon,9;Brad Pitt,9;Chris Evans,9;Willem Dafoe,9"
+    }
+  },
+  "gate_cross_engine": "PASS",
+  "dialect_note": "Two silent dialect divergences found by the md5 cross-engine gate: (1) DuckDB '/' is true division vs PostgreSQL integer division (8 decades vs 59); (2) DuckDB CAST(double AS INT) rounds vs PostgreSQL truncation (8 vs 9). Fixed with CAST(FLOOR(startyear/10.0) AS INTEGER)*10. Join fan-out identical in both engines (207,381 rows)."
+}

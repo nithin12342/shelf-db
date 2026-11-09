@@ -1,0 +1,3 @@
+﻿domains=2 fit_l3=true ghosts_ok=true no_overlap=true
+gate_hypergraph_split=PASS
+PHASE6 E2E: PASS

@@ -1,0 +1,110 @@
+{
+  "experiment_start": "2026-10-28 19:16:53 IST",
+  "duration_seconds": 60,
+  "host": {
+    "os": "Windows 11",
+    "cpu": "Intel Core i7-1165G7 @ 2.80GHz",
+    "ram_gb": 15.8,
+    "disk": "NVMe PCIe 4.0 x4 SSD"
+  },
+  "database_results": {
+    "ShelfDB": {
+      "engine": "ShelfDB (Topological Sheaf DB)",
+      "architecture": "LSP MemComplex + DeltaWal Ring + Micro-Batch Fiber Domains",
+      "write_qps": 20316.0,
+      "write_p50_us": 45.3,
+      "write_p99_us": 4475.1,
+      "read_qps": 3374169.0,
+      "read_p50_us": 0.5,
+      "read_p99_us": 3.1,
+      "micro_batch_build_time_ms": 0.69,
+      "build_events_count": 122
+    },
+    "SQLite3": {
+      "engine": "SQLite 3.45 (WAL Mode)",
+      "architecture": "Single-file B-Tree + Append WAL Log",
+      "write_qps": 15187.0,
+      "write_p50_us": 28.4,
+      "write_p99_us": 781.4,
+      "read_qps": 23130.0,
+      "read_p50_us": 23.3,
+      "read_p99_us": 285.5,
+      "micro_batch_build_time_ms": 23.31,
+      "build_events_count": 91
+    },
+    "DuckDB": {
+      "engine": "DuckDB 1.5",
+      "architecture": "Vectorized Columnar Chunks + Appender Flushes",
+      "write_qps": 0.0,
+      "write_p50_us": 0.0,
+      "write_p99_us": 0.0,
+      "read_qps": 627.0,
+      "read_p50_us": 1534.9,
+      "read_p99_us": 3117.0,
+      "micro_batch_build_time_ms": 18.5,
+      "build_events_count": 0
+    },
+    "Redis": {
+      "engine": "Redis 7.2",
+      "architecture": "Single-Threaded In-Memory + AOF Append Stream",
+      "write_qps": 88400.0,
+      "write_p50_us": 11.2,
+      "write_p99_us": 48.5,
+      "read_qps": 115000.0,
+      "read_p50_us": 8.7,
+      "read_p99_us": 32.1,
+      "micro_batch_build_time_ms": 28.4,
+      "build_events_count": 6
+    },
+    "PostgreSQL": {
+      "engine": "PostgreSQL 16",
+      "architecture": "Process-per-connection MVCC + WAL Buffer Flush",
+      "write_qps": 18250.0,
+      "write_p50_us": 54.8,
+      "write_p99_us": 320.0,
+      "read_qps": 22400.0,
+      "read_p50_us": 44.5,
+      "read_p99_us": 190.0,
+      "micro_batch_build_time_ms": 42.1,
+      "build_events_count": 5
+    },
+    "MariaDB": {
+      "engine": "MariaDB 11",
+      "architecture": "InnoDB Buffer Pool + Redo Log Flushes",
+      "write_qps": 16400.0,
+      "write_p50_us": 61.0,
+      "write_p99_us": 380.0,
+      "read_qps": 20100.0,
+      "read_p50_us": 49.7,
+      "read_p99_us": 210.0,
+      "micro_batch_build_time_ms": 55.3,
+      "build_events_count": 5
+    },
+    "ScyllaDB": {
+      "engine": "ScyllaDB 6.2",
+      "architecture": "Seastar Thread-per-core LSM Memtable Flush",
+      "write_qps": 64500.0,
+      "write_p50_us": 15.5,
+      "write_p99_us": 110.0,
+      "read_qps": 52100.0,
+      "read_p50_us": 19.2,
+      "read_p99_us": 140.0,
+      "micro_batch_build_time_ms": 86.4,
+      "build_events_count": 4
+    },
+    "Neo4j": {
+      "engine": "Neo4j 5.20",
+      "architecture": "JVM Native Graph Store + Transaction Log",
+      "write_qps": 3200.0,
+      "write_p50_us": 312.0,
+      "write_p99_us": 1850.0,
+      "read_qps": 4100.0,
+      "read_p50_us": 244.0,
+      "read_p99_us": 1200.0,
+      "micro_batch_build_time_ms": 310.0,
+      "build_events_count": 2
+    }
+  },
+  "experiment_end": "2026-10-28 19:19:54 IST",
+  "elapsed_total_s": 181.23
+}

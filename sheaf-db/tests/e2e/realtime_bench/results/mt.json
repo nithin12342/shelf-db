@@ -1,0 +1,10 @@
+{
+  "threads": 32,
+  "ops": 32000,
+  "wall_s": 0.1,
+  "throughput": 217522,
+  "p50_us": 5.8,
+  "p99_us": 1472.9,
+  "gate_mt": "PASS (vs mongo 2497 ops/s)",
+  "verdict": "sheaf-db wins 87x throughput; p99 1.47ms shows single-mutex write contention spikes under 32-way sharing. Different work/op vs Mongo doc ops \u2014 recorded, not equated."
+}

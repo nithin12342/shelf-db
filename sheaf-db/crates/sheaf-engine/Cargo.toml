@@ -1,0 +1,10 @@
+[package]
+name = "sheaf-engine"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sheaf-core = { path = "../sheaf-core" }
+sheaf-storage = { path = "../sheaf-storage" }
+sheaf-kernel = { path = "../sheaf-kernel" }
+sheaf-query = { path = "../sheaf-query" }

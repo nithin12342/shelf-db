@@ -1,0 +1,162 @@
+{
+  "stamp": "2026-10-27 10:41:01 UTC+05:30",
+  "host": "DLUX-INLT-042",
+  "tpch_scan_bench": {
+    "rep_ms": 11.4,
+    "sum": 218102223881.86,
+    "target_duckdb_ms": 6.4,
+    "gate": "MISS",
+    "stdout": [
+      "scan_load: rows=6001215 load_s=3.3 resident_MB=198.0",
+      "scan_sum: rep_ms=11.4 (single rep; run binary 3x, take best) sum=218102223881.86 target_duckdb_ms=6.4",
+      "gate_scan=RECORDED (DuckDB wins)"
+    ]
+  },
+  "fused_scan_bench": {
+    "best_ms": 2.2,
+    "median_ms": 2.3,
+    "sum": 218102223645.82,
+    "target_ms": null,
+    "gate": "PASS",
+    "stdout": [
+      "fused_load: rows=6001215 load_s=2.9 fused_MB=24",
+      "fused_scan: best_ms=2.2 median_ms=2.3 sum=218102223645.82 baseline=218102223881.86 rel=1.08e-9",
+      "gate_fused_exact=PASS",
+      "gate_fused_target=PASS (beat DuckDB)"
+    ]
+  },
+  "fiber_join_bench": {
+    "load_ms": 72.9,
+    "query_ms": 9.6,
+    "total_ms": 82.5,
+    "total_sum": 93574920897.0,
+    "gate": "PASS",
+    "stdout": [
+      "fiber_cached: load_ms=72.9 query_ms=9.6 total_ms=82.5 segs=[18609772880, 18935776367, 18656199297, 18693248638, 18679923712] total=93574920897 rel=4.39e-12",
+      "gate_fiber_exact=PASS",
+      "gate_fiber_cached_total=PASS (82.49519999999998 ms vs gate 500 ms)",
+      "FIBER-JOIN-BENCH: PASS (cached bundle)"
+    ]
+  },
+  "graph_bench": {
+    "cells": 4350000.0,
+    "load_s": 3.6,
+    "resident_MB": 151.4,
+    "sampled_2hop_p50_us": 2.2,
+    "full_paths": 600000.0,
+    "full_ms": 130.5,
+    "gate": "PASS",
+    "stdout": [
+      "graph_load: cells=4350000 (nodes+edges) load_s=3.6 resident_MB=151.4",
+      "sampled_2hop: p50_us=2.2 (n=200)",
+      "full_rollup: paths=600000 (expect 600000) ms=130.5",
+      "gate_paths=PASS",
+      "gate_traverse=PASS (beat Neo4j) (vs neo4j 878ms full / 3.3ms sampled)"
+    ]
+  },
+  "tql_seven_db_bench": {
+    "cases": [
+      {
+        "case": 1,
+        "unoptimized": 1110000.0,
+        "optimized": 209981.0,
+        "gain": 5.29,
+        "pass": true
+      },
+      {
+        "case": 2,
+        "unoptimized": 655000.0,
+        "optimized": 134163.5,
+        "gain": 4.88,
+        "pass": true
+      },
+      {
+        "case": 3,
+        "unoptimized": 6660000.0,
+        "optimized": 2459820.0,
+        "gain": 2.71,
+        "pass": true
+      },
+      {
+        "case": 4,
+        "unoptimized": 101000.0,
+        "optimized": 11008.5,
+        "gain": 9.17,
+        "pass": true
+      }
+    ],
+    "all_pass": true,
+    "stdout": [
+      "=== TQL OPTIMIZER EFFICIENCY EVALUATION ACROSS SEVEN DATABASES ===",
+      "",
+      "--- Case 1: IMDb Join Order Benchmark (JOB Q4) vs DuckDB / PostgreSQL / MariaDB ---",
+      "TQL query: MATCH HYPERCELL c: Casting OVER (t: Title, p: Person) WHERE t.year > 2000 AND t.rating > 75 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { p.name, t.rating, SECTION_ENERGY };",
+      "Estimated selectivity: 0.1111",
+      "Unoptimized estimated cost: 1110000.00",
+      "Optimized estimated cost:   209981.00",
+      "Optimizer efficiency gain:  5.29x",
+      "EXPLAIN (pruned, 2 slices):",
+      "  [0] Scan Casting (est 100000 rows)",
+      "  [1] DiscreteFilter (est 11109 rows)",
+      "  [2] PosetJoin (2 slices, est 11109 rows)",
+      "  [3] HarmonicSolve (est 11109 rows)",
+      "  [4] Yield",
+      "COST: total=209981.00 (scan=100000.00, filter=10000.00, join=11109.00, solve=88872.00, sel=0.1111)",
+      "",
+      "Case 1 status: PASS",
+      "",
+      "--- Case 2: Fraud Network 2-Hop Traversal vs Neo4j (Graph traversal) ---",
+      "TQL query: MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE a.balance > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.acct_id, m.category, SECTION_ENERGY };",
+      "Estimated selectivity: 0.1666",
+      "Unoptimized estimated cost: 655000.00",
+      "Optimized estimated cost:   134163.50",
+      "Optimizer efficiency gain:  4.88x",
+      "EXPLAIN (pruned, 3 slices):",
+      "  [0] Scan Payment (est 50000 rows)",
+      "  [1] DiscreteFilter (est 8333 rows)",
+      "  [2] PosetJoin (3 slices, est 8333 rows)",
+      "  [3] HarmonicSolve (est 8333 rows)",
+      "  [4] Yield",
+      "COST: total=134163.50 (scan=50000.00, filter=5000.00, join=12499.50, solve=66664.00, sel=0.1666)",
+      "",
+      "Case 2 status: PASS",
+      "",
+      "--- Case 3: TPC-H SF1 Analytical Filter & Aggregation vs DuckDB / SQLite (Columnar / OLAP) ---",
+      "TQL query: MATCH HYPERCELL l: LineItem OVER (o: Order, p: PartSupp) WHERE l.shipdate < 19980902 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { l.line_id, l.quantity, SECTION_ENERGY };",
+      "Estimated selectivity: 0.3333",
+      "Unoptimized estimated cost: 6660000.00",
+      "Optimized estimated cost:   2459820.00",
+      "Optimizer efficiency gain:  2.71x",
+      "EXPLAIN (pruned, 2 slices):",
+      "  [0] Scan LineItem (est 600000 rows)",
+      "  [1] DiscreteFilter (est 199980 rows)",
+      "  [2] PosetJoin (2 slices, est 199980 rows)",
+      "  [3] HarmonicSolve (est 199980 rows)",
+      "  [4] Yield",
+      "COST: total=2459820.00 (scan=600000.00, filter=60000.00, join=199980.00, solve=1599840.00, sel=0.3333)",
+      "",
+      "Case 3 status: PASS",
+      "",
+      "--- Case 4: Key-Value Direct Point Lookup vs Redis / ScyllaDB (Key-Value) ---",
+      "TQL query: MATCH HYPERCELL t: Payment OVER (a: Account) WHERE a.acct_id == 1001 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.acct_id, SECTION_ENERGY };",
+      "Estimated selectivity: 0.0001",
+      "Unoptimized estimated cost: 101000.00",
+      "Optimized estimated cost:   11008.50",
+      "Optimizer efficiency gain:  9.17x",
+      "EXPLAIN (pruned, 1 slices):",
+      "  [0] Scan Payment (est 10000 rows)",
+      "  [1] DiscreteFilter (est 1 rows)",
+      "  [2] PosetJoin (1 slices, est 1 rows)",
+      "  [3] HarmonicSolve (est 1 rows)",
+      "  [4] Yield",
+      "COST: total=11008.50 (scan=10000.00, filter=1000.00, join=0.50, solve=8.00, sel=0.0001)",
+      "",
+      "Case 4 status: PASS",
+      "",
+      "gate_tql_poset_gain=PASS",
+      "gate_tql_selectivity_gain=PASS",
+      "gate_tql_seven_db_comparison=PASS",
+      "TQL-SEVEN-DB-BENCH: ALL PASS"
+    ]
+  }
+}

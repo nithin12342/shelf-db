@@ -1,0 +1,8 @@
+{
+  "durable_p50_ns": 2500,
+  "durable_p99_ns": 9600,
+  "n": 20000,
+  "replay": "20000/20000 epochs ordered clean",
+  "gate_epoch_replay": "PASS",
+  "verdict": "parity zone with SQLite 2.1us (2.5 vs 2.1). No-seek design validated; remaining gap is the flush syscall."
+}

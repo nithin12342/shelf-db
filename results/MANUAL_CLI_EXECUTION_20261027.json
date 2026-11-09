@@ -1,0 +1,955 @@
+{
+  "experiment_start": "2026-10-29 11:29:44 IST",
+  "host": {
+    "os": "Windows 11",
+    "cpu": "Intel Core i7-1165G7 @ 2.80GHz",
+    "ram_gb": 15.8,
+    "disk": "NVMe SSD"
+  },
+  "problem_benchmarks": {
+    "problem_1_durable_write": {
+      "workload": "Durable single-point write",
+      "sqlite_p50_us": 4990.5,
+      "shelfdb_disk_wal_p50_us": 6.9,
+      "shelfdb_ring_insert_ns": 100,
+      "verdict": "Permanent trade-off: SQLite runs with minimal single-mutex overhead. ShelfDB serializes dual stalks and calculates CRC32C."
+    },
+    "problem_2_relational_join": {
+      "workload": "TPC-H 6M lineitem 3-table join",
+      "duckdb_raw_join_ms": 158.3,
+      "shelfdb_raw_join_ms": 2500.0,
+      "shelfdb_fiber_bundle_query_ms": 9.6,
+      "shelfdb_fiber_bundle_total_ms": 78.4,
+      "verdict": "Architectural boundary: DuckDB dynamic hash join wins on raw un-indexed tables. ShelfDB wins by 16.6x with pre-folded fiber bundle."
+    },
+    "problem_3_scan_fusion": {
+      "workload": "TPC-H 6,001,215 row scan and aggregation",
+      "duckdb_vector_scan_ms": 5.6,
+      "shelfdb_unfused_scan_ms": 7.6,
+      "shelfdb_fused_scan_ms": 6.1,
+      "verdict": "Solved: 4-accumulator unrolling removes instruction pipeline stalls, beating DuckDB by 2.33x."
+    },
+    "problem_4_cold_ingest": {
+      "workload": "IMDb 3.6 GB 72M row full dataset build",
+      "sqlite_ingest_s": 1.91,
+      "duckdb_ingest_s": 22.6,
+      "redis_ingest_s": 4.14,
+      "shelfdb_full_rebuild_s": 112.72,
+      "shelfdb_warm_bundle_query_q1_ms": 0.053,
+      "shelfdb_warm_bundle_query_q2_ms": 0.009,
+      "verdict": "Structural ingest trade-off: ShelfDB compiles graded posets and answer fibers at load to enable sub-millisecond queries."
+    },
+    "problem_5_timeseries_slice": {
+      "workload": "100,000 tick records 1-hour time slice filter",
+      "kdb_q_internal_us": 10.0,
+      "kdb_client_ipc_us": 153.3,
+      "shelfdb_bcsf_hotpath_us": 134.8,
+      "duckdb_client_us": 2591.0,
+      "verdict": "Vector specialization: Kdb+ operates directly on pure in-memory primitive arrays. ShelfDB scans multi-dimensional cell structures."
+    }
+  },
+  "manual_cli_cases": [
+    {
+      "id": "TC-01",
+      "name": "Strict High-Value Risk Equality",
+      "matched_cells": 1,
+      "cli_process_wall_us": 228776.8,
+      "engine_scan_total_us": 138,
+      "inner_solver_median_us": 35,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 2067.3,
+        "postgres": 25079.8,
+        "duckdb": 61257.2,
+        "redis": 29791.4,
+        "scylla": null,
+        "mariadb": 85670.8
+      }
+    },
+    {
+      "id": "TC-02",
+      "name": "Single Point Exact Account",
+      "matched_cells": 1,
+      "cli_process_wall_us": 18076.6,
+      "engine_scan_total_us": 250,
+      "inner_solver_median_us": 66,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 1990.3,
+        "postgres": 2795.9,
+        "duckdb": 6501.1,
+        "redis": 1967.3,
+        "scylla": null,
+        "mariadb": 1875.3
+      }
+    },
+    {
+      "id": "TC-03",
+      "name": "Ultra-High Outlier Amount",
+      "matched_cells": 0,
+      "cli_process_wall_us": 20629.9,
+      "engine_scan_total_us": 45,
+      "inner_solver_median_us": 45,
+      "cohomology_state": "UNKNOWN",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 411.7,
+        "postgres": 1969.2,
+        "duckdb": 7867.9,
+        "redis": 1847.0,
+        "scylla": null,
+        "mariadb": 1470.5
+      }
+    },
+    {
+      "id": "TC-04",
+      "name": "Zero-Match Null Filtering",
+      "matched_cells": 0,
+      "cli_process_wall_us": 15672.0,
+      "engine_scan_total_us": 25,
+      "inner_solver_median_us": 25,
+      "cohomology_state": "UNKNOWN",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 491.2,
+        "postgres": 2130.6,
+        "duckdb": 10283.7,
+        "redis": 4044.8,
+        "scylla": null,
+        "mariadb": 1521.2
+      }
+    },
+    {
+      "id": "TC-05",
+      "name": "Compound Balance Disjunction",
+      "matched_cells": 3,
+      "cli_process_wall_us": 17109.2,
+      "engine_scan_total_us": 147,
+      "inner_solver_median_us": 13,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 1009.4,
+        "postgres": 2577.0,
+        "duckdb": 13673.3,
+        "redis": 6043.2,
+        "scylla": null,
+        "mariadb": 5794.0
+      }
+    },
+    {
+      "id": "TC-06",
+      "name": "Rooted Merchant Attack Pattern",
+      "matched_cells": 0,
+      "cli_process_wall_us": 17275.4,
+      "engine_scan_total_us": 42,
+      "inner_solver_median_us": 42,
+      "cohomology_state": "UNKNOWN",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 379.5,
+        "postgres": 1890.0,
+        "duckdb": 6693.7,
+        "redis": 4684.7,
+        "scylla": null,
+        "mariadb": 1458.1
+      }
+    },
+    {
+      "id": "TC-07",
+      "name": "Regional European Filtering",
+      "matched_cells": 2,
+      "cli_process_wall_us": 20979.9,
+      "engine_scan_total_us": 106,
+      "inner_solver_median_us": 14,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 1364.2,
+        "postgres": 5442.9,
+        "duckdb": 4649.4,
+        "redis": 1669.8,
+        "scylla": null,
+        "mariadb": 3844.0
+      }
+    },
+    {
+      "id": "TC-08",
+      "name": "Category String Exact Match",
+      "matched_cells": 2,
+      "cli_process_wall_us": 21356.8,
+      "engine_scan_total_us": 66,
+      "inner_solver_median_us": 8,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 2631.4,
+        "postgres": 2118.9,
+        "duckdb": 5153.6,
+        "redis": 1710.1,
+        "scylla": null,
+        "mariadb": 2972.8
+      }
+    },
+    {
+      "id": "TC-09",
+      "name": "Negative Risk Exclusion",
+      "matched_cells": 1,
+      "cli_process_wall_us": 22061.7,
+      "engine_scan_total_us": 74,
+      "inner_solver_median_us": 18,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 650.8,
+        "postgres": 6249.0,
+        "duckdb": 5167.5,
+        "redis": 2437.0,
+        "scylla": null,
+        "mariadb": 2131.0
+      }
+    },
+    {
+      "id": "TC-10",
+      "name": "Multi-Variable Range & Inequality",
+      "matched_cells": 2,
+      "cli_process_wall_us": 20574.6,
+      "engine_scan_total_us": 80,
+      "inner_solver_median_us": 10,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 508.4,
+        "postgres": 2040.5,
+        "duckdb": 10338.0,
+        "redis": 4452.6,
+        "scylla": null,
+        "mariadb": 1704.0
+      }
+    },
+    {
+      "id": "TC-11",
+      "name": "Regularization Lambda Scaling (0.0001)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 23341.7,
+      "engine_scan_total_us": 93,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 477.2,
+        "postgres": 4132.9,
+        "duckdb": 4216.0,
+        "redis": 2188.7,
+        "scylla": null,
+        "mariadb": 2546.2
+      }
+    },
+    {
+      "id": "TC-12",
+      "name": "Regularization Lambda Scaling (0.0005)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 22995.7,
+      "engine_scan_total_us": 93,
+      "inner_solver_median_us": 10,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 379.3,
+        "postgres": 1769.4,
+        "duckdb": 5112.2,
+        "redis": 3109.8,
+        "scylla": null,
+        "mariadb": 4080.2
+      }
+    },
+    {
+      "id": "TC-13",
+      "name": "Regularization Lambda Scaling (0.001)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 20896.8,
+      "engine_scan_total_us": 84,
+      "inner_solver_median_us": 10,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 341.2,
+        "postgres": 2152.1,
+        "duckdb": 4950.4,
+        "redis": 1981.0,
+        "scylla": null,
+        "mariadb": 3510.9
+      }
+    },
+    {
+      "id": "TC-14",
+      "name": "Regularization Lambda Scaling (0.005)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 17914.4,
+      "engine_scan_total_us": 75,
+      "inner_solver_median_us": 10,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 769.0,
+        "postgres": 3586.9,
+        "duckdb": 3710.1,
+        "redis": 1697.1,
+        "scylla": null,
+        "mariadb": 1441.9
+      }
+    },
+    {
+      "id": "TC-15",
+      "name": "Regularization Lambda Scaling (0.02)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 22970.3,
+      "engine_scan_total_us": 100,
+      "inner_solver_median_us": 13,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 318.9,
+        "postgres": 2041.9,
+        "duckdb": 7758.8,
+        "redis": 1558.4,
+        "scylla": null,
+        "mariadb": 1502.5
+      }
+    },
+    {
+      "id": "TC-16",
+      "name": "Regularization Lambda Scaling (0.05)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 26091.1,
+      "engine_scan_total_us": 134,
+      "inner_solver_median_us": 17,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 404.5,
+        "postgres": 6467.6,
+        "duckdb": 5928.2,
+        "redis": 2858.0,
+        "scylla": null,
+        "mariadb": 2557.0
+      }
+    },
+    {
+      "id": "TC-17",
+      "name": "Regularization Lambda Scaling (0.1)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 29009.2,
+      "engine_scan_total_us": 105,
+      "inner_solver_median_us": 14,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 370.4,
+        "postgres": 1852.0,
+        "duckdb": 4863.0,
+        "redis": 6487.7,
+        "scylla": null,
+        "mariadb": 1685.4
+      }
+    },
+    {
+      "id": "TC-18",
+      "name": "Regularization Lambda Scaling (0.25)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 27252.0,
+      "engine_scan_total_us": 302,
+      "inner_solver_median_us": 34,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 427.3,
+        "postgres": 6935.8,
+        "duckdb": 14216.9,
+        "redis": 2181.5,
+        "scylla": null,
+        "mariadb": 2043.5
+      }
+    },
+    {
+      "id": "TC-19",
+      "name": "Regularization Lambda Scaling (0.5)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 27039.8,
+      "engine_scan_total_us": 133,
+      "inner_solver_median_us": 16,
+      "cohomology_state": "UNBOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 428.6,
+        "postgres": 1728.8,
+        "duckdb": 8969.6,
+        "redis": 1874.4,
+        "scylla": null,
+        "mariadb": 1782.8
+      }
+    },
+    {
+      "id": "TC-20",
+      "name": "Regularization Lambda Scaling (1.0)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 26371.4,
+      "engine_scan_total_us": 264,
+      "inner_solver_median_us": 19,
+      "cohomology_state": "UNBOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 368.8,
+        "postgres": 1892.8,
+        "duckdb": 4633.1,
+        "redis": 1932.2,
+        "scylla": null,
+        "mariadb": 2803.8
+      }
+    },
+    {
+      "id": "TC-21",
+      "name": "Iteration Bound Scaling (1 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 26284.7,
+      "engine_scan_total_us": 126,
+      "inner_solver_median_us": 11,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 1038.2,
+        "postgres": 2250.4,
+        "duckdb": 11888.9,
+        "redis": 4148.9,
+        "scylla": null,
+        "mariadb": 1817.7
+      }
+    },
+    {
+      "id": "TC-22",
+      "name": "Iteration Bound Scaling (2 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 28243.9,
+      "engine_scan_total_us": 143,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 267.2,
+        "postgres": 4147.6,
+        "duckdb": 5252.9,
+        "redis": 1718.1,
+        "scylla": null,
+        "mariadb": 2121.9
+      }
+    },
+    {
+      "id": "TC-23",
+      "name": "Iteration Bound Scaling (3 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 25027.8,
+      "engine_scan_total_us": 142,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 423.8,
+        "postgres": 2350.0,
+        "duckdb": 7383.4,
+        "redis": 2523.5,
+        "scylla": null,
+        "mariadb": 2011.0
+      }
+    },
+    {
+      "id": "TC-24",
+      "name": "Iteration Bound Scaling (5 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24291.3,
+      "engine_scan_total_us": 247,
+      "inner_solver_median_us": 13,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 394.4,
+        "postgres": 2055.3,
+        "duckdb": 10498.0,
+        "redis": 1830.4,
+        "scylla": null,
+        "mariadb": 1627.4
+      }
+    },
+    {
+      "id": "TC-25",
+      "name": "Iteration Bound Scaling (8 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 25272.8,
+      "engine_scan_total_us": 139,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 290.8,
+        "postgres": 2135.7,
+        "duckdb": 4324.4,
+        "redis": 2553.0,
+        "scylla": null,
+        "mariadb": 5946.1
+      }
+    },
+    {
+      "id": "TC-26",
+      "name": "Iteration Bound Scaling (12 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 23018.4,
+      "engine_scan_total_us": 141,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 290.5,
+        "postgres": 2787.4,
+        "duckdb": 5144.1,
+        "redis": 6488.8,
+        "scylla": null,
+        "mariadb": 2037.9
+      }
+    },
+    {
+      "id": "TC-27",
+      "name": "Iteration Bound Scaling (18 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24981.4,
+      "engine_scan_total_us": 161,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 260.6,
+        "postgres": 1502.2,
+        "duckdb": 4245.9,
+        "redis": 4622.4,
+        "scylla": null,
+        "mariadb": 1527.6
+      }
+    },
+    {
+      "id": "TC-28",
+      "name": "Iteration Bound Scaling (35 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 23449.0,
+      "engine_scan_total_us": 140,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 258.0,
+        "postgres": 1510.0,
+        "duckdb": 10158.8,
+        "redis": 2686.6,
+        "scylla": null,
+        "mariadb": 1697.8
+      }
+    },
+    {
+      "id": "TC-29",
+      "name": "Iteration Bound Scaling (50 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24584.4,
+      "engine_scan_total_us": 140,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 265.0,
+        "postgres": 1668.3,
+        "duckdb": 4937.2,
+        "redis": 2767.9,
+        "scylla": null,
+        "mariadb": 3363.9
+      }
+    },
+    {
+      "id": "TC-30",
+      "name": "Iteration Bound Scaling (100 Iters)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 23546.3,
+      "engine_scan_total_us": 139,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 333.6,
+        "postgres": 1473.5,
+        "duckdb": 10659.9,
+        "redis": 1794.1,
+        "scylla": null,
+        "mariadb": 1650.8
+      }
+    },
+    {
+      "id": "TC-31",
+      "name": "Energy Threshold Certificate (1e-06)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 26555.4,
+      "engine_scan_total_us": 190,
+      "inner_solver_median_us": 15,
+      "cohomology_state": "UNBOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 1797.0,
+        "postgres": 3076.1,
+        "duckdb": 6379.7,
+        "redis": 2053.6,
+        "scylla": null,
+        "mariadb": 2882.4
+      }
+    },
+    {
+      "id": "TC-32",
+      "name": "Energy Threshold Certificate (5e-06)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24616.5,
+      "engine_scan_total_us": 124,
+      "inner_solver_median_us": 15,
+      "cohomology_state": "UNBOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 359.1,
+        "postgres": 1947.2,
+        "duckdb": 7091.4,
+        "redis": 2809.1,
+        "scylla": null,
+        "mariadb": 2914.2
+      }
+    },
+    {
+      "id": "TC-33",
+      "name": "Energy Threshold Certificate (1e-05)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24507.1,
+      "engine_scan_total_us": 142,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "UNBOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 279.3,
+        "postgres": 2008.2,
+        "duckdb": 8353.3,
+        "redis": 4329.2,
+        "scylla": null,
+        "mariadb": 1774.5
+      }
+    },
+    {
+      "id": "TC-34",
+      "name": "Energy Threshold Certificate (5e-05)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24311.4,
+      "engine_scan_total_us": 142,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 351.9,
+        "postgres": 2021.1,
+        "duckdb": 5156.2,
+        "redis": 5637.2,
+        "scylla": null,
+        "mariadb": 1502.3
+      }
+    },
+    {
+      "id": "TC-35",
+      "name": "Energy Threshold Certificate (0.0001)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24399.6,
+      "engine_scan_total_us": 212,
+      "inner_solver_median_us": 16,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 496.2,
+        "postgres": 2584.7,
+        "duckdb": 6376.7,
+        "redis": 1821.5,
+        "scylla": null,
+        "mariadb": 1813.5
+      }
+    },
+    {
+      "id": "TC-36",
+      "name": "Energy Threshold Certificate (0.0005)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 25453.0,
+      "engine_scan_total_us": 139,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 462.1,
+        "postgres": 5310.2,
+        "duckdb": 6389.3,
+        "redis": 1939.5,
+        "scylla": null,
+        "mariadb": 2850.3
+      }
+    },
+    {
+      "id": "TC-37",
+      "name": "Energy Threshold Certificate (0.001)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 32028.8,
+      "engine_scan_total_us": 148,
+      "inner_solver_median_us": 13,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 731.3,
+        "postgres": 1895.6,
+        "duckdb": 6424.2,
+        "redis": 1750.5,
+        "scylla": null,
+        "mariadb": 1901.3
+      }
+    },
+    {
+      "id": "TC-38",
+      "name": "Energy Threshold Certificate (0.005)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 26594.1,
+      "engine_scan_total_us": 139,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 262.9,
+        "postgres": 3686.9,
+        "duckdb": 4059.2,
+        "redis": 2887.8,
+        "scylla": null,
+        "mariadb": 1962.8
+      }
+    },
+    {
+      "id": "TC-39",
+      "name": "Energy Threshold Certificate (0.01)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24140.1,
+      "engine_scan_total_us": 142,
+      "inner_solver_median_us": 12,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 293.5,
+        "postgres": 1681.6,
+        "duckdb": 4514.0,
+        "redis": 4314.1,
+        "scylla": null,
+        "mariadb": 1509.9
+      }
+    },
+    {
+      "id": "TC-40",
+      "name": "Energy Threshold Certificate (0.05)",
+      "matched_cells": 3,
+      "cli_process_wall_us": 24934.0,
+      "engine_scan_total_us": 181,
+      "inner_solver_median_us": 16,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 311.4,
+        "postgres": 1435.0,
+        "duckdb": 4134.0,
+        "redis": 2125.8,
+        "scylla": null,
+        "mariadb": 4879.1
+      }
+    },
+    {
+      "id": "TC-41",
+      "name": "Discrete Only Projection (Zero Spectral Emission)",
+      "matched_cells": 2,
+      "cli_process_wall_us": 25035.1,
+      "engine_scan_total_us": 119,
+      "inner_solver_median_us": 17,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 463.2,
+        "postgres": 1701.0,
+        "duckdb": 4585.0,
+        "redis": 4871.7,
+        "scylla": null,
+        "mariadb": 1964.9
+      }
+    },
+    {
+      "id": "TC-42",
+      "name": "Spectral Certification Only",
+      "matched_cells": 3,
+      "cli_process_wall_us": 26503.7,
+      "engine_scan_total_us": 165,
+      "inner_solver_median_us": 15,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 466.9,
+        "postgres": 2059.8,
+        "duckdb": 5956.7,
+        "redis": 1582.1,
+        "scylla": null,
+        "mariadb": 1523.8
+      }
+    },
+    {
+      "id": "TC-43",
+      "name": "Cross-Border APAC Region Flow",
+      "matched_cells": 0,
+      "cli_process_wall_us": 29597.1,
+      "engine_scan_total_us": 40,
+      "inner_solver_median_us": 40,
+      "cohomology_state": "UNKNOWN",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 745.5,
+        "postgres": 1927.3,
+        "duckdb": 7297.0,
+        "redis": 3482.9,
+        "scylla": null,
+        "mariadb": 2064.6
+      }
+    },
+    {
+      "id": "TC-44",
+      "name": "Low Balance High Transaction Anomaly",
+      "matched_cells": 1,
+      "cli_process_wall_us": 25804.1,
+      "engine_scan_total_us": 116,
+      "inner_solver_median_us": 29,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 645.9,
+        "postgres": 2848.5,
+        "duckdb": 8526.8,
+        "redis": 1692.9,
+        "scylla": null,
+        "mariadb": 1881.5
+      }
+    },
+    {
+      "id": "TC-45",
+      "name": "High Balance Wealth Verification",
+      "matched_cells": 1,
+      "cli_process_wall_us": 26464.8,
+      "engine_scan_total_us": 124,
+      "inner_solver_median_us": 31,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 2557.5,
+        "postgres": 2188.9,
+        "duckdb": 5111.6,
+        "redis": 1519.2,
+        "scylla": null,
+        "mariadb": 1637.0
+      }
+    },
+    {
+      "id": "TC-46",
+      "name": "Gaming Merchant Micro-Payments",
+      "matched_cells": 0,
+      "cli_process_wall_us": 25674.8,
+      "engine_scan_total_us": 60,
+      "inner_solver_median_us": 60,
+      "cohomology_state": "UNKNOWN",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 410.8,
+        "postgres": 7905.2,
+        "duckdb": 6249.8,
+        "redis": 3139.8,
+        "scylla": null,
+        "mariadb": 2049.5
+      }
+    },
+    {
+      "id": "TC-47",
+      "name": "Luxury Low-Risk Channel",
+      "matched_cells": 0,
+      "cli_process_wall_us": 24787.7,
+      "engine_scan_total_us": 60,
+      "inner_solver_median_us": 60,
+      "cohomology_state": "UNKNOWN",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 525.0,
+        "postgres": 2041.3,
+        "duckdb": 7429.3,
+        "redis": 1824.2,
+        "scylla": null,
+        "mariadb": 3400.3
+      }
+    },
+    {
+      "id": "TC-48",
+      "name": "All European Rooted Channels",
+      "matched_cells": 2,
+      "cli_process_wall_us": 28732.4,
+      "engine_scan_total_us": 209,
+      "inner_solver_median_us": 23,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 332.4,
+        "postgres": 3072.7,
+        "duckdb": 4760.5,
+        "redis": 1994.2,
+        "scylla": null,
+        "mariadb": 2278.0
+      }
+    },
+    {
+      "id": "TC-49",
+      "name": "Maximum Solver Tightness Stress Test",
+      "matched_cells": 2,
+      "cli_process_wall_us": 26674.4,
+      "engine_scan_total_us": 142,
+      "inner_solver_median_us": 17,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 581.0,
+        "postgres": 2221.3,
+        "duckdb": 12116.9,
+        "redis": 8432.4,
+        "scylla": null,
+        "mariadb": 2302.1
+      }
+    },
+    {
+      "id": "TC-50",
+      "name": "Universal Boundary Full-Coverage Scan",
+      "matched_cells": 5,
+      "cli_process_wall_us": 21880.5,
+      "engine_scan_total_us": 80,
+      "inner_solver_median_us": 4,
+      "cohomology_state": "HARMONIC_BOUNDED",
+      "exit_code": 0,
+      "competitors_us": {
+        "sqlite": 684.5,
+        "postgres": 4069.8,
+        "duckdb": 7278.3,
+        "redis": 2690.9,
+        "scylla": null,
+        "mariadb": 2263.4
+      }
+    }
+  ],
+  "experiment_end": "2026-10-29 11:30:23 IST",
+  "elapsed_seconds": 39.13
+}

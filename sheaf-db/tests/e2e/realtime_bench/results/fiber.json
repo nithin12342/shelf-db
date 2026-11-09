@@ -1,0 +1,24 @@
+{
+  "prefold_s": 1.8,
+  "runs": 2574528,
+  "orders": 1500000,
+  "fiber_join_ms": 3.6,
+  "segments": [
+    18609772880,
+    18935776367,
+    18656199297,
+    18693248638,
+    18679923712
+  ],
+  "total": 93574920897,
+  "rel": 4.39e-12,
+  "gate_fiber_exact": "PASS",
+  "gate_fiber_target": "PASS (beat DuckDB)",
+  "verdict": "sheaf-db 3.6ms vs DuckDB 158ms (44x), vs PG 3.04s (844x). Pre-fold once (1.8s, index-like), stream forever.",
+  "fiber_join_ms_process_runs": [
+    3.6,
+    3.2,
+    3.4
+  ],
+  "fiber_join_ms_best": 3.2
+}

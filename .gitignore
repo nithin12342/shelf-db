@@ -1,0 +1,42 @@
+# Environment & Credentials
+.env
+.env.local
+*.token
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Rust build artifacts
+target/
+**/target/
+dist/
+Cargo.lock
+
+# Standalone rustc tools (built by tools/run_tools.sh, not cargo targets)
+**/tools/*.exe
+*.exe
+
+# Logs
+*.log
+sheaf-db/tests/e2e/realtime_bench/results/*.log
+
+# IDE / System
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+
+# Local datasets (GBs, never commit)
+data/
+*.tsv
+*.tsv.gz
+*.zip
+*.gz
+
+
+# Session artifacts (large, not code)
+fiber-bundle-build-avoidance-plan.json
+html-conversation-to-timestamped-markdown.json
+
+von-neumann-architecture-physical-limits.json

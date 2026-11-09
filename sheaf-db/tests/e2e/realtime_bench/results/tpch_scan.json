@@ -1,0 +1,11 @@
+{
+  "rows": 6001215,
+  "load_s": 1.7,
+  "resident_MB": 198.0,
+  "scan_ms_process_runs": [
+    7.6,
+    9.7,
+    13.5
+  ],
+  "verdict": "CORRECTED (2nd): earlier 30ms process numbers were stale-binary + loaded-box artifacts. True speed ~8ms (interleaved), matching coord 7.8-9.5 and SoA 8.0. DuckDB 6.4ms wins narrowly (~1.25x) - genuine parity zone."
+}

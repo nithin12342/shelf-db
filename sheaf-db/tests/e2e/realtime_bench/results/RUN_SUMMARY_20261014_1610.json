@@ -1,0 +1,20 @@
+{
+  "stamp": "2026-10-14 16:10 UTC+05:30",
+  "summary": {
+    "sqlite": "OK",
+    "duckdb": "OK",
+    "redis": "OK",
+    "mongodb": "OK",
+    "mariadb": "OK",
+    "pg": "OK",
+    "neo4j": "BENCH-FAIL",
+    "scylladb": "BENCH-FAIL",
+    "shelf:tpch_scan_bench": "OK",
+    "shelf:fiber_join_bench": "OK",
+    "shelf:graph_bench": "OK",
+    "shelf:mt_bench": "OK",
+    "shelf:wal_insert_bench": "OK",
+    "shelf:epoch_wal_bench": "OK",
+    "shelf:real_load_bench": "OK"
+  }
+}

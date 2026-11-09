@@ -1,0 +1,33 @@
+PostgreSQL IMDb load, 2026-10-26, successful session.
+
+This is a transcription of the psql output of that session, not a raw console
+capture. The raw output stayed in the session. The rows, the seconds, and the
+row counts below are the psql values. The clock times are not recorded per
+statement and do not appear in this file.
+
+Context: the earlier attempt in pg_imdb_load_20261026.log failed. A console
+control event killed the backend, and PostgreSQL truncates an unlogged table
+after an unclean shutdown. All seven tables were empty afterwards.
+
+The commands were server-side COPY statements, run through psql with
+-v ON_ERROR_STOP=1, after "SET synchronous_commit = off". The seconds are the
+psql \timing output.
+
+step 1  COPY title_ratings     1721477 rows     27.1 s wall (psql start included)
+step 2  COPY title_crew       12866977 rows     20.017 s
+step 3  COPY title_episode     9950953 rows     21.094 s
+step 4  COPY title_basics     12866375 rows     57.834 s
+step 5  COPY name_basics      15738257 rows    245.008 s
+step 6  COPY title_akas       59774094 rows    185.276 s
+step 7  COPY title_principals 102312263 rows    286.135 s
+step 8  count verification of all seven tables    55.205 s
+        total wall for steps 4 to 7               829.7 s
+
+Final counts, all equal to the DuckDB counts:
+  title_basics      12866375
+  title_akas        59774094
+  title_crew        12866977
+  title_episode      9950953
+  title_principals 102312263
+  title_ratings      1721477
+  name_basics       15738257

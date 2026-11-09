@@ -1,0 +1,53 @@
+{
+  "_purpose": "Every committed run of the shelf database on the IMDb suite, so the analysis documents can cite a named file for each number. The file `imdb_shelf.json` holds only the newest run, so the earlier runs were archived here when they were overwritten.",
+  "_same_binary_and_bundle": true,
+  "_box_state_note": "The box carries other engines and containers during the engine matrix. The idle control run used the same binary and the same bundle with the box idle.",
+  "matrix_window_20261021_1031": {
+    "_source": "imdb_shelf_matrixwindow.json, committed in 123bd7f",
+    "_box_state": "loaded, engines and containers resident, same window as imdb_multi_engine.json",
+    "q1": {"load_ms": 151.1, "query_ms": 197.8, "count": 44906, "votes": 294435444, "avg": 8.1455061756},
+    "q2": {"load_ms": 654.9, "query_ms": 18333.3},
+    "q3": {"load_ms": 95.3, "query_ms": 1746.9},
+    "bundle_open_ms": 0.1,
+    "wall_ms": 21180.2
+  },
+  "idle_control_20261021_1634": {
+    "_source": "imdb_shelf.json at commit 007ca16, archived into this file",
+    "_box_state": "idle, same binary and same bundle",
+    "q1": {"load_ms": 162.3, "query_ms": 159.4, "count": 44906, "votes": 294435444, "avg": 8.1455061756},
+    "q2": {"load_ms": 523.7, "query_ms": 10804.2},
+    "q3": {"load_ms": 68.8, "query_ms": 1472.1},
+    "bundle_open_ms": 0.0,
+    "wall_ms": 13191.4
+  },
+  "run3_20261022_0936": {
+    "_source": "imdb_shelf.json at commit 727f742, archived into this file",
+    "_box_state": "loaded",
+    "q1": {"load_ms": 300.8, "query_ms": 349.6, "count": 44906, "votes": 294435444, "avg": 8.1455061756},
+    "q2": {"load_ms": 1572.6, "query_ms": 12531.1},
+    "q3": {"load_ms": 358.9, "query_ms": 2189.3},
+    "bundle_open_ms": 0.0,
+    "wall_ms": 17338.0
+  },
+  "latest_20261022_0956": {
+    "_source": "imdb_shelf.json at commit e8fc5c0, still the current file",
+    "_box_state": "idle",
+    "q1": {"load_ms": 212.6, "query_ms": 274.9, "count": 44906, "votes": 294435444, "avg": 8.1455061756},
+    "q2": {"load_ms": 1905.3, "query_ms": 21493.8},
+    "q3": {"load_ms": 255.4, "query_ms": 2539.3},
+    "bundle_open_ms": 0.0,
+    "wall_ms": 26689.2
+  },
+  "spread_across_the_four_runs": {
+    "_note": "The same binary and the same bundle produce this spread. The engine comparison must state which run it uses.",
+    "q1_query_ms": [159.4, 197.8, 274.9, 349.6],
+    "q2_query_ms": [10804.2, 12531.1, 18333.3, 21493.8],
+    "q3_query_ms": [1472.1, 1746.9, 2189.3, 2539.3],
+    "wall_ms": [13191.4, 17338.0, 21180.2, 26689.2]
+  },
+  "bundle_setup_cost_ms": {
+    "_note": "Two committed measurements of the same bundle build. The 51,100 ms figure is the benchmark number used across the analysis documents. The 112,721 ms figure is a forced full rebuild measured on 2026-10-22 with the per-stage times names 11,440 ms, ratings 548 ms, basics 11,168 ms, principals 89,565 ms.",
+    "benchmark_20261021": 51100,
+    "forced_full_rebuild_20261022": 112721
+  }
+}

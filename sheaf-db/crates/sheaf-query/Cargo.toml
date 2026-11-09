@@ -1,0 +1,7 @@
+[package]
+name = "sheaf-query"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sheaf-core = { path = "../sheaf-core" }

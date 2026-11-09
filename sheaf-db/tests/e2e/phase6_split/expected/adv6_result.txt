@@ -1,0 +1,7 @@
+﻿D1_empty_zero_domains=PASS
+D2_single_cell=PASS
+D3_small_single_domain=PASS
+D4_ghosts_cover=PASS
+D5_no_overlap=PASS
+D6_budget_respected=PASS
+ADVERSARIAL6: PASS

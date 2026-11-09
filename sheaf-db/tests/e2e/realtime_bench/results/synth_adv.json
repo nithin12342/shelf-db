@@ -1,0 +1,26 @@
+{
+  "ADV1_GBs": {
+    "16MB": 5.3,
+    "48MB": 3.9,
+    "256MB": 2.9,
+    "1024MB": 2.7
+  },
+  "ADV1_verdict": "floor CONFIRMED with size dependence (copy=2x traffic: read BW ~10.6->5.4 GB/s). 48MB scan floor ~6.2ms.",
+  "ADV2_fsync_C_p50_ns": 1316600,
+  "ADV2_fsync_C_p99_ns": 3511200,
+  "ADV2_fsync_D_p50_ns": 1303200,
+  "ADV2_fsync_D_p99_ns": 1900500,
+  "ADV2_verdict": "drive asymmetry REFUTED at p50 (C:==D:); NEW: C: p99 1.8x worse (nearly-full-drive tails).",
+  "ADV3_p50_ns": 100,
+  "ADV3_p99_ns": 300,
+  "ADV3_pmax_ns": 184800,
+  "ADV3_drained": 40000,
+  "ADV3_verdict": "contention NOT a bottleneck (p50 identical to uncontended); pmax outlier = scheduler, noted.",
+  "ADV4_skew_ms": 4.2,
+  "ADV4_verdict": "skew-insensitive (4.2 vs 3.2-3.6 uniform). Streaming does not care about distribution.",
+  "ADV5_verdict": "PASS - 8-dim scrambled seals rejected, graded advance to 8, replay 8 dims.",
+  "ADV6_parse_s": 2.1,
+  "ADV6_sort_s": 0.0,
+  "ADV6_verdict": "NEW: sort tax does not exist (sub-50ms for 2.57M); prefold ~= parse cost. Faster parser (memchr) is the only prefold lever left.",
+  "overall": "no new verdict-threatening bottlenecks; two annotations (C: tails, ring pmax); two worries killed (drive asymmetry, sort tax)."
+}

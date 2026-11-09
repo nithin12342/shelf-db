@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sheaf-DB Storage Architecture & Native Topology Visualizer</title>
+  <style>
+    :root {
+      --bg-primary: #0b0f17;
+      --bg-secondary: #131b28;
+      --bg-card: #1a2436;
+      --bg-card-hover: #222f46;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-bright: #ffffff;
+      --accent-blue: #38bdf8;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-purple: #c084fc;
+      --accent-rose: #f43f5e;
+      --border-color: #26354a;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding: 24px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--accent-cyan);
+    }
+
+    .badge.green { color: var(--accent-green); border-color: rgba(16, 185, 129, 0.3); }
+    .badge.amber { color: var(--accent-amber); border-color: rgba(245, 158, 11, 0.3); }
+    .badge.purple { color: var(--accent-purple); border-color: rgba(192, 132, 252, 0.3); }
+
+    h1 {
+      font-size: 1.75rem;
+      color: var(--text-bright);
+      margin-bottom: 6px;
+    }
+
+    p.lead {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 960px;
+    }
+
+    nav.tab-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-secondary);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-blue);
+      border-bottom-color: var(--accent-blue);
+      background: var(--bg-secondary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      color: var(--text-bright);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      color: var(--accent-blue);
+      margin-top: 18px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .ste-note {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 3px solid var(--accent-blue);
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      margin: 14px 0;
+      color: var(--text-main);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .ste-alert {
+      background: rgba(245, 158, 11, 0.08);
+      border-left: 3px solid var(--accent-amber);
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      margin: 14px 0;
+      color: var(--text-main);
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* Diagram Containers */
+    .diagram-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 20px;
+      margin: 18px 0;
+      overflow-x: auto;
+    }
+
+    svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Table Styles */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 16px 0;
+    }
+
+    table.data-table th, table.data-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background: var(--bg-card);
+      color: var(--accent-cyan);
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    table.data-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    table.data-table td.mono {
+      font-family: var(--font-mono);
+    }
+
+    /* Interactive controls */
+    .control-panel {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      background: var(--bg-card);
+      padding: 12px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .control-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.15s ease;
+    }
+
+    .control-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-blue);
+    }
+
+    .control-btn.active {
+      background: #1e3a8a;
+      border-color: var(--accent-blue);
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    /* Binary offset strip */
+    .binary-strip {
+      display: flex;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 16px 0;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    .binary-block {
+      padding: 12px 8px;
+      text-align: center;
+      border-right: 1px solid var(--border-color);
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .binary-block:last-child {
+      border-right: none;
+    }
+
+    .binary-block:hover {
+      filter: brightness(1.2);
+    }
+
+    .binary-block .size {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      margin-top: 4px;
+    }
+
+    .binary-block.hdr { background: #1e3a8a; color: #93c5fd; }
+    .binary-block.off { background: #064e3b; color: #6ee7b7; }
+    .binary-block.idx { background: #3730a3; color: #c7d2fe; }
+    .binary-block.stk { background: #701a75; color: #f5d0fe; }
+    .binary-block.mrp { background: #713f12; color: #fde047; }
+    .binary-block.dsc { background: #134e4a; color: #5eead4; }
+    .binary-block.crc { background: #881337; color: #fecdd3; }
+
+    /* Interactive inspector */
+    .inspector-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      min-height: 80px;
+    }
+
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #7dd3fc;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Sheaf-DB: Storage Architecture & Native Topology Visualizer</h1>
+    <p class="lead">
+      This visual specification details the native shape of the cellular sheaf, the geometric fiber bundle, 
+      the fast ingestion acceleration pipeline, the three-tier storage system, and Structure-of-Arrays (SoA) memory alignment.
+    </p>
+    <div class="badge-bar">
+      <span class="badge green">Write Amp: 1.0002 (Floor: 1.0)</span>
+      <span class="badge green">Fiber Read Amp: 13.0 (208 Bytes)</span>
+      <span class="badge blue">Base Scan: 19.2 GB/s (75% Bus Peak)</span>
+      <span class="badge purple">Ingest Throughput: 938k events/s</span>
+      <span class="badge amber">Host L3 Domain: 12 MiB</span>
+    </div>
+  </header>
+
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('sheaf-native')">1. Native Cellular Sheaf Shape</button>
+    <button class="tab-btn" onclick="switchTab('bundle-native')">2. Native Fiber Bundle Shape</button>
+    <button class="tab-btn" onclick="switchTab('ingest-pipeline')">3. Fast Ingestion Pipeline</button>
+    <button class="tab-btn" onclick="switchTab('overview')">4. Three-Tier Storage Engine</button>
+    <button class="tab-btn" onclick="switchTab('bcsf')">5. BCSF Segment Binary Layout</button>
+    <button class="tab-btn" onclick="switchTab('soa')">6. Memory Layout (SoA)</button>
+    <button class="tab-btn" onclick="switchTab('shadow')">7. Shadow Merge & Paging</button>
+    <button class="tab-btn" onclick="switchTab('limits')">8. Physical Ceilings</button>
+  </nav>
+
+  <!-- TAB 1: NATIVE CELLULAR SHEAF SHAPE -->
+  <div id="sheaf-native" class="tab-content active">
+    <div class="card">
+      <h2>Native Geometric Shape: The Cellular Sheaf Complex</h2>
+      <p>
+        In mathematics, a <strong>cellular sheaf</strong> &fnof; over a graded cell complex &chi; assigns:
+        (1) a base cell to every entity, 
+        (2) a vector stalk space &fnof;(&sigma;) standing vertically over each cell &sigma;, 
+        and (3) linear restriction morphisms &rho;<sub>&sigma;&trianglelefteq;&tau;</sub> transporting stalk vectors along boundary incidences.
+      </p>
+
+      <div class="control-panel">
+        <span style="font-size:0.85rem; font-weight:600; color:var(--accent-cyan); align-self:center;">Visual Filters:</span>
+        <button class="control-btn active" id="btn-all" onclick="toggleSheafLayer('all')">Show Complete Sheaf</button>
+        <button class="control-btn" id="btn-base" onclick="toggleSheafLayer('base')">Base Cells Only</button>
+        <button class="control-btn" id="btn-stalks" onclick="toggleSheafLayer('stalks')">Stalks & Fibers Only</button>
+        <button class="control-btn" id="btn-morphisms" onclick="toggleSheafLayer('morphisms')">Restriction Maps & Coboundary</button>
+      </div>
+
+      <div class="diagram-container">
+        <!-- SVG ISOMETRIC 3D VISUALIZATION OF CELLULAR SHEAF -->
+        <svg id="sheaf-svg" viewBox="0 0 960 540" width="960" height="540">
+          <defs>
+            <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+            </marker>
+            <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#c084fc" />
+            </marker>
+            <marker id="arrow-rose" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#f43f5e" />
+            </marker>
+            <linearGradient id="stalk-grad-0" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#0284c7" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.2"/>
+            </linearGradient>
+            <linearGradient id="stalk-grad-1" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#c084fc" stop-opacity="0.2"/>
+            </linearGradient>
+            <linearGradient id="stalk-grad-2" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#059669" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#34d399" stop-opacity="0.2"/>
+            </linearGradient>
+          </defs>
+
+          <!-- 3D PERSPECTIVE BASE CELL COMPLEX (Z = 0 BASE PLANE) -->
+          <g id="layer-base-cells">
+            <polygon points="120,440 480,480 840,410 480,370" fill="rgba(30, 41, 59, 0.4)" stroke="#334155" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <text x="140" y="460" fill="#64748b" font-size="11" font-family="monospace">Base Complex K (Dim 0, 1, 2)</text>
+
+            <polygon points="260,430 700,410 480,380" fill="rgba(56, 189, 248, 0.08)" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <text x="480" y="415" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">2-Cell: &sigma; (Hyperedge / Face)</text>
+            <text x="480" y="430" fill="#94a3b8" font-size="9" text-anchor="middle">&part;&sigma; = e_01 + e_12 - e_02 (&delta;&sup2; = 0)</text>
+
+            <line x1="260" y1="430" x2="700" y2="410" stroke="#38bdf8" stroke-width="3"/>
+            <polygon points="485,420 475,415 475,425" fill="#38bdf8"/>
+            <text x="480" y="445" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">1-Cell: e_01 (Edge)</text>
+
+            <line x1="700" y1="410" x2="480" y2="380" stroke="#38bdf8" stroke-width="3"/>
+            <polygon points="595,395 585,390 587,400" fill="#38bdf8"/>
+            <text x="615" y="388" fill="#38bdf8" font-size="11" font-weight="bold">1-Cell: e_12</text>
+
+            <line x1="260" y1="430" x2="480" y2="380" stroke="#38bdf8" stroke-width="3"/>
+            <polygon points="365,405 375,400 373,410" fill="#38bdf8"/>
+            <text x="330" y="395" fill="#38bdf8" font-size="11" font-weight="bold">1-Cell: e_02</text>
+
+            <circle cx="260" cy="430" r="10" fill="#0284c7" stroke="#ffffff" stroke-width="2"/>
+            <text x="240" y="445" fill="#ffffff" font-size="12" font-weight="bold">v0</text>
+
+            <circle cx="700" cy="410" r="10" fill="#7c3aed" stroke="#ffffff" stroke-width="2"/>
+            <text x="718" y="420" fill="#ffffff" font-size="12" font-weight="bold">v1</text>
+
+            <circle cx="480" cy="380" r="10" fill="#059669" stroke="#ffffff" stroke-width="2"/>
+            <text x="480" y="365" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">v2</text>
+          </g>
+
+          <!-- VERTICAL STALK FIBERS RISING OVER BASE CELLS -->
+          <g id="layer-stalks">
+            <line x1="260" y1="430" x2="260" y2="160" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="2,2"/>
+            <rect x="235" y="160" width="50" height="180" rx="6" fill="url(#stalk-grad-0)" stroke="#38bdf8" stroke-width="1.5"/>
+            <line x1="240" y1="200" x2="280" y2="200" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <line x1="240" y1="240" x2="280" y2="240" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <line x1="240" y1="280" x2="280" y2="280" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <rect x="205" y="125" width="110" height="28" rx="4" fill="#0c4a6e" stroke="#0284c7"/>
+            <text x="260" y="144" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">Stalk &fnof;(v0) &cong; &reals;&sup2;</text>
+            <circle cx="260" cy="220" r="5" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5"/>
+            <text x="270" y="224" fill="#e0f2fe" font-size="10" font-family="monospace">x_v0</text>
+
+            <line x1="700" y1="410" x2="700" y2="140" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="2,2"/>
+            <rect x="675" y="140" width="50" height="180" rx="6" fill="url(#stalk-grad-1)" stroke="#c084fc" stroke-width="1.5"/>
+            <line x1="680" y1="180" x2="720" y2="180" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <line x1="680" y1="220" x2="720" y2="220" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <line x1="680" y1="260" x2="720" y2="260" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <rect x="645" y="105" width="110" height="28" rx="4" fill="#4c1d95" stroke="#7c3aed"/>
+            <text x="700" y="124" fill="#c084fc" font-size="11" font-weight="bold" text-anchor="middle">Stalk &fnof;(v1) &cong; &reals;&sup2;</text>
+            <circle cx="700" cy="245" r="5" fill="#c084fc" stroke="#ffffff" stroke-width="1.5"/>
+            <text x="710" y="249" fill="#f3e8ff" font-size="10" font-family="monospace">x_v1</text>
+
+            <line x1="480" y1="380" x2="480" y2="90" stroke="#059669" stroke-width="1.5" stroke-dasharray="2,2"/>
+            <rect x="455" y="90" width="50" height="180" rx="6" fill="url(#stalk-grad-2)" stroke="#34d399" stroke-width="1.5"/>
+            <line x1="460" y1="130" x2="500" y2="130" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <line x1="460" y1="170" x2="500" y2="170" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <line x1="460" y1="210" x2="500" y2="210" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+            <rect x="425" y="55" width="110" height="28" rx="4" fill="#064e3b" stroke="#059669"/>
+            <text x="480" y="74" fill="#34d399" font-size="11" font-weight="bold" text-anchor="middle">Stalk &fnof;(v2) &cong; &reals;&sup2;</text>
+            <circle cx="480" cy="180" r="5" fill="#34d399" stroke="#ffffff" stroke-width="1.5"/>
+            <text x="490" y="184" fill="#d1fae5" font-size="10" font-family="monospace">x_v2</text>
+
+            <line x1="480" y1="420" x2="480" y2="240" stroke="#64748b" stroke-width="1" stroke-dasharray="2,2"/>
+            <rect x="458" y="240" width="44" height="130" rx="4" fill="rgba(15, 23, 42, 0.9)" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="480" y="232" fill="#94a3b8" font-size="10" font-weight="bold" text-anchor="middle">Edge Stalk &fnof;(e_01)</text>
+          </g>
+
+          <!-- MORPHISMS, RESTRICTION MAPS & COBOUNDARY EVALUATION -->
+          <g id="layer-morphisms">
+            <path d="M 265 220 C 340 220, 420 280, 460 280" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+            <text x="340" y="245" fill="#38bdf8" font-size="10" font-family="monospace">W_{0,e} &middot; x_v0</text>
+
+            <path d="M 695 245 C 620 245, 540 295, 500 295" fill="none" stroke="#c084fc" stroke-width="2" marker-end="url(#arrow-purple)"/>
+            <text x="600" y="265" fill="#c084fc" font-size="10" font-family="monospace">W_{1,e} &middot; x_v1</text>
+
+            <line x1="475" y1="280" x2="485" y2="295" stroke="#f43f5e" stroke-width="4"/>
+            <text x="480" y="325" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">Residual: (&delta;x)_e</text>
+            <text x="480" y="338" fill="#fca5a5" font-size="9" text-anchor="middle">W_{1}x_1 - W_{0}x_0</text>
+
+            <path d="M 260 220 Q 370 190, 480 180 T 700 245" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6,4"/>
+            <rect x="520" y="160" width="130" height="24" rx="4" fill="rgba(120, 53, 15, 0.9)" stroke="#f59e0b"/>
+            <text x="585" y="176" fill="#fde68a" font-size="10" font-weight="bold" text-anchor="middle">Section s &in; &Gamma;(K; &fnof;)</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="ste-note">
+        <strong>Mathematical Definition:</strong> A 0-cochain (section) assigns vector <em>x<sub>v</sub></em> to each vertex. 
+        The coboundary operator &delta; measures inconsistency across every incident edge: 
+        <code>(&delta;x)<sub>e</sub> = W<sub>1,e</sub> x<sub>1</sub> - W<sub>0,e</sub> x<sub>0</sub></code>. 
+        The Dirichlet energy is <code>E(x) = &sum; &parallel;(&delta;x)<sub>e</sub>&parallel;&sup2;</code>. 
+        When <code>E(x) = 0</code>, the section is harmonic.
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: NATIVE FIBER BUNDLE SHAPE -->
+  <div id="bundle-native" class="tab-content">
+    <div class="card">
+      <h2>Native Geometric Shape: The Topological Fiber Bundle (E, B, &pi;, F)</h2>
+      <p>
+        A <strong>fiber bundle</strong> (E, B, &pi;, F) consists of a base space B, a total space E, a continuous projection &pi;: E &rarr; B, 
+        and a standard fiber space F. In Sheaf-DB, B is the pre-aggregated query group key space, 
+        F is the materialized result stalk, and &pi; projects complex cells into instant answers.
+      </p>
+
+      <div class="diagram-container">
+        <!-- SVG NATIVE FIBER BUNDLE TOPOLOGY -->
+        <svg viewBox="0 0 960 520" width="960" height="520">
+          <defs>
+            <marker id="arrow-down" viewBox="0 0 10 10" refX="5" refY="6" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 1 0 L 5 10 L 9 0 z" fill="#06b6d4" />
+            </marker>
+            <linearGradient id="bundle-bg-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="rgba(168, 85, 247, 0.15)"/>
+              <stop offset="100%" stop-color="rgba(168, 85, 247, 0.02)"/>
+            </linearGradient>
+            <linearGradient id="fiber-line-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#c084fc"/>
+              <stop offset="100%" stop-color="#3b82f6"/>
+            </linearGradient>
+          </defs>
+
+          <!-- TOTAL SPACE ENCLOSURE E -->
+          <path d="M 160 80 Q 480 30, 800 80 L 820 380 Q 480 430, 140 380 Z" fill="url(#bundle-bg-grad)" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="5,5"/>
+          <text x="825" y="100" fill="#c084fc" font-size="14" font-weight="bold">Total Space E</text>
+          <text x="825" y="118" fill="#94a3b8" font-size="10">E = &bigsqcup;_{b &in; B} F_b</text>
+
+          <!-- BASE SPACE B (CURVED LOWER MANIFOLD) -->
+          <g transform="translate(0, 40)">
+            <path d="M 140 340 Q 480 390, 820 340 L 820 370 Q 480 420, 140 370 Z" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+            <text x="480" y="375" fill="#38bdf8" font-size="13" font-weight="bold" text-anchor="middle">Base Space B (Key Domain / Partition Groups)</text>
+            <text x="480" y="392" fill="#94a3b8" font-size="10" text-anchor="middle">Parameter keys: b0, b1, b2, b3, b4 ... bn</text>
+          </g>
+
+          <!-- DISCRETE BASE POINTS ON B -->
+          <circle cx="220" cy="392" r="5" fill="#38bdf8"/>
+          <text x="220" y="420" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">b0 (Key 0)</text>
+
+          <circle cx="350" cy="406" r="5" fill="#38bdf8"/>
+          <text x="350" y="434" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">b1 (Key 1)</text>
+
+          <circle cx="480" cy="410" r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
+          <text x="480" y="440" fill="#f59e0b" font-size="12" font-weight="bold" text-anchor="middle">b* (Target Key)</text>
+
+          <circle cx="610" cy="406" r="5" fill="#38bdf8"/>
+          <text x="610" y="434" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">b3 (Key 3)</text>
+
+          <circle cx="740" cy="392" r="5" fill="#38bdf8"/>
+          <text x="740" y="420" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">b4 (Key 4)</text>
+
+          <!-- VERTICAL FIBERS F_b -->
+          <line x1="220" y1="392" x2="220" y2="120" stroke="url(#fiber-line-grad)" stroke-width="2"/>
+          <circle cx="220" cy="120" r="3" fill="#c084fc"/>
+          <text x="220" y="105" fill="#94a3b8" font-size="10" text-anchor="middle">Fiber F_{b0}</text>
+
+          <line x1="350" y1="406" x2="350" y2="105" stroke="url(#fiber-line-grad)" stroke-width="2"/>
+          <circle cx="350" cy="105" r="3" fill="#c084fc"/>
+          <text x="350" y="90" fill="#94a3b8" font-size="10" text-anchor="middle">Fiber F_{b1}</text>
+
+          <line x1="480" y1="410" x2="480" y2="95" stroke="#f59e0b" stroke-width="3.5"/>
+          <circle cx="480" cy="95" r="4" fill="#f59e0b"/>
+          <rect x="420" y="65" width="120" height="24" rx="4" fill="#78350f" stroke="#f59e0b"/>
+          <text x="480" y="81" fill="#fde68a" font-size="10" font-weight="bold" text-anchor="middle">Fiber F_{b*} (208 B)</text>
+
+          <line x1="610" y1="406" x2="610" y2="105" stroke="url(#fiber-line-grad)" stroke-width="2"/>
+          <circle cx="610" cy="105" r="3" fill="#c084fc"/>
+          <text x="610" y="90" fill="#94a3b8" font-size="10" text-anchor="middle">Fiber F_{b3}</text>
+
+          <line x1="740" y1="392" x2="740" y2="120" stroke="url(#fiber-line-grad)" stroke-width="2"/>
+          <circle cx="740" cy="120" r="3" fill="#c084fc"/>
+          <text x="740" y="105" fill="#94a3b8" font-size="10" text-anchor="middle">Fiber F_{b4}</text>
+
+          <!-- CROSS-SECTION SURFACE s(b) CUTTING THROUGH ALL FIBERS -->
+          <path d="M 180 230 Q 480 280, 780 210 L 780 235 Q 480 305, 180 255 Z" fill="rgba(16, 185, 129, 0.25)" stroke="#10b981" stroke-width="2"/>
+          <text x="790" y="225" fill="#10b981" font-size="12" font-weight="bold">Cross-Section s(b)</text>
+          <text x="790" y="242" fill="#6ee7b7" font-size="9">Materialized Aggregates</text>
+
+          <circle cx="220" cy="242" r="5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+          <circle cx="350" cy="265" r="5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+          <circle cx="480" cy="272" r="6" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
+          <text x="500" y="276" fill="#fde68a" font-size="11" font-weight="bold">s(b*) = Aggregate</text>
+          <circle cx="610" cy="254" r="5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+          <circle cx="740" cy="225" r="5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+
+          <!-- PROJECTION MAP ARROW \pi: E -> B -->
+          <g transform="translate(80, 200)">
+            <line x1="0" y1="0" x2="0" y2="130" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#arrow-down)"/>
+            <text x="-15" y="70" fill="#06b6d4" font-size="13" font-weight="bold" text-anchor="end">Bundle Projection &pi;</text>
+            <text x="-15" y="88" fill="#94a3b8" font-size="9" text-anchor="end">&pi;(F_b) = b</text>
+          </g>
+
+          <!-- INCOMING QUERY HIGHLIGHT (10.5 ns DIRECT PINPOINT) -->
+          <g transform="translate(480, 20)">
+            <rect x="-100" y="0" width="200" height="32" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+            <text x="0" y="16" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Topological Query: q(b*)</text>
+            <text x="0" y="28" fill="#10b981" font-size="9" text-anchor="middle">Binary Search: 208 Bytes (10.5 ns)</text>
+            <line x1="0" y1="32" x2="0" y2="65" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,3"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="ste-note">
+        <strong>Why the Fiber Bundle Wins:</strong> A query for a pre-aggregated group touches only the vertical fiber <code>F<sub>b*</sub></code>. 
+        It reads exactly 208 bytes with 13.0 read amplification. It avoids scanning the underlying base space entirely.
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: FAST INGESTION PIPELINE -->
+  <div id="ingest-pipeline" class="tab-content">
+    <div class="card">
+      <h2>Fast Data Ingestion Pipeline</h2>
+      <p>
+        The ingestion engine combines five optimizations to eliminate parse bottlenecks and speed up cold builds. 
+        It removes redundant string scanning, parses text chunks across worker threads, and validates CRC in cache lines.
+      </p>
+
+      <div class="diagram-container">
+        <!-- SVG FAST INGESTION PIPELINE -->
+        <svg viewBox="0 0 940 360" width="940" height="360">
+          <defs>
+            <marker id="arrow-ingest" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+            </marker>
+          </defs>
+
+          <!-- Raw Input Stage -->
+          <g transform="translate(20, 40)">
+            <rect x="0" y="0" width="160" height="260" rx="6" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+            <text x="80" y="30" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">Raw Data Source</text>
+            <text x="80" y="50" fill="#94a3b8" font-size="10" text-anchor="middle">3.6 GB TSV / CSV Files</text>
+            <text x="80" y="66" fill="#64748b" font-size="9" text-anchor="middle">(72.8M Text Rows)</text>
+
+            <rect x="15" y="90" width="130" height="35" rx="4" fill="#0f172a" stroke="#334155"/>
+            <text x="80" y="112" fill="#cbd5e1" font-size="10" text-anchor="middle">basics (12.9M)</text>
+
+            <rect x="15" y="135" width="130" height="35" rx="4" fill="#0f172a" stroke="#334155"/>
+            <text x="80" y="157" fill="#cbd5e1" font-size="10" text-anchor="middle">names (15.7M)</text>
+
+            <rect x="15" y="180" width="130" height="35" rx="4" fill="#0f172a" stroke="#334155"/>
+            <text x="80" y="202" fill="#cbd5e1" font-size="10" text-anchor="middle">principals (42.8M)</text>
+            <text x="80" y="240" fill="#f43f5e" font-size="9" text-anchor="middle">Serial Parse: 112.7 s</text>
+          </g>
+
+          <line x1="180" y1="170" x2="220" y2="170" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-ingest)"/>
+
+          <!-- 4-Thread Partitioned Ingest -->
+          <g transform="translate(230, 40)">
+            <rect x="0" y="0" width="220" height="260" rx="6" fill="#161d2a" stroke="#10b981" stroke-width="2"/>
+            <text x="110" y="28" fill="#10b981" font-size="12" font-weight="bold" text-anchor="middle">1. Parallel Chunk Workers</text>
+            <text x="110" y="45" fill="#94a3b8" font-size="9" text-anchor="middle">4 Threads (METHOD-063)</text>
+
+            <rect x="15" y="65" width="190" height="38" rx="4" fill="#1e3a8a"/>
+            <text x="110" y="84" fill="#93c5fd" font-size="10" font-weight="bold" text-anchor="middle">Thread 0: Byte Range 0-25%</text>
+            <text x="110" y="96" fill="#bfdbfe" font-size="8" text-anchor="middle">Aligned to line boundary</text>
+
+            <rect x="15" y="110" width="190" height="38" rx="4" fill="#1e3a8a"/>
+            <text x="110" y="129" fill="#93c5fd" font-size="10" font-weight="bold" text-anchor="middle">Thread 1: Byte Range 25-50%</text>
+            <text x="110" y="141" fill="#bfdbfe" font-size="8" text-anchor="middle">Aligned to line boundary</text>
+
+            <rect x="15" y="155" width="190" height="38" rx="4" fill="#1e3a8a"/>
+            <text x="110" y="174" fill="#93c5fd" font-size="10" font-weight="bold" text-anchor="middle">Thread 2: Byte Range 50-75%</text>
+            <text x="110" y="186" fill="#bfdbfe" font-size="8" text-anchor="middle">Aligned to line boundary</text>
+
+            <rect x="15" y="200" width="190" height="38" rx="4" fill="#1e3a8a"/>
+            <text x="110" y="219" fill="#93c5fd" font-size="10" font-weight="bold" text-anchor="middle">Thread 3: Byte Range 75-100%</text>
+            <text x="110" y="231" fill="#bfdbfe" font-size="8" text-anchor="middle">Aligned to line boundary</text>
+          </g>
+
+          <line x1="450" y1="170" x2="490" y2="170" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-ingest)"/>
+
+          <!-- Line Extraction & Stalk Staging -->
+          <g transform="translate(500, 40)">
+            <rect x="0" y="0" width="200" height="260" rx="6" fill="#161d2a" stroke="#06b6d4" stroke-width="2"/>
+            <text x="100" y="28" fill="#06b6d4" font-size="12" font-weight="bold" text-anchor="middle">2. Fast Zero-Copy Parse</text>
+            <text x="100" y="45" fill="#94a3b8" font-size="9" text-anchor="middle">Single Pass (METHOD-061)</text>
+
+            <rect x="15" y="65" width="170" height="50" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <text x="100" y="85" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">1-Pass Field Scan</text>
+            <text x="100" y="100" fill="#10b981" font-size="9" text-anchor="middle">Removes 115.8M tab scans</text>
+
+            <rect x="15" y="125" width="170" height="50" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <text x="100" y="145" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">Fast ASCII Int Parse</text>
+            <text x="100" y="160" fill="#10b981" font-size="9" text-anchor="middle">Skips UTF-8 check (METHOD-062)</text>
+
+            <rect x="15" y="185" width="170" height="50" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <text x="100" y="205" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">MPSC Ring WAL</text>
+            <text x="100" y="220" fill="#10b981" font-size="9" text-anchor="middle">HW CRC32C, 50k writes/s</text>
+          </g>
+
+          <line x1="700" y1="170" x2="740" y2="170" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-ingest)"/>
+
+          <!-- Output Target -->
+          <g transform="translate(750, 40)">
+            <rect x="0" y="0" width="170" height="260" rx="6" fill="#161d2a" stroke="#a855f7" stroke-width="2"/>
+            <text x="85" y="28" fill="#c084fc" font-size="12" font-weight="bold" text-anchor="middle">3. Storage Emission</text>
+            <text x="85" y="45" fill="#94a3b8" font-size="9" text-anchor="middle">BCSF & Fiber Sections</text>
+
+            <rect x="15" y="65" width="140" height="50" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <text x="85" y="85" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">Per-Section Gen</text>
+            <text x="85" y="100" fill="#a855f7" font-size="9" text-anchor="middle">B12: dirty sections only</text>
+
+            <rect x="15" y="125" width="140" height="50" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <text x="85" y="145" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">Pipelined CRC32</text>
+            <text x="85" y="160" fill="#a855f7" font-size="9" text-anchor="middle">4 MiB L3 cache chunks</text>
+
+            <rect x="15" y="185" width="140" height="50" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <text x="85" y="205" fill="#e2e8f0" font-size="10" font-weight="bold" text-anchor="middle">Pre-Folded Fibers</text>
+            <text x="85" y="220" fill="#10b981" font-size="9" font-weight="bold" text-anchor="middle">938k events / sec</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="ste-note">
+        <strong>Measured Ingestion Gains:</strong> Multi-threaded parsing reduces total build time from 112.7 s to 54.1 s. 
+        The single-pass line parser removes 115,797,375 redundant tab position scans during the basics stage. 
+        Incremental section generations ensure that later updates write only the modified section rather than the entire 3.6 GB bundle.
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Ingestion Optimization</th>
+            <th>Waste Removed</th>
+            <th>Measured Before</th>
+            <th>Measured After</th>
+            <th>Throughput Gain</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Multi-Threaded Chunk Parse (METHOD-063)</strong></td>
+            <td>Serial text loop bottleneck</td>
+            <td class="mono">112,721 ms (1 thread)</td>
+            <td class="mono">54,100 to 61,100 ms (4 threads)</td>
+            <td><strong>1.85x to 2.09x faster</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Single-Pass Line Tokenizer (METHOD-061)</strong></td>
+            <td>115.8M redundant tab rescans</td>
+            <td class="mono">18 tab checks / row</td>
+            <td class="mono">9 tab checks / row</td>
+            <td><strong>50% fewer tab scans</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Fast ASCII Integer Parse (METHOD-062)</strong></td>
+            <td>UTF-8 checks & generic parse</td>
+            <td class="mono">1,549 ns / row</td>
+            <td class="mono">Sub-100 ns / row</td>
+            <td><strong>Eliminates string tax</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Pipelined L3 CRC32C (METHOD-064)</strong></td>
+            <td>Double memory pass for checksum</td>
+            <td class="mono">120.8 ms section load</td>
+            <td class="mono">84.0 to 105.2 ms section load</td>
+            <td><strong>1.26x to 1.46x faster</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Lock-Free MPSC Ring WAL (SPEC-032)</strong></td>
+            <td>Disk write mutex lock contention</td>
+            <td class="mono">1.14 ms sync floor</td>
+            <td class="mono">2.5 &micro;s epoch durable</td>
+            <td><strong>938k events / sec</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Per-Section Generations (B12)</strong></td>
+            <td>Full 3.6 GB bundle rewrite on delta</td>
+            <td class="mono">3.6 GB write</td>
+            <td class="mono">Only modified section</td>
+            <td><strong>Write amp = 1.0002</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 4: THREE-TIER OVERVIEW (PRESERVED BLOCK DIAGRAM) -->
+  <div id="overview" class="tab-content">
+    <div class="card">
+      <h2>The Three Storage Layers (Block Diagram)</h2>
+      <p>
+        The database splits data storage into three distinct layers based on write and read cost trade-offs. 
+        Each layer serves a specific role in the system lifecycle.
+      </p>
+
+      <div class="diagram-container">
+        <svg viewBox="0 0 940 380" width="940" height="380">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+            </marker>
+            <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+            </marker>
+          </defs>
+
+          <!-- Client / Ingest -->
+          <rect x="20" y="40" width="160" height="90" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+          <text x="100" y="75" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">Client Mutation</text>
+          <text x="100" y="98" fill="#94a3b8" font-size="11" text-anchor="middle">In-Process API / TQL</text>
+
+          <line x1="180" y1="85" x2="250" y2="85" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="215" y="75" fill="#38bdf8" font-size="10" text-anchor="middle">Insert</text>
+
+          <!-- Layer 1: MemComplex -->
+          <rect x="260" y="20" width="200" height="330" rx="8" fill="#161d2a" stroke="#06b6d4" stroke-width="2"/>
+          <rect x="275" y="35" width="170" height="32" rx="4" fill="#0e7490"/>
+          <text x="360" y="56" fill="#ffffff" font-size="13" font-weight="bold" text-anchor="middle">1. MemComplex</text>
+          <text x="360" y="85" fill="#94a3b8" font-size="11" text-anchor="middle">Volatile RAM Write Buffer</text>
+
+          <rect x="275" y="105" width="170" height="45" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="360" y="125" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">MPSC Ring WAL</text>
+          <text x="360" y="140" fill="#64748b" font-size="9" text-anchor="middle">Lock-free + HW CRC32C</text>
+
+          <rect x="275" y="160" width="170" height="45" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="360" y="180" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">64-Shard Star Map</text>
+          <text x="360" y="195" fill="#64748b" font-size="9" text-anchor="middle">Lock-free writer shards</text>
+
+          <rect x="275" y="215" width="170" height="45" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="360" y="235" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">Sealed Batches</text>
+          <text x="360" y="250" fill="#64748b" font-size="9" text-anchor="middle">Seal every 1,000 cells</text>
+
+          <rect x="275" y="270" width="170" height="45" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="360" y="290" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">Versioned Tombstones</text>
+          <text x="360" y="305" fill="#64748b" font-size="9" text-anchor="middle">AtomicU64 death generation</text>
+
+          <line x1="460" y1="185" x2="510" y2="185" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-green)"/>
+          <text x="485" y="175" fill="#10b981" font-size="10" text-anchor="middle">Shadow</text>
+          <text x="485" y="200" fill="#10b981" font-size="10" text-anchor="middle">Merge</text>
+
+          <!-- Layer 2: BCSF Base -->
+          <rect x="520" y="20" width="200" height="330" rx="8" fill="#161d2a" stroke="#10b981" stroke-width="2"/>
+          <rect x="535" y="35" width="170" height="32" rx="4" fill="#065f46"/>
+          <text x="620" y="56" fill="#ffffff" font-size="13" font-weight="bold" text-anchor="middle">2. BCSF Base</text>
+          <text x="620" y="85" fill="#94a3b8" font-size="11" text-anchor="middle">Immutable Column Slabs</text>
+
+          <rect x="535" y="105" width="170" height="45" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="620" y="125" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">SoA Column Slabs</text>
+          <text x="620" y="140" fill="#64748b" font-size="9" text-anchor="middle">Contiguous float/int vectors</text>
+
+          <rect x="535" y="160" width="170" height="45" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="620" y="180" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">CSR Incidence Offsets</text>
+          <text x="620" y="195" fill="#64748b" font-size="9" text-anchor="middle">Zero-copy boundary index</text>
+
+          <rect x="535" y="215" width="170" height="45" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="620" y="235" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">Durable Segments</text>
+          <text x="620" y="250" fill="#64748b" font-size="9" text-anchor="middle">Self-describing binary file</text>
+
+          <rect x="535" y="270" width="170" height="45" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="620" y="290" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">TIFI & Partition Sidecars</text>
+          <text x="620" y="305" fill="#64748b" font-size="9" text-anchor="middle">L3 cache domains + ghosts</text>
+
+          <line x1="720" y1="185" x2="750" y2="185" stroke="#a855f7" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="735" y="175" fill="#a855f7" font-size="10" text-anchor="middle">Fold</text>
+
+          <!-- Layer 3: Fiber Bundle -->
+          <rect x="760" y="20" width="160" height="330" rx="8" fill="#161d2a" stroke="#a855f7" stroke-width="2"/>
+          <rect x="770" y="35" width="140" height="32" rx="4" fill="#6b21a8"/>
+          <text x="840" y="56" fill="#ffffff" font-size="13" font-weight="bold" text-anchor="middle">3. Fiber Bundle</text>
+          <text x="840" y="85" fill="#94a3b8" font-size="11" text-anchor="middle">Materialized Aggregates</text>
+
+          <rect x="770" y="105" width="140" height="55" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="840" y="125" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">Section Index</text>
+          <text x="840" y="140" fill="#64748b" font-size="9" text-anchor="middle">Generations per section</text>
+          <text x="840" y="152" fill="#64748b" font-size="9" text-anchor="middle">CRC32C hardware check</text>
+
+          <rect x="770" y="170" width="140" height="55" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="840" y="190" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">Sorted Keys</text>
+          <text x="840" y="205" fill="#64748b" font-size="9" text-anchor="middle">Binary search 208 B</text>
+          <text x="840" y="217" fill="#10b981" font-size="9" font-weight="bold" text-anchor="middle">10.5 ns lookup</text>
+
+          <rect x="770" y="235" width="140" height="80" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+          <text x="840" y="255" fill="#e2e8f0" font-size="11" font-weight="600" text-anchor="middle">L3 Streaming</text>
+          <text x="840" y="270" fill="#64748b" font-size="9" text-anchor="middle">4 MiB chunked verify</text>
+          <text x="840" y="285" fill="#64748b" font-size="9" text-anchor="middle">Zero copy into memory</text>
+        </svg>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Primary Structure</th>
+            <th>Write Amplification</th>
+            <th>Read Amplification</th>
+            <th>Query Access Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MemComplex</strong></td>
+            <td>Append-only poset shards + ring WAL</td>
+            <td class="mono">1.0000</td>
+            <td class="mono">Full scan</td>
+            <td>Volatile write staging buffer</td>
+          </tr>
+          <tr>
+            <td><strong>BCSF Base</strong></td>
+            <td>Sorted Structure-of-Arrays (SoA) slabs</td>
+            <td class="mono">1.0002 (Shadow)</td>
+            <td class="mono">6001.2 (Full Scan)</td>
+            <td>SIMD vector scan (19.2 GB/s)</td>
+          </tr>
+          <tr>
+            <td><strong>Fiber Bundle</strong></td>
+            <td>Sectioned pre-aggregated key-value tables</td>
+            <td class="mono">Written once</td>
+            <td class="mono">13.0 (208 Bytes)</td>
+            <td>Binary search (10.5 ns point lookup)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 5: BCSF FORMAT -->
+  <div id="bcsf" class="tab-content">
+    <div class="card">
+      <h2>Binary Cellular Sheaf Format (BCSF) Segment File Layout</h2>
+      <p>
+        The BCSF file format (<code>crates/sheaf-storage/src/bcsf/segment.rs</code>) is a self-describing immutable container. 
+        It has a fixed 176-byte header followed by nine contiguous payload parts.
+      </p>
+
+      <h3>Header & Payload Memory Map</h3>
+      <div class="binary-strip">
+        <div class="binary-block hdr" style="flex: 2;" onclick="showPart('header')">
+          <div>HEADER</div>
+          <div class="size">176 Bytes</div>
+        </div>
+        <div class="binary-block off" style="flex: 1;" onclick="showPart('offsets')">
+          <div>0: offsets</div>
+          <div class="size">u32[]</div>
+        </div>
+        <div class="binary-block idx" style="flex: 1.5;" onclick="showPart('indices')">
+          <div>1: indices</div>
+          <div class="size">u64[]</div>
+        </div>
+        <div class="binary-block stk" style="flex: 1;" onclick="showPart('stalk_offsets')">
+          <div>2: stk_off</div>
+          <div class="size">u32[]</div>
+        </div>
+        <div class="binary-block mrp" style="flex: 1;" onclick="showPart('morph_cells')">
+          <div>3: mrp_cel</div>
+          <div class="size">u32[]</div>
+        </div>
+        <div class="binary-block mrp" style="flex: 1;" onclick="showPart('morph_offsets')">
+          <div>4: mrp_off</div>
+          <div class="size">u32[]</div>
+        </div>
+        <div class="binary-block dsc" style="flex: 1.5;" onclick="showPart('discrete')">
+          <div>5: discrete</div>
+          <div class="size">u8[] arena</div>
+        </div>
+        <div class="binary-block mrp" style="flex: 1;" onclick="showPart('morphs')">
+          <div>6: morphs</div>
+          <div class="size">f32[] (W)</div>
+        </div>
+        <div class="binary-block stk" style="flex: 2;" onclick="showPart('stalks')">
+          <div>7: stalks</div>
+          <div class="size">f32[] (64B align)</div>
+        </div>
+        <div class="binary-block hdr" style="flex: 1;" onclick="showPart('dims')">
+          <div>8: dims</div>
+          <div class="size">u8[] tags</div>
+        </div>
+        <div class="binary-block crc" style="flex: 1;" onclick="showPart('crc')">
+          <div>CRC32</div>
+          <div class="size">4 Bytes</div>
+        </div>
+      </div>
+
+      <div id="inspector" class="inspector-panel">
+        <strong>Click any block above to inspect field details, offsets, and alignment.</strong>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Offset (Bytes)</th>
+            <th>Field Name</th>
+            <th>Data Type</th>
+            <th>Size</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">0x0000 (0)</td>
+            <td class="mono">SEGMENT_MAGIC</td>
+            <td class="mono">u64 (LE)</td>
+            <td>8 Bytes</td>
+            <td>Magic constant: <code>0x5347_534D_4E54_3031</code> ("SGSMNT01")</td>
+          </tr>
+          <tr>
+            <td class="mono">0x0008 (8)</td>
+            <td class="mono">SEGMENT_FMT_VER</td>
+            <td class="mono">u32 (LE)</td>
+            <td>4 Bytes</td>
+            <td>Format version number (currently 1)</td>
+          </tr>
+          <tr>
+            <td class="mono">0x000C (12)</td>
+            <td class="mono">cell_count</td>
+            <td class="mono">u64 (LE)</td>
+            <td>8 Bytes</td>
+            <td>Total number of cells stored in this segment</td>
+          </tr>
+          <tr>
+            <td class="mono">0x0014 (20)</td>
+            <td class="mono">generation</td>
+            <td class="mono">u64 (LE)</td>
+            <td>8 Bytes</td>
+            <td>Compaction generation stamp</td>
+          </tr>
+          <tr>
+            <td class="mono">0x001C (28)</td>
+            <td class="mono">src_fingerprint</td>
+            <td class="mono">u64 (LE)</td>
+            <td>8 Bytes</td>
+            <td>Fingerprint of the source input data</td>
+          </tr>
+          <tr>
+            <td class="mono">0x0024 (36)</td>
+            <td class="mono">parts[0..8]</td>
+            <td class="mono">Part[9]</td>
+            <td>144 Bytes</td>
+            <td>9 Part descriptors: each carries (off: u64, len: u64) = 16B per part</td>
+          </tr>
+          <tr>
+            <td class="mono">0x00B4 (172)</td>
+            <td class="mono">payload_crc</td>
+            <td class="mono">u32 (LE)</td>
+            <td>4 Bytes</td>
+            <td>Hardware-accelerated CRC32C over the entire payload body</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 6: SOA MEMORY LAYOUT -->
+  <div id="soa" class="tab-content">
+    <div class="card">
+      <h2>Structure-of-Arrays (SoA) Primary Layout</h2>
+      <p>
+        The memory representation uses Structure-of-Arrays (SoA) rather than Array-of-Structures (AoS). 
+        Contiguous columns enable AVX-256/AVX-512 vector arithmetic with unit stride memory access.
+      </p>
+
+      <div class="diagram-container">
+        <svg viewBox="0 0 880 280" width="880" height="280">
+          <g transform="translate(20, 20)">
+            <text x="0" y="15" fill="#f43f5e" font-size="12" font-weight="bold">Array of Structures (AoS) — Inefficient Cache Thrashing</text>
+            <rect x="0" y="25" width="400" height="40" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <rect x="5" y="30" width="40" height="30" fill="#38bdf8"/>
+            <text x="25" y="50" fill="#000" font-size="9" text-anchor="middle">id</text>
+            <rect x="47" y="30" width="30" height="30" fill="#a855f7"/>
+            <text x="62" y="50" fill="#fff" font-size="9" text-anchor="middle">dim</text>
+            <rect x="79" y="30" width="50" height="30" fill="#10b981"/>
+            <text x="104" y="50" fill="#000" font-size="9" text-anchor="middle">stalk[0]</text>
+            <rect x="131" y="30" width="50" height="30" fill="#10b981"/>
+            <text x="156" y="50" fill="#000" font-size="9" text-anchor="middle">stalk[1]</text>
+
+            <rect x="195" y="30" width="40" height="30" fill="#38bdf8"/>
+            <text x="215" y="50" fill="#000" font-size="9" text-anchor="middle">id</text>
+            <rect x="237" y="30" width="30" height="30" fill="#a855f7"/>
+            <text x="252" y="50" fill="#fff" font-size="9" text-anchor="middle">dim</text>
+            <rect x="269" y="30" width="50" height="30" fill="#10b981"/>
+            <text x="294" y="50" fill="#000" font-size="9" text-anchor="middle">stalk[0]</text>
+            <rect x="321" y="30" width="50" height="30" fill="#10b981"/>
+            <text x="346" y="50" fill="#000" font-size="9" text-anchor="middle">stalk[1]</text>
+            <text x="0" y="82" fill="#64748b" font-size="10">Scan requires reading all fields: 24 MB read bandwidth waste</text>
+          </g>
+
+          <g transform="translate(460, 20)">
+            <text x="0" y="15" fill="#10b981" font-size="12" font-weight="bold">Structure of Arrays (SoA) — Sheaf-DB Primary Layout</text>
+            <rect x="0" y="25" width="400" height="24" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <text x="10" y="41" fill="#38bdf8" font-size="10" font-weight="bold">ids: [u64]</text>
+            <rect x="70" y="27" width="320" height="20" fill="rgba(56, 189, 248, 0.2)"/>
+            <rect x="0" y="55" width="400" height="24" rx="4" fill="#1c2536" stroke="#2d3b52"/>
+            <text x="10" y="71" fill="#a855f7" font-size="10" font-weight="bold">dims: [u8]</text>
+            <rect x="70" y="57" width="320" height="20" fill="rgba(168, 85, 247, 0.2)"/>
+            <rect x="0" y="85" width="400" height="24" rx="4" fill="#1c2536" stroke="#10b981"/>
+            <text x="10" y="101" fill="#10b981" font-size="10" font-weight="bold">stalks_val: [f32]</text>
+            <rect x="105" y="87" width="285" height="20" fill="#065f46"/>
+            <text x="240" y="101" fill="#6ee7b7" font-size="9" text-anchor="middle">Unit Stride Contiguous Scan (SIMD AVX-512)</text>
+            <text x="0" y="130" fill="#64748b" font-size="10">Scan touches ONLY the target column: 19.2 GB/s DRAM saturation</text>
+          </g>
+
+          <g transform="translate(20, 160)">
+            <rect x="0" y="0" width="840" height="95" rx="6" fill="#161d2a" stroke="#2d3b52"/>
+            <text x="15" y="22" fill="#e2e8f0" font-size="12" font-weight="bold">4-Lane SIMD Independent Accumulator Chains (Breaking Serial Dependency)</text>
+            <text x="15" y="42" fill="#94a3b8" font-size="10">Loop: acc0 += c[i]; acc1 += c[i+1]; acc2 += c[i+2]; acc3 += c[i+3]; (1.40x measured gain over single accumulator)</text>
+            <rect x="15" y="55" width="190" height="28" rx="4" fill="#1e3a8a"/>
+            <text x="110" y="73" fill="#93c5fd" font-size="10" text-anchor="middle">Lane 0: FMA Accumulator</text>
+            <rect x="220" y="55" width="190" height="28" rx="4" fill="#1e3a8a"/>
+            <text x="315" y="73" fill="#93c5fd" font-size="10" text-anchor="middle">Lane 1: FMA Accumulator</text>
+            <rect x="425" y="55" width="190" height="28" rx="4" fill="#1e3a8a"/>
+            <text x="520" y="73" fill="#93c5fd" font-size="10" text-anchor="middle">Lane 2: FMA Accumulator</text>
+            <rect x="630" y="55" width="190" height="28" rx="4" fill="#1e3a8a"/>
+            <text x="725" y="73" fill="#93c5fd" font-size="10" text-anchor="middle">Lane 3: FMA Accumulator</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 7: SHADOW MERGE -->
+  <div id="shadow" class="tab-content">
+    <div class="card">
+      <h2>Shadow Merge & Paging vs Copy Merge</h2>
+      <p>
+        The compactor uses shadow paging to reach a write amplification of 1.0002. 
+        Instead of copying the full base on every merge, it appends only the delta.
+      </p>
+
+      <div class="grid-2">
+        <div>
+          <h3>Standard Copy Merge (Write Amp = 2.0000)</h3>
+          <p>Traditional LSM merge rewrites the whole run. 200,000 base + 1,000 delta = 201,000 cells rewritten (8.0 ms).</p>
+          <div class="diagram-container">
+            <svg viewBox="0 0 380 180" width="380" height="180">
+              <rect x="20" y="20" width="160" height="50" rx="4" fill="#334155"/>
+              <text x="100" y="50" fill="#fff" font-size="11" text-anchor="middle">Base (200k Cells)</text>
+
+              <rect x="200" y="20" width="70" height="50" rx="4" fill="#0284c7"/>
+              <text x="235" y="50" fill="#fff" font-size="11" text-anchor="middle">Delta (1k)</text>
+
+              <path d="M 100 70 L 170 110" stroke="#f43f5e" stroke-width="2"/>
+              <path d="M 235 70 L 190 110" stroke="#f43f5e" stroke-width="2"/>
+
+              <rect x="20" y="110" width="340" height="50" rx="4" fill="#881337" stroke="#f43f5e"/>
+              <text x="190" y="135" fill="#fecdd3" font-size="11" font-weight="bold" text-anchor="middle">Rewritten New Base (201,000 Cells)</text>
+              <text x="190" y="150" fill="#fecdd3" font-size="9" text-anchor="middle">Write Cost: 2.00x user data</text>
+            </svg>
+          </div>
+        </div>
+
+        <div>
+          <h3>Sheaf-DB Shadow Merge (Write Amp = 1.0002)</h3>
+          <p>Base is untouched. Reader holds a <code>Chain</code> referencing the base plus delta. Compaction completes in 1.0 ms.</p>
+          <div class="diagram-container">
+            <svg viewBox="0 0 380 180" width="380" height="180">
+              <rect x="20" y="20" width="180" height="50" rx="4" fill="#065f46" stroke="#10b981"/>
+              <text x="110" y="45" fill="#6ee7b7" font-size="11" font-weight="bold" text-anchor="middle">Untouched Base Slab</text>
+              <text x="110" y="60" fill="#6ee7b7" font-size="9" text-anchor="middle">Arc&lt;BcsfReader&gt; (Zero bytes written)</text>
+
+              <rect x="220" y="20" width="140" height="50" rx="4" fill="#0284c7" stroke="#38bdf8"/>
+              <text x="290" y="45" fill="#e0f2fe" font-size="11" font-weight="bold" text-anchor="middle">Delta Slab</text>
+              <text x="290" y="60" fill="#e0f2fe" font-size="9" text-anchor="middle">1,000 new cells</text>
+
+              <rect x="20" y="110" width="340" height="50" rx="4" fill="#1c2536" stroke="#10b981" stroke-dasharray="4"/>
+              <text x="190" y="132" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">BcsfReader Chained View</text>
+              <text x="190" y="148" fill="#94a3b8" font-size="9" text-anchor="middle">Cell index: [0, base) -> Base; [base, base+delta) -> Delta</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 8: HARDWARE LIMITS -->
+  <div id="limits" class="tab-content">
+    <div class="card">
+      <h2>Physical Limits & Machine Balance</h2>
+      <p>
+        Storage structures and query execution are designed around hardware physical boundaries 
+        measured on this host (12 MiB L3 cache, 25.6 GB/s memory bandwidth, 1.14 ms fsync floor).
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Physical Boundary</th>
+            <th>Measured Host Value</th>
+            <th>Shelf Database Adaptation</th>
+            <th>Efficiency Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>L3 Cache Domain</strong></td>
+            <td class="mono">12 MiB (Cliff at 5.1x)</td>
+            <td>Partitions sized to 12 MiB instead of legacy 64 MB target</td>
+            <td>Passed: fits in LLC</td>
+          </tr>
+          <tr>
+            <td><strong>DRAM Bus Bandwidth</strong></td>
+            <td class="mono">25.6 GB/s Peak</td>
+            <td>BCSF SoA columnar scan achieves 19.2 GB/s (4 threads)</td>
+            <td>Passed: 75% of physical bus limit</td>
+          </tr>
+          <tr>
+            <td><strong>Storage fsync Floor</strong></td>
+            <td class="mono">1.14 ms</td>
+            <td>Append-only Ring WAL + sealed batch flushing</td>
+            <td>Passed: 2.5 &micro;s epoch / 6.9 &micro;s WAL</td>
+          </tr>
+          <tr>
+            <td><strong>Drive Write Budget</strong></td>
+            <td class="mono">51.2 GB / day</td>
+            <td>Shadow merge (1.0002 write amp) prevents SSD burnout</td>
+            <td>Passed: 300 TBW lifetime protected</td>
+          </tr>
+          <tr>
+            <td><strong>Read Amplification</strong></td>
+            <td class="mono">13.0 (208 Bytes)</td>
+            <td>Fiber pre-aggregation answers query without scanning base</td>
+            <td>Passed: 115,000x fewer bytes read</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+      
+      const activeContent = document.getElementById(tabId);
+      if (activeContent) activeContent.classList.add('active');
+    }
+
+    function toggleSheafLayer(layer) {
+      document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById('btn-' + layer);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const baseGroup = document.getElementById('layer-base-cells');
+      const stalkGroup = document.getElementById('layer-stalks');
+      const morphGroup = document.getElementById('layer-morphisms');
+
+      if (layer === 'all') {
+        baseGroup.style.display = 'block';
+        stalkGroup.style.display = 'block';
+        morphGroup.style.display = 'block';
+      } else if (layer === 'base') {
+        baseGroup.style.display = 'block';
+        stalkGroup.style.display = 'none';
+        morphGroup.style.display = 'none';
+      } else if (layer === 'stalks') {
+        baseGroup.style.display = 'none';
+        stalkGroup.style.display = 'block';
+        morphGroup.style.display = 'none';
+      } else if (layer === 'morphisms') {
+        baseGroup.style.display = 'block';
+        stalkGroup.style.display = 'none';
+        morphGroup.style.display = 'block';
+      }
+    }
+
+    const partDetails = {
+      header: "<strong>Fixed Header (176 Bytes)</strong><br>Carries SEGMENT_MAGIC (0x5347_534D_4E54_3031), format version 1, 64-bit cell count, compaction generation, input source fingerprint, 9 Part descriptors, and payload CRC32.",
+      offsets: "<strong>Part 0: Cell Incidence Offsets (`u32[]`)</strong><br>CSR-style prefix sum array. Cell `i` boundaries are at `indices[offsets[i]..offsets[i+1]]`.",
+      indices: "<strong>Part 1: Incidence Indices (`u64[]`)</strong><br>Sorted codimension-1 boundary cell IDs for each hypercell in the complex.",
+      stalk_offsets: "<strong>Part 2: Stalk Offsets (`u32[]`)</strong><br>Offset table pointing into continuous float stalk arena for cell attribute embeddings.",
+      morph_cells: "<strong>Part 3: Morphism Target Cells (`u32[]`)</strong><br>List of target cell indices that own restriction morphisms.",
+      morph_offsets: "<strong>Part 4: Morphism Offsets (`u32[]`)</strong><br>Offset indices into the float weight matrix arena.",
+      discrete: "<strong>Part 5: Discrete Arena (`u8[]`)</strong><br>Contiguous byte arena holding raw discrete attributes, string payloads, and projection masks.",
+      morphs: "<strong>Part 6: Morphism Weights Arena (`f32[]`)</strong><br>Restriction matrices (W) for continuous sheaf Laplacian relaxation.",
+      stalks: "<strong>Part 7: Continuous Stalk Arena (`f32[]`)</strong><br>Contiguous float embeddings, strictly 64-byte aligned for AVX-512 vector operations.",
+      dims: "<strong>Part 8: Dimension Tags (`u8[]`)</strong><br>One byte per cell storing topological dimension (0 for vertex, 1 for edge, 2 for hyperedge).",
+      crc: "<strong>Payload Hardware CRC32C (4 Bytes)</strong><br>Hardware-calculated CRC32C verifying full payload integrity before zero-copy reader access."
+    };
+
+    function showPart(name) {
+      const el = document.getElementById('inspector');
+      if (partDetails[name]) {
+        el.innerHTML = partDetails[name];
+      }
+    }
+  </script>
+</body>
+</html>

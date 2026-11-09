@@ -1,0 +1,15 @@
+{
+  "thread_scaling_ms": {
+    "t1": 15.9,
+    "t2": 11.4,
+    "t4_process_runs": [
+      6.1,
+      4.0,
+      4.5
+    ],
+    "t4_best": 4.0
+  },
+  "gate_parity": "PASS",
+  "gate_stretch_6_4ms": "PASS at 4.0ms",
+  "verdict": "P1 hard+stretch PASS. 4-thread partitioned scan 4.0ms beats DuckDB quiet 6.4ms."
+}

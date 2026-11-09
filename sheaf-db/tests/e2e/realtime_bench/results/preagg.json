@@ -1,0 +1,13 @@
+{
+  "load_s": 1.2,
+  "order_seg_entries": 1500000,
+  "ingest_s": 2.7,
+  "events": 2574528,
+  "events_per_s": 937895,
+  "readout_us": 5.3,
+  "groups": 5,
+  "total": 93574920897,
+  "rel": 4.37e-12,
+  "gate_preagg_exact": "PASS",
+  "verdict": "O(groups) readout 5.3us vs O(rows) scan; ingest 938k events/s incl. probe."
+}

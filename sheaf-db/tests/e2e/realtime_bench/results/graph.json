@@ -1,0 +1,11 @@
+{
+  "cells": 4350000,
+  "load_s": 1.4,
+  "resident_MB": 151.4,
+  "sampled_2hop_p50_us": 0.8,
+  "full_rollup_paths": 600000,
+  "full_rollup_ms": 41.7,
+  "gate_paths": "PASS",
+  "gate_traverse": "PASS (beat Neo4j)",
+  "verdict": "sheaf-db 41.7ms vs Neo4j 878ms (21x); sampled 0.8us vs 3.3ms (4000x). Path count exact."
+}

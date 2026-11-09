@@ -1,0 +1,1 @@
+{"criterion_sqlite_us":2.1,"gate_batch_replay":"PASS","gate_replay_exact":"PASS","mode_batched_avg_ns_per_op":130,"mode_durable_p50_ns":6900,"mode_durable_p99_ns":16700,"n":20000,"replay_recs":"20000/20000","verdict":"SQLite wins ~3.3x on durable point writes; sheaf-db batch mode 130ns/op (less durable)"}

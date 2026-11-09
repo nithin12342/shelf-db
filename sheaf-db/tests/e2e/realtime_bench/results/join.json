@@ -1,0 +1,17 @@
+{
+  "pass1_maps_s": 0.4,
+  "customers": 150000,
+  "orders": 1500000,
+  "join_timed_s": 2.5,
+  "orders_joined": 662508,
+  "segments": [
+    18609772880,
+    18935776367,
+    18656199297,
+    18693248638,
+    18679923712
+  ],
+  "total": 93574920897,
+  "gate_join": "PASS (beat PG)",
+  "verdict": "DuckDB 158ms >> sheaf-db 2.5s >> PG 3.04s. Middle of pack; dominated by HashMap+BCSF build, not join logic."
+}

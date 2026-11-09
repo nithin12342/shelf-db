@@ -1,0 +1,12 @@
+{
+  "gates": {
+    "gate_n5_concurrent_build_equals_quiet": "PASS",
+    "gate_n5_frozen_epoch_exposed": "PASS",
+    "gate_n5_epoch_stamp_detects_staleness": "PASS",
+    "gate_n6_fiber_equals_fallback": "PASS",
+    "gate_n6_no_deadlock": "PASS",
+    "gate_n6_lag_bounded": "PASS"
+  },
+  "missing": [],
+  "exit_code": 0
+}

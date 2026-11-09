@@ -1,0 +1,10 @@
+[workspace]
+members = ["crates/sheaf-core", "crates/sheaf-storage", "crates/sheaf-kernel", "crates/sheaf-engine", "crates/sheaf-query"]
+resolver = "2"
+
+# Release tuning (measured, Phase-3 E2E): LTO + single codegen unit let the
+# kernel's hot matvec/dot calls inline across crates. Without it the
+# per-call overhead dominated the SpMV at d<=4. Build time cost accepted.
+[profile.release]
+lto = true
+codegen-units = 1

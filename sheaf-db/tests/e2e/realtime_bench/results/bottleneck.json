@@ -1,0 +1,18 @@
+{
+  "A_memcpy_single_GBs": 4.2,
+  "B_memcpy_4t_GBs": 5.3,
+  "note_bandwidth": "copy measures read+write (2x traffic): true read BW ~8.4 GB/s single-thread. 48MB scan floor = 5.7ms. 2.8ms prediction needed 17GB/s: REFUTED quantitatively. 4-thread barely scales (controller saturated). DuckDB 6.4ms sits at the practical floor.",
+  "C1_manual_ms": 12.3,
+  "C2_zip_ms": 14.8,
+  "C3_unchecked_ms": 10.9,
+  "note_bounds": "all variants within 11-15ms; zip SLOWEST. Bounds checks are NOT the 30-vs-8 gap cause (that was box load). Iterator-is-faster assumption also refuted.",
+  "D_fsync_p50_ns": 1206800,
+  "D_fsync_p99_ns": 2156300,
+  "D_write_only_p50_ns": 9100,
+  "note_fsync": "fsync = 99.3% of durable cost (1.2ms vs 9.1us). Neither SQLite (2.1us) nor sheaf-db (6.9us) fsyncs per op. Our overhead is the per-op header rewrite (seek+write+seek-back); batch mode already 130ns.",
+  "E_encode_ns": 0,
+  "E_crc_sw_ns": 134,
+  "E_crc_hw_ns": 25,
+  "note_amdahl": "checksum total ~2% of 6.9us durable op. HW-CRC saves 109ns of 6900ns (1.6%). 100ns ring number is transport-only.",
+  "verdict": "bandwidth floor CONFIRMED, fsync floor CONFIRMED (1.2ms), Amdahl CONFIRMED, bounds-check hypothesis REFUTED, thread-scaling assumption REFUTED (4t barely beats 1t)."
+}

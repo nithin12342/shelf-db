@@ -1,0 +1,48 @@
+{
+  "neo4j_version": "5.26.32",
+  "counts": {
+    "customers": 150000,
+    "orders": 1500000,
+    "lines": 600000
+  },
+  "point_lookup_us": {
+    "p50": 2194.0,
+    "p99": 7938.6,
+    "n": 5000
+  },
+  "two_hop_us": {
+    "p50": 2124.0,
+    "p99": 11357.5,
+    "n": 200
+  },
+  "full_traversal_ms": {
+    "p50": 846.8,
+    "paths": 600000,
+    "n": 3
+  },
+  "run1_20261026": {
+    "neo4j_version": "5.26.32",
+    "counts": {
+      "customers": 150000,
+      "orders": 1500000,
+      "lines": 600000
+    },
+    "point_lookup_us": {
+      "p50": 1430.3,
+      "p99": 4737.4,
+      "n": 5000
+    },
+    "two_hop_us": {
+      "p50": 1650.4,
+      "p99": 7817.4,
+      "n": 200
+    },
+    "full_traversal_ms": {
+      "p50": 485.9,
+      "paths": 600000,
+      "n": 3
+    },
+    "note": "runner 2026-10-26 11:32 UTC+05:30"
+  },
+  "note": "1 runs; latest run1_20261026."
+}

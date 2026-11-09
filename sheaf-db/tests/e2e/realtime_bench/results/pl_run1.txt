@@ -1,0 +1,101 @@
+﻿C_clock_marginal_s_per_add=6.92456e-10 (const derived: 1 cycle per added dependency)
+C_clock_crosscheck_reps_add=[2.68145166269464, 2.5249469489156877, 2.5256072542759687, 1.8981903927290467, 1.4373624216592125, 3.6620970881744226, 1.9561506463917706, 2.2663996755551046, 2.136759930401124, 3.208977089091266, 1.9310528568558425, 1.8884588804422944, 2.321367473030864, 1.530153579369372, 1.940744994648777]
+C_clock_crosscheck_reps_imul=[2.3255182085104518, 3.1745829369477163, 3.237282195621461, 3.7463170230066485, 3.130332215128233, 3.3750122885012392, 3.1753240360951605, 3.2669168741406858, 2.582490715887782, 3.1212418361116763, 2.309947337104695, 4.4856683032167375, 3.092349941888801, 2.882562311721703, 1.8482539285490946]
+A_latency_ns set_kb=4 pages_4k=1 ns=1.47 cycles=2.13
+A_latency_ns set_kb=16 pages_4k=4 ns=2.39 cycles=3.45
+A_latency_ns set_kb=32 pages_4k=8 ns=1.68 cycles=2.43
+A_latency_ns set_kb=64 pages_4k=16 ns=3.43 cycles=4.95
+A_latency_ns set_kb=128 pages_4k=32 ns=4.15 cycles=6.00
+A_latency_ns set_kb=256 pages_4k=64 ns=5.75 cycles=8.31
+A_latency_ns set_kb=512 pages_4k=128 ns=6.49 cycles=9.37
+A_latency_ns set_kb=1024 pages_4k=256 ns=7.01 cycles=10.12
+A_latency_ns set_kb=2048 pages_4k=512 ns=15.57 cycles=22.48
+A_latency_ns set_kb=3072 pages_4k=768 ns=19.79 cycles=28.58
+A_latency_ns set_kb=4096 pages_4k=1024 ns=21.29 cycles=30.75
+A_latency_ns set_kb=5120 pages_4k=1280 ns=31.08 cycles=44.89
+A_latency_ns set_kb=6144 pages_4k=1536 ns=27.43 cycles=39.61
+A_latency_ns set_kb=7168 pages_4k=1792 ns=18.87 cycles=27.26
+A_latency_ns set_kb=8192 pages_4k=2048 ns=53.69 cycles=77.54
+A_latency_ns set_kb=10240 pages_4k=2560 ns=85.61 cycles=123.63
+A_latency_ns set_kb=12288 pages_4k=3072 ns=94.40 cycles=136.33
+A_latency_ns set_kb=16384 pages_4k=4096 ns=126.90 cycles=183.26
+A_latency_ns set_kb=24576 pages_4k=6144 ns=143.95 cycles=207.88
+A_latency_ns set_kb=32768 pages_4k=8192 ns=159.75 cycles=230.70
+A_latency_ns set_kb=65536 pages_4k=16384 ns=179.52 cycles=259.25
+A_latency_ns set_kb=131072 pages_4k=32768 ns=163.72 cycles=236.44
+C_clock_marginal_s_per_add=5.43081e-10 (const derived: 1 cycle per added dependency)
+C_clock_crosscheck_reps_add=[1.7192302027590947, 1.07717588696461, 2.3116914484112008, 1.252074960165521, 2.4270673617499745, 2.1652417151459953, 1.496168131171302, 2.705397247216164, 1.934772809630291, 3.081009009009009, 1.420931519617838, 1.59347548922134, 1.9817141749078921, 2.022943409100601, 2.9866726746503525]
+C_clock_crosscheck_reps_imul=[2.796976224981395, 3.2028364187506764, 3.4487005044049535, 2.6986213771182452, 3.847459314897007, 2.9905677885612603, 3.682025506376594, 3.1675097194933324, 2.1207664725930133, 2.997948969578018, 3.7354809535089037, 3.663852827973123, 2.161316635478144, 3.195993257261411, 3.7146936855120196]
+A_clock_GHz_before=1.444 A_clock_GHz_after=1.841
+A_tlb_few_pages_64_ns=27.89 A_tlb_many_pages_16384_ns=159.89 A_tlb_penalty_ns=132.01
+B_read_GBps threads=1 gbs=14.49
+B_read_GBps threads=1 gbs=13.12
+B_read_GBps threads=1 gbs=11.56
+B_read_1t_mean_GBps=11.56
+B_read_GBps threads=2 gbs=18.53
+B_read_GBps threads=4 gbs=18.87
+B_read_GBps threads=8 gbs=19.20
+C_clock_marginal_s_per_add=6.63250e-10 (const derived: 1 cycle per added dependency)
+C_clock_crosscheck_reps_add=[1.9819313855409015, 2.1475019482206252, 1.5953852455286033, 2.016661099047937, 2.907412819763417, 2.4931178516993033, 1.9483913560142598, 1.98644061659893, 1.9368847610555402, 2.001443896298627, 2.064111724585904, 2.976532470159822, 2.1224956328581595, 2.293994886475383, 2.411030696281508]
+C_clock_crosscheck_reps_imul=[3.0633904515572796, 6.164656075957171, 2.489092554118357, 3.036442819285524, 3.535718080396671, 2.833564239249112, 2.922751813273709, 2.664935722880122, 2.47954648116361, 1.7687834703323249, 3.1045570056424174, 2.067010032150192, 4.536553337300203, 2.9351055936589514, 2.902498149518875]
+C_clock_marginal_s_per_add=3.44606e-10 (const derived: 1 cycle per added dependency)
+C_clock_crosscheck_reps_add=[2.0372461699090154, 1.918122148253422, 2.0272422373688195, 2.0700646584347906, 2.0263768054285167, 2.0068826949384406, 2.88994772818657, 2.3431023370984705, 1.8149315941215216, 1.952560499678451, 2.1931058360201674, 2.2041447381893393, 1.4898410880180173, 1.8432630432630432, 2.0347657049314507]
+C_clock_crosscheck_reps_imul=[2.84417715128922, 2.3563028601830958, 3.067510017412466, 3.138448958512653, 3.032754225487886, 3.2086999336373174, 3.0108532988507415, 3.276067176411696, 3.2216928142552774, 1.7758137458351593, 4.502029057769283, 3.0418497131121116, 2.4074286292089386, 2.726419921541873, 2.813193657984145]
+C_clock_marginal_s_per_add=3.35456e-10 (const derived: 1 cycle per added dependency)
+C_clock_crosscheck_reps_add=[2.494760264140109, 2.0518669659253215, 1.5567886422715456, 1.6714682319346394, 2.6673970369049287, 1.722234314632421, 2.9297623415270473, 1.7478827676114141, 1.3996464727623332, 1.9064041329564283, 1.921772948028507, 1.8906903418519747, 1.9636723263419698, 2.798535295314301, 2.0943057339473494]
+C_clock_crosscheck_reps_imul=[2.6091439995791026, 4.15306184133637, 3.7415384040645545, 3.5027510614331514, 2.9186402872479325, 2.2407070644803353, 3.2162422888477065, 2.944479721708401, 3.14027765948386, 3.922463744393885, 3.2577504705449667, 3.13391501464896, 2.765546975195787, 2.8557068741893645, 3.612691044945092]
+C_clock_GHz=2.981
+C_clock_crosscheck_add_ratio=2.027 (const expected=2.000)
+C_clock_crosscheck_imul_ratio=3.033 (const expected=3.000)
+C_clock_crosscheck_ok=PASS
+C_flops scalar gflops=1.34
+C_flops avx2 gflops=30.29
+C_flops avx512 gflops=29.65
+C_avx512f_present=true
+C_best_path=avx2
+C_theoretical_1core_gflops=95.39 (const flops_per_cycle=32 x clock_GHz=2.981)
+C_flops_allthreads gflops=84.10 threads=4
+D_write_1MiB_p50_us=711.5
+D_write_4KiB_p50_us=3.8
+D_fsync_4KiB_p50_us=1333.5 p99_us=2041.8
+D_seq_read_uncached_GBps=2.73
+D_rand4k_read_uncached_p50_us=3.9 p99_us=23.3
+E_recheck_dram_latency_ns=172.05 set_mb=128
+E_landauer_J_per_bit=2.8710e-21
+E_si_flight_ps die_mm=10 one_way=120.1 round_trip=240.2 implied_max_GHz=4.16
+E_si_flight_ps die_mm=25 one_way=300.2 round_trip=600.4 implied_max_GHz=1.67
+E_si_flight_ps die_mm=50 one_way=600.4 round_trip=1200.8 implied_max_GHz=0.83
+E_dram_floor_ns cycle_ns=0.625 tRCD+tCL+tRP=41.2
+E_bdp_bytes_at_dram_latency=3303
+E_machine_balance_1t_flop_per_byte=2.621
+E_machine_balance_all_flop_per_byte=4.381
+E_cmos_over_landauer_x=3.483e5
+E_hdd_grain_nm=9.12 E_hdd_areal_Tb_per_in2=1.20
+E_storage_over_dram_x=22.7 dram_latencies_per_storage_access=22.7
+E_dram_peak_1ch_GBps=25.6 E_dram_peak_2ch_GBps=51.2 (const DDR4-3200 x64bit)
+E_dram_1t_pct_of_1ch_peak=45.2 E_dram_all_pct_of_1ch_peak=75.0
+E_dram_all_pct_of_2ch_peak=37.5
+E_pcie_ceiling_GBps link=pcie3_x4 effective_GBps=3.94
+E_pcie_ceiling_GBps link=pcie4_x4 effective_GBps=7.88
+E_hdd_rotational_latency_ms rpm=7200 half_rev_ms=2.08
+E_hdd_rotational_latency_ms rpm=5400 half_rev_ms=2.78
+E_hdd_rotational_latency_ms rpm=15000 half_rev_ms=1.00
+E_seq_read_pct_of_pcie4_x4=34.6
+E_quad_L3_tlbhit_ns=43.97 E_quad_L3_tlbmiss_ns=107.74 E_quad_DRAM_tlbmiss_ns=196.69
+E_page_walk_ns=63.77 E_dram_access_component_ns=88.95
+E_dram_only_estimate_ns=88.95 E_dram_vs_ddr4_cas_floor_x=2.16
+E_stlb_reach_MiB_at_1536_entries=6.0 E_l3_size_MiB=12 E_stlb_reach_lt_l3=true
+gate_hierarchy_ordered=PASS (L1=1.49 L2=4.48 L3=20.13 DRAM=182.13 ns)
+gate_dram_slower_than_l3=PASS
+gate_dram_above_ddr4_cas_floor=PASS (measured=182.13 ns > floor=41.20 ns)
+gate_fsync_floor_exists=PASS (fsync=1333.5 us vs write_only=3.8 us)
+gate_read_bw_significant=PASS (measured=11.56 GB/s vs 1ch_peak=25.60 GB/s)
+gate_dram_slower_than_l1=PASS
+G_same_window_read_GBps=15.65
+G_same_window_gflops=42.23
+G_same_window_machine_balance_flop_per_byte=2.698
+G_kernel_intensity_flop_per_byte d=2 intensity=0.333 memory_bound_vs_measured_ridge=YES
+G_kernel_intensity_flop_per_byte d=4 intensity=0.400 memory_bound_vs_measured_ridge=YES
+G_kernel_intensity_flop_per_byte d=8 intensity=0.444 memory_bound_vs_measured_ridge=YES
+G_kernel_intensity_flop_per_byte d=16 intensity=0.471 memory_bound_vs_measured_ridge=YES
+PHYSICAL-LIMITS-PROBE: COMPLETE

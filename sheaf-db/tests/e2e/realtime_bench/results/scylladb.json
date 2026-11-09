@@ -1,0 +1,44 @@
+{
+  "scylla_version": "3.0.8",
+  "load_s": 152.0,
+  "counts": {
+    "kv": 500000
+  },
+  "point_lookup_us": {
+    "p50": 15600.4,
+    "p99": 17279.9,
+    "n": 5000
+  },
+  "range_slice_ms": {
+    "ms": 57.9,
+    "rows": 10000
+  },
+  "flood_read_us": {
+    "p50": 794.5,
+    "p99": 1703.8,
+    "n": 2001
+  },
+  "run1_20261026": {
+    "scylla_version": "3.0.8",
+    "load_s": 155.5,
+    "counts": {
+      "kv": 500000
+    },
+    "point_lookup_us": {
+      "p50": 15912.5,
+      "p99": 17581.9,
+      "n": 5000
+    },
+    "range_slice_ms": {
+      "ms": 61.5,
+      "rows": 10000
+    },
+    "flood_read_us": {
+      "p50": 869.5,
+      "p99": 2673.3,
+      "n": 2001
+    },
+    "note": "runner 2026-10-26 11:43 UTC+05:30"
+  },
+  "note": "1 runs; latest run1_20261026."
+}

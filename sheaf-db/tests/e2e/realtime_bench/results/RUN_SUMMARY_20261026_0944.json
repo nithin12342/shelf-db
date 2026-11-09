@@ -1,0 +1,17 @@
+{
+  "stamp": "2026-10-26 09:44 UTC+05:30",
+  "summary": {
+    "shelf:tpch_scan_bench": "OK",
+    "shelf:fused_scan_bench": "OK",
+    "shelf:fiber_join_bench": "OK",
+    "shelf:fiber_snap_bench": "OK",
+    "shelf:range_slice_bench": "OK",
+    "shelf:graph_bench": "OK",
+    "shelf:mt_bench": "OK",
+    "shelf:wal_insert_bench": "OK",
+    "shelf:epoch_wal_bench": "OK",
+    "shelf:p0_gates_bench": "OK",
+    "shelf:real_load_bench": "OK",
+    "shelf:imdb_fiber_bench": "OK"
+  }
+}

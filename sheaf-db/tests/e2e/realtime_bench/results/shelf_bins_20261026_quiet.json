@@ -1,0 +1,118 @@
+{
+  "stamp": "2026-10-26 11:44 UTC+05:30",
+  "source": "shelf_bins_20261026.log",
+  "tpch_scan_bench": {
+    "rep_ms": 6.2,
+    "load_s": 1.9,
+    "resident_MB": 198.0,
+    "sum": 218102223881.86,
+    "target_duckdb_ms": 6.4,
+    "gate": "PASS",
+    "log_block": [
+      "cargo.exe :     Finished `release` profile [optimized] target(s) in 0.02s",
+      "At line:2 char:210",
+      "+ ...  if($a1){$args+=$a1}; if($a2){$args+=$a2}; & cargo @args 2>&1 | Out-F ...",
+      "+                                                ~~~~~~~~~~~~~~~~~~",
+      "    + CategoryInfo          : NotSpecified: (    Finished `r...get(s) in 0.02s:String) [], RemoteException",
+      "    + FullyQualifiedErrorId : NativeCommandError",
+      " ",
+      "     Running `D:\\d2\\sheaf-db\\target\\release\\tpch_scan_bench.exe --lineitem=D:\\bench\\build\\tpch-dbgen\\lineitem.tbl`",
+      "scan_load: rows=6001215 load_s=1.9 resident_MB=198.0",
+      "scan_sum: rep_ms=6.2 (single rep; run binary 3x, take best) sum=218102223881.86 target_duckdb_ms=6.4",
+      "gate_scan=PASS (beat DuckDB)",
+      "exit=0"
+    ]
+  },
+  "fused_scan_bench": {
+    "best_ms": 1.7,
+    "median_ms": 1.7,
+    "load_s": 1.2,
+    "fused_MB": 24.0,
+    "sum": 218102223645.82,
+    "gate": "PASS",
+    "log_block": [
+      "cargo.exe :     Finished `release` profile [optimized] target(s) in 0.03s",
+      "At line:2 char:210",
+      "+ ...  if($a1){$args+=$a1}; if($a2){$args+=$a2}; & cargo @args 2>&1 | Out-F ...",
+      "+                                                ~~~~~~~~~~~~~~~~~~",
+      "    + CategoryInfo          : NotSpecified: (    Finished `r...get(s) in 0.03s:String) [], RemoteException",
+      "    + FullyQualifiedErrorId : NativeCommandError",
+      " ",
+      "     Running `D:\\d2\\sheaf-db\\target\\release\\fused_scan_bench.exe --lineitem=D:\\bench\\build\\tpch-dbgen\\lineitem.tbl`",
+      "fused_load: rows=6001215 load_s=1.2 fused_MB=24",
+      "fused_scan: best_ms=1.7 median_ms=1.7 sum=218102223645.82 baseline=218102223881.86 rel=1.08e-9",
+      "gate_fused_exact=PASS",
+      "gate_fused_target=PASS (beat DuckDB)",
+      "exit=0"
+    ]
+  },
+  "fiber_join_bench": {
+    "load_ms": 25.2,
+    "query_ms": 3.7,
+    "total_ms": 29.0,
+    "total_sum": 93574920897.0,
+    "gate": "PASS",
+    "log_block": [
+      "cargo.exe :     Finished `release` profile [optimized] target(s) in 0.03s",
+      "At line:2 char:210",
+      "+ ...  if($a1){$args+=$a1}; if($a2){$args+=$a2}; & cargo @args 2>&1 | Out-F ...",
+      "+                                                ~~~~~~~~~~~~~~~~~~",
+      "    + CategoryInfo          : NotSpecified: (    Finished `r...get(s) in 0.03s:String) [], RemoteException",
+      "    + FullyQualifiedErrorId : NativeCommandError",
+      " ",
+      "     Running `D:\\d2\\sheaf-db\\target\\release\\fiber_join_bench.exe --dir=D:\\bench\\build\\tpch-dbgen ",
+      "--snap=D:\\bench\\data\\fiber_snapshot.bin`",
+      "fiber_cached: load_ms=25.2 query_ms=3.7 total_ms=29.0 segs=[18609772880, 18935776367, 18656199297, 18693248638, 18679923712] total=93574920897 rel=4.39e-12",
+      "gate_fiber_exact=PASS",
+      "gate_fiber_cached_total=PASS (28.991300000000003 ms vs gate 500 ms)",
+      "FIBER-JOIN-BENCH: PASS (cached bundle)",
+      "exit=0"
+    ]
+  },
+  "range_slice_bench": {
+    "cells": 500000.0,
+    "best_ms": 0.0,
+    "rows": 10000.0,
+    "gate": "PASS",
+    "log_block": [
+      "cargo.exe :     Finished `release` profile [optimized] target(s) in 0.02s",
+      "At line:2 char:210",
+      "+ ...  if($a1){$args+=$a1}; if($a2){$args+=$a2}; & cargo @args 2>&1 | Out-F ...",
+      "+                                                ~~~~~~~~~~~~~~~~~~",
+      "    + CategoryInfo          : NotSpecified: (    Finished `r...get(s) in 0.02s:String) [], RemoteException",
+      "    + FullyQualifiedErrorId : NativeCommandError",
+      " ",
+      "     Running `D:\\d2\\sheaf-db\\target\\release\\range_slice_bench.exe`",
+      "range_load: cells=500000 load_s=0.0 index_ms=23 resident_MB=14.5",
+      "range_slice: best_ms=0.0 median_ms=0.0 rows=10000 sum=7492500.0 rel=0.00e0",
+      "gate_range_exact=PASS",
+      "gate_range_target=PASS (beat Scylla best)",
+      "exit=0"
+    ]
+  },
+  "graph_bench": {
+    "cells": 4350000.0,
+    "load_s": 1.2,
+    "resident_MB": 151.4,
+    "sampled_2hop_p50_us": 0.8,
+    "full_paths": 600000.0,
+    "full_ms": 45.2,
+    "gate": "PASS",
+    "log_block": [
+      "cargo.exe :     Finished `release` profile [optimized] target(s) in 0.02s",
+      "At line:2 char:210",
+      "+ ...  if($a1){$args+=$a1}; if($a2){$args+=$a2}; & cargo @args 2>&1 | Out-F ...",
+      "+                                                ~~~~~~~~~~~~~~~~~~",
+      "    + CategoryInfo          : NotSpecified: (    Finished `r...get(s) in 0.02s:String) [], RemoteException",
+      "    + FullyQualifiedErrorId : NativeCommandError",
+      " ",
+      "     Running `D:\\d2\\sheaf-db\\target\\release\\graph_bench.exe --dir=D:\\bench\\data\\neo4j\\import`",
+      "graph_load: cells=4350000 (nodes+edges) load_s=1.2 resident_MB=151.4",
+      "sampled_2hop: p50_us=0.8 (n=200)",
+      "full_rollup: paths=600000 (expect 600000) ms=45.2",
+      "gate_paths=PASS",
+      "gate_traverse=PASS (beat Neo4j) (vs neo4j 878ms full / 3.3ms sampled)",
+      "exit=0"
+    ]
+  }
+}

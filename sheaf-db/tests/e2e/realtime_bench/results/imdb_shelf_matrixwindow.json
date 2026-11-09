@@ -1,0 +1,20 @@
+{
+  "q1": {
+    "load_ms": 151.1,
+    "query_ms": 197.8,
+    "count": 44906,
+    "votes": 294435444,
+    "avg": 8.1455061756
+  },
+  "q2": {
+    "load_ms": 654.9,
+    "query_ms": 18333.3
+  },
+  "q3": {
+    "load_ms": 95.3,
+    "query_ms": 1746.9
+  },
+  "bundle_open_ms": 0.1,
+  "wall_ms": 21180.2,
+  "_note": "ShelfDB IMDb numbers measured in the SAME window as the engine matrix (2026-10-21 10:31, engines+containers resident). The idle-box control (322/11,883/1,541 ms totals) is in RUNTIME_COMPARISON.md's box-state table; results/imdb_shelf.json holds the latest (idle) run."
+}

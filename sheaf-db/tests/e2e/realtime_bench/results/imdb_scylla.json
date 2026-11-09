@@ -1,0 +1,21 @@
+{
+  "engine": "scylladb",
+  "version": "3.0.8",
+  "shape": "CQL denormalized: PRIMARY KEY ((year), avg, tconst)",
+  "etl": "Rust: imdb_scylla_prep (write-time join)",
+  "etl_rows": 215309,
+  "insert_ms": 97443.5,
+  "query_ms": 271.1,
+  "query_ms_runs": [
+    236.3,
+    260.1,
+    271.1,
+    289.4,
+    296.1
+  ],
+  "count": 44906,
+  "votes": 294435444,
+  "avg": 8.14550617559553,
+  "mongo_same_query_ms": 183618.6,
+  "gate": "PASS"
+}

@@ -1,0 +1,33 @@
+﻿valid_corpus=50 worst_compile_us=26 median_compile_us=7
+gate_parse_50us=PASS
+gate_malformed_pinpoint=PASS
+gate_tir_golden=PASS
+--- .section ---
+status: OK
+execution_time_us: 14
+subcomplex:
+  dimension: 2
+  cell_count: 4
+  cells:
+    - { id: "Transaction(#9001)", dim: 2 }
+    - { id: "p", dim: 0 }
+    - { id: "d", dim: 0 }
+    - { id: "l", dim: 0 }
+discrete_payload:
+  p.name: "Alice"
+  d.device_id: "dev_xyz"
+  t.amount: "1500.0"
+  SECTION_ENERGY: "0.000010"
+  COHOMOLOGY_STATE: "HARMONIC_BOUNDED"
+spectral_metrics:
+  dirichlet_energy: 0.00001
+  iterations_to_converge: 2
+  cohomology_state: HARMONIC_BOUNDED
+harmonic_section:
+  stalk_projections:
+    - { cell: "p", vector: [0.133721, -0.257143, 0.637475, 0.060199] }
+    - { cell: "d", vector: [0.216279, -0.492857, 0.992525, 0.109801] }
+    - { cell: "l", vector: [0.083721, -0.237143, 0.357475, 0.050199] }
+
+gate_section_emit=PASS
+PHASE4 E2E: PASS

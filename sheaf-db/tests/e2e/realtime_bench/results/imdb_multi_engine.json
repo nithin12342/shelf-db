@@ -1,0 +1,294 @@
+{
+  "run_20261020_1531": {
+    "sqlite": true,
+    "mariadb": true,
+    "mongodb": true,
+    "redis": true,
+    "scylladb": true,
+    "duckdb_q1_ms": 345.7,
+    "pg_q1_ms": 1918.1,
+    "shelfdb_q1_ms": 142.7
+  },
+  "run_20261020_1531_detail": {
+    "sqlite": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440741,
+      "ms": 352.9841000017768,
+      "load_s": 3.481716000002052,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 7.63e-15"
+    },
+    "mariadb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440566,
+      "ms": 1040.3689999984636,
+      "load_s": 20.214709899999434,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 1.40e-14"
+    },
+    "mongodb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440741,
+      "ms": 183618.64159999823,
+      "load_s": 35.91063189999841,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 7.63e-15"
+    },
+    "redis": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145503941566828,
+      "ms": 199.39439999870956,
+      "lookup_ms": 4255.035199999838,
+      "load_s": 2.221304800001235,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 2.73e-07"
+    },
+    "scylladb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440566,
+      "ms": 265.5649000007543,
+      "range_ms": 63.178399999742396,
+      "range_rows": 10000,
+      "load_s": 10.768537699997978,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 1.40e-14"
+    }
+  },
+  "truth": {
+    "count": 44906,
+    "votes": 294435444,
+    "avg": 8.145506168440681
+  },
+  "run_20261020_1533": {
+    "neo4j": true,
+    "duckdb_q1_ms": 345.7,
+    "pg_q1_ms": 1918.1,
+    "shelfdb_q1_ms": 142.7
+  },
+  "run_20261020_1533_detail": {
+    "neo4j": {
+      "pairs": 173716,
+      "expected_pairs": 173716,
+      "ms": 385.050400000182,
+      "load_s": 16.000084199997218,
+      "titles": 20885,
+      "edges": 219681,
+      "persons": 184073,
+      "gate": "PASS",
+      "gate_detail": "pairs 173716 == 173716"
+    }
+  },
+  "run_20261021_1551": {
+    "sqlite": true,
+    "mariadb": true,
+    "redis": true,
+    "scylladb": true,
+    "neo4j": true,
+    "duckdb_q1_ms": 345.7,
+    "pg_q1_ms": 1918.1,
+    "shelfdb_q1_ms": 197.8
+  },
+  "run_20261021_1551_detail": {
+    "sqlite": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440741,
+      "ms": 757.5370000013208,
+      "load_s": 7.889072300000407,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 7.63e-15"
+    },
+    "mariadb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440566,
+      "ms": 970.9059999986493,
+      "load_s": 26.99336630000107,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 1.40e-14"
+    },
+    "redis": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145503941566828,
+      "ms": 255.46310000208905,
+      "lookup_ms": 8917.080200000782,
+      "load_s": 4.140592899999319,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 2.73e-07"
+    },
+    "scylladb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440566,
+      "ms": 208.27379999900586,
+      "range_ms": 274.1320999994059,
+      "range_rows": 10000,
+      "load_s": 21.348121900002297,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 1.40e-14"
+    },
+    "neo4j": {
+      "pairs": 173716,
+      "expected_pairs": 173716,
+      "ms": 1089.5234000017808,
+      "load_s": 83.68974420000086,
+      "titles": 20885,
+      "edges": 219681,
+      "persons": 184073,
+      "gate": "PASS",
+      "gate_detail": "pairs 173716 == 173716"
+    }
+  },
+  "run_20261023_1551": {
+    "sqlite": true,
+    "duckdb_q1_ms": 345.7,
+    "pg_q1_ms": 1918.1,
+    "shelfdb_q1_ms": 0.0
+  },
+  "run_20261023_1551_detail": {
+    "sqlite": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440741,
+      "ms": 652.2594000016397,
+      "load_s": 6.578676600001927,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 7.63e-15"
+    }
+  },
+  "run_20261026_1219": {
+    "scylladb": true,
+    "duckdb_q1_ms": 345.7,
+    "pg_q1_ms": 1918.1,
+    "shelfdb_q1_ms": 0.0
+  },
+  "run_20261026_1219_detail": {
+    "scylladb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440566,
+      "ms": 85.0205000006099,
+      "range_ms": 51.16559999987658,
+      "range_rows": 10000,
+      "load_s": 8.446427799999583,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 1.40e-14"
+    }
+  },
+  "run_20261026_1344": {
+    "sqlite": true,
+    "mariadb": true,
+    "redis": true,
+    "scylladb": false,
+    "neo4j": false,
+    "duckdb_q1_ms": 582.3,
+    "pg_q1_ms": 2724.0,
+    "shelfdb_q1_ms": 0.0
+  },
+  "run_20261026_1344_detail": {
+    "sqlite": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440741,
+      "ms": 645.3102999985276,
+      "load_s": 3.6690309000005072,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 8.07e-15"
+    },
+    "mariadb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440566,
+      "ms": 1064.3394000035187,
+      "load_s": 18.567064899998513,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 1.35e-14"
+    },
+    "redis": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145503941566828,
+      "ms": 208.56650000132504,
+      "lookup_ms": 8326.475500001834,
+      "load_s": 4.742516499998601,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 2.73e-07"
+    },
+    "scylladb": {
+      "gate": "ERROR",
+      "error": "RuntimeError: scylla native protocol never became ready"
+    },
+    "neo4j": {
+      "gate": "ERROR",
+      "error": "ServiceUnavailable: Couldn't connect to 127.0.0.1:7687 (resolved to ('127.0.0.1:7687',)):\nFailed to establish connection to ResolvedIPv4Address(('127.0.0.1', 7687)) (reason [WinError 10061] No connection could be made be"
+    }
+  },
+  "run_20261026_1423": {
+    "sqlite": true,
+    "mariadb": true,
+    "redis": true,
+    "scylladb": true,
+    "neo4j": true,
+    "duckdb_q1_ms": 553.3,
+    "pg_q1_ms": 2674.1,
+    "shelfdb_q1_ms": 0.0
+  },
+  "run_20261026_1423_detail": {
+    "sqlite": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440741,
+      "ms": 636.6304000002856,
+      "load_s": 7.956838900001458,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 7.41e-15"
+    },
+    "mariadb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440566,
+      "ms": 1074.3868999998085,
+      "load_s": 23.36055380000107,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 1.42e-14"
+    },
+    "redis": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145503941566828,
+      "ms": 704.88579999801,
+      "lookup_ms": 8494.748299999628,
+      "load_s": 3.649708199998713,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 2.73e-07"
+    },
+    "scylladb": {
+      "count": 44906,
+      "votes": 294435444,
+      "avg": 8.145506168440566,
+      "ms": 125.414299996919,
+      "range_ms": 255.17350000154693,
+      "range_rows": 10000,
+      "load_s": 20.12104619999809,
+      "gate": "PASS",
+      "gate_detail": "count 44906==44906:True votes 294435444==294435444:True avg rel 1.42e-14"
+    },
+    "neo4j": {
+      "pairs": 173716,
+      "expected_pairs": 173716,
+      "ms": 974.7640000023239,
+      "load_s": 93.00108919999911,
+      "titles": 20885,
+      "edges": 219681,
+      "persons": 184073,
+      "gate": "PASS",
+      "gate_detail": "pairs 173716 == 173716"
+    }
+  }
+}

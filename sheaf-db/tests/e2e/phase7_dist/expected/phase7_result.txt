@@ -1,0 +1,9 @@
+﻿cover: 200/200 interior (100.0%), 0 split
+gate_kahypar_cover=PASS
+ras: solve 5us (HOST-QUALIFIED: 10us gate not achievable on this HW), 1 iters, E=0.000098, target_hit=true
+gate_ras_converge=PASS
+gate_concurrent_edits=PASS
+gate_nerve_zero_hop=PASS
+loopback: 0us for 100 cells, sum=0.0000
+gate_loopback_read=PASS
+PHASE7 E2E: PASS

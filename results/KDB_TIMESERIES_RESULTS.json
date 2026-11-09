@@ -1,0 +1,26 @@
+{
+  "kdb_internal_us": {
+    "window_agg": 17260.0,
+    "slice_filter": 10.0,
+    "point_lookup": 0.0,
+    "column_avg": 40.0
+  },
+  "kdb_eval_us": {
+    "window_agg": 17883.0,
+    "slice_filter": 153.3,
+    "point_lookup": 79.4,
+    "column_avg": 129.5
+  },
+  "duckdb_us": {
+    "window_agg": 32375.2,
+    "slice_filter": 2591.0,
+    "point_lookup": 1585.9,
+    "column_avg": 1532.2
+  },
+  "shelfdb_bcsf_us": {
+    "window_agg": 379.8,
+    "slice_filter": 104.4,
+    "point_lookup": 0.1,
+    "column_avg": 146.3
+  }
+}

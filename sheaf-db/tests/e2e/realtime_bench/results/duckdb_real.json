@@ -1,0 +1,30 @@
+{
+  "duckdb_version": "1.5.4",
+  "fraud_load_s": 12.9,
+  "fraud_counts": {
+    "rows": 590540,
+    "frauds": 20663,
+    "avg_amt": 135.03
+  },
+  "fraud_group_ms": {
+    "p50": 13.3,
+    "groups": 5,
+    "n": 3
+  },
+  "fraud_risk_ms": {
+    "ms": 22.0,
+    "groups": 5
+  },
+  "fb_load_s": 0.1,
+  "fb_edges": 88234,
+  "fb_2hop_us": {
+    "p50": 59567.3,
+    "p99": 530101.7,
+    "n": 195
+  },
+  "fb_triangles": {
+    "n": 1612010,
+    "ms": 223.1,
+    "note": "corrected undirected wedge query; earlier 0 was an orientation bug in the query, not the data"
+  }
+}

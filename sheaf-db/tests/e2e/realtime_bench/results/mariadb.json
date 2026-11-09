@@ -1,0 +1,497 @@
+{
+  "run1_quiet_box": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 214.0,
+      "p99": 891.3,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 29812.2,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1521.3,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 68.1,
+      "p99": 356.4,
+      "n": 10000
+    }
+  },
+  "run2_loaded_box": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 206.8,
+      "p99": 1047.9,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 52887.6,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 2815.3,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 392.9,
+      "p99": 1230.8,
+      "n": 10000
+    }
+  },
+  "run3_kept_install": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 268.1,
+      "p99": 1076.3,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 53329.0,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 2877.3,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 91.8,
+      "p99": 575.8,
+      "n": 10000
+    },
+    "note": "kept-install rematch, data kept (no reload)"
+  },
+  "run4_loaded": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 329.3,
+      "p99": 3091.9,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 58939.5,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 3345.7,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 156.8,
+      "p99": 2476.4,
+      "n": 10000
+    },
+    "note": "run4 data-kept rerun. Slowest join/scan of all runs - box loaded."
+  },
+  "note": "16 runs; latest run16_20261026.",
+  "run5_20261014": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 768.0,
+      "p99": 2808.2,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 26580.2,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1504.5,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 70.4,
+      "p99": 150.9,
+      "n": 10000
+    },
+    "note": "runner 2026-10-14 16:07 UTC+05:30"
+  },
+  "run6_20261015": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 141.1,
+      "p99": 553.3,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 31064.9,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1394.0,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 73.5,
+      "p99": 199.0,
+      "n": 10000
+    },
+    "note": "runner 2026-10-15 16:15 UTC+05:30"
+  },
+  "run7_20261015": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 124.6,
+      "p99": 543.1,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 29270.2,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1530.6,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 70.4,
+      "p99": 320.8,
+      "n": 10000
+    },
+    "note": "runner 2026-10-15 17:46 UTC+05:30"
+  },
+  "run8_20261015": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 110.5,
+      "p99": 575.1,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 29716.1,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1598.4,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 76.1,
+      "p99": 316.1,
+      "n": 10000
+    },
+    "note": "runner 2026-10-15 20:06 UTC+05:30"
+  },
+  "run9_20261015": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 108.4,
+      "p99": 544.6,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 27504.6,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1473.1,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 59.9,
+      "p99": 293.1,
+      "n": 10000
+    },
+    "note": "runner 2026-10-15 20:27 UTC+05:30"
+  },
+  "run10_20261015": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 123.0,
+      "p99": 666.1,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 29093.6,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1551.8,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 65.7,
+      "p99": 319.5,
+      "n": 10000
+    },
+    "note": "runner 2026-10-15 20:53 UTC+05:30"
+  },
+  "run11_20261016": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 127.1,
+      "p99": 582.7,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 87613.1,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 3620.0,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 236.7,
+      "p99": 2015.2,
+      "n": 10000
+    },
+    "note": "runner 2026-10-16 12:44 UTC+05:30"
+  },
+  "run12_20261020": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 119.2,
+      "p99": 697.9,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 39470.3,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 2981.8,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 229.3,
+      "p99": 842.8,
+      "n": 10000
+    },
+    "note": "runner 2026-10-20 21:01 UTC+05:30"
+  },
+  "run13_20261021": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 388.7,
+      "p99": 842.4,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 52443.5,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 2927.9,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 215.5,
+      "p99": 553.7,
+      "n": 10000
+    },
+    "note": "runner 2026-10-21 15:18 UTC+05:30"
+  },
+  "run14_20261023": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 251.7,
+      "p99": 965.4,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 37883.9,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1987.5,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 104.9,
+      "p99": 383.9,
+      "n": 10000
+    },
+    "note": "runner 2026-10-23 13:06 UTC+05:30"
+  },
+  "run15_20261023": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 514.4,
+      "p99": 1092.2,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 51143.2,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 2682.7,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 220.2,
+      "p99": 567.2,
+      "n": 10000
+    },
+    "note": "runner 2026-10-23 17:34 UTC+05:30"
+  },
+  "run16_20261026": {
+    "engine": "mariadb",
+    "version": "13.0.2-MariaDB",
+    "counts": {
+      "customer": 150000,
+      "orders": 1500000,
+      "lineitem": 6001215,
+      "part": 200000,
+      "partsupp": 800000
+    },
+    "point_lookup_us": {
+      "p50": 139.5,
+      "p99": 445.9,
+      "n": 20000
+    },
+    "join_ms": {
+      "p50": 23086.1,
+      "rows": 100,
+      "n": 3
+    },
+    "scan_agg_ms": {
+      "p50": 1279.3,
+      "n": 5
+    },
+    "insert_us": {
+      "p50": 63.9,
+      "p99": 165.7,
+      "n": 10000
+    },
+    "note": "runner 2026-10-26 11:30 UTC+05:30"
+  }
+}

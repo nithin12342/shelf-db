@@ -1,0 +1,9 @@
+C1_open_boundary_rejected=PASS
+C2_dim_mismatch_rejected=PASS
+C3_non_ortho_rejected=PASS
+C4_n6_prunes_to_1=PASS
+C5_n1_prunes_to_1=PASS
+C6_multi_value_parity=PASS
+C7_nonexistent_empty=PASS
+C8_compose=PASS
+ADVERSARIAL5: PASS

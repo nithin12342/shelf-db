@@ -1,0 +1,9 @@
+﻿E1_all_interior=PASS
+E2_some_split=PASS
+E3_empty=PASS
+E4_zero_x0=PASS
+E5_non_harmonic=PASS
+E6_min_energy=PASS
+E7_nerve_zero_hop=PASS
+E8_loopback_finite=PASS
+ADVERSARIAL7: PASS

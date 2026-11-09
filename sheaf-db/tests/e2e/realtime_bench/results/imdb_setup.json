@@ -1,0 +1,86 @@
+{
+  "method": "METHOD-065",
+  "tsv_dir": "D:\\d2\\data\\imdb",
+  "files": [
+    "title.basics.tsv",
+    "title.akas.tsv",
+    "title.crew.tsv",
+    "title.episode.tsv",
+    "title.principals.tsv",
+    "title.ratings.tsv",
+    "name.basics.tsv"
+  ],
+  "input_bytes": 10407973490,
+  "input_mib": 9925.8,
+  "disk_rate_gbs": 3.2,
+  "floor_ms": 3252.5,
+  "note": "setup covers the empty table and the full load of every row. Both engines declare every column as text, so the comparison does not mix two type choices.",
+  "duckdb": {
+    "setup_ms": 155991.3168000021,
+    "per_table_ms": {
+      "title_basics": 40880.00309999916,
+      "title_akas": 29213.110199998482,
+      "title_crew": 5669.0173000024515,
+      "title_episode": 3564.3794999996317,
+      "title_principals": 58200.194699998974,
+      "title_ratings": 1345.6923000012466,
+      "name_basics": 17118.919700002152
+    },
+    "counts": {
+      "title_basics": 12866375,
+      "title_akas": 59774094,
+      "title_crew": 12866977,
+      "title_episode": 9950953,
+      "title_principals": 102312263,
+      "title_ratings": 1721477,
+      "name_basics": 15738257
+    },
+    "wall_ms": 192663.04350000064,
+    "above_floor": true,
+    "counts_ok": true,
+    "bad_counts": {}
+  },
+  "postgres": {
+    "setup_ms": 783103.1700000023,
+    "per_table_ms": {
+      "title_basics": 65510.567000001174,
+      "title_akas": 223002.57299999794,
+      "title_crew": 33977.1819000016,
+      "title_episode": 25737.675199998193,
+      "title_principals": 359162.5503000032,
+      "title_ratings": 5656.81609999956,
+      "name_basics": 70055.80650000047
+    },
+    "counts": {
+      "title_basics": 12866375,
+      "title_akas": 59774094,
+      "title_crew": 12866977,
+      "title_episode": 9950953,
+      "title_principals": 102312263,
+      "title_ratings": 1721477,
+      "name_basics": 15738257
+    },
+    "counts_ok": true,
+    "bad_counts": {},
+    "above_floor": true
+  },
+  "disk_state": {
+    "sampled_during": "the postgres load",
+    "sample_mb_s": [
+      48.0,
+      56.2
+    ],
+    "sample_method": "Get-Counter '\\PhysicalDisk(_Total)\\Disk Bytes/sec', 2 samples of 2 s",
+    "consequence": "A rate far below the planned 3.20 GB/s means the measured setup is a measure of the disk and not of the engine, and the run does not replace a figure measured on a quiet disk."
+  },
+  "gate": {
+    "question": "is a recorded DuckDB setup of 100 ms possible for this input",
+    "read_floor_ms_at_planned_rate": 3252.5,
+    "recorded_setup_ms": 100,
+    "recorded_is_below_the_floor_by": 32.5,
+    "measured_duckdb_setup_ms": 155991.0,
+    "measured_over_recorded": 1560.0,
+    "counts_complete": true,
+    "answer": "NO. The read of the input alone is 3252 ms at the planned 3.20 GB/s, which is 32.5x the recorded 100 ms, so the record is below the floor before any parse or write. The measured setup is 155991 ms."
+  }
+}

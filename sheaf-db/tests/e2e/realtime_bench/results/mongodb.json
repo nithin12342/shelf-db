@@ -1,0 +1,312 @@
+{
+  "run1_first_install": {
+    "mongo_version": "9.0.2",
+    "load_s": 3.8,
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 12058.4,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 79.6,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 6.4,
+      "throughput": 2497.0,
+      "p50_us": 9470.0,
+      "p99_us": 46769.6
+    }
+  },
+  "run2_reinstall": {
+    "mongo_version": "9.0.2",
+    "load_s": 4.1,
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 5.0,
+      "throughput": 3218.0,
+      "p50_us": 8165.4,
+      "p99_us": 30169.3
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 11508.7,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 72.9,
+      "rows": 200,
+      "n": 5
+    }
+  },
+  "run3_kept_install_INVALID": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 3.6,
+      "throughput": 4411.0,
+      "p50_us": 5954.9,
+      "p99_us": 20450.4
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 36.5,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 55.9,
+      "rows": 200,
+      "n": 5
+    },
+    "load_s": "see mongo_bench output (fresh reload)",
+    "note": "INVALID: stale-index artifact (fully-indexed 36.5ms mislabeled unindexed). Kept for forensics."
+  },
+  "run4_fixed_harness": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 26010.8,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 66.9,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 9.9,
+      "throughput": 1617.0,
+      "p50_us": 16145.2,
+      "p99_us": 61952.1
+    },
+    "note": "run4 fixed harness (index-drop before unindexed; truthful pair). load_s absent = data kept, no reload."
+  },
+  "note": "11 runs; latest run11_20261020.",
+  "run5_20261014": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 31316.2,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 109.0,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 15.6,
+      "throughput": 1023.0,
+      "p50_us": 24476.8,
+      "p99_us": 108508.9
+    },
+    "note": "runner 2026-10-14 16:05 UTC+05:30"
+  },
+  "run6_20261015": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 9368.4,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 26.3,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 5.0,
+      "throughput": 3192.0,
+      "p50_us": 7867.6,
+      "p99_us": 35317.1
+    },
+    "note": "runner 2026-10-15 16:13 UTC+05:30"
+  },
+  "run7_20261015": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 17328.5,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 61.6,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 11.3,
+      "throughput": 1412.0,
+      "p50_us": 18303.8,
+      "p99_us": 68605.0
+    },
+    "note": "manual retry after runner BENCH-FAIL (mongod readiness). Correct pair."
+  },
+  "run8_20261015": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 6005.0,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 64.3,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 3.3,
+      "throughput": 4875.0,
+      "p50_us": 5455.0,
+      "p99_us": 18382.6
+    },
+    "note": "runner 2026-10-15 20:04 UTC+05:30"
+  },
+  "run9_20261015": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 11802.5,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 62.0,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 3.5,
+      "throughput": 4630.0,
+      "p50_us": 5744.7,
+      "p99_us": 19614.4
+    },
+    "note": "runner 2026-10-15 20:51 UTC+05:30"
+  },
+  "run10_20261016": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 11078.0,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 59.0,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 3.4,
+      "throughput": 4654.0,
+      "p50_us": 5685.4,
+      "p99_us": 19268.1
+    },
+    "note": "runner 2026-10-16 12:39 UTC+05:30"
+  },
+  "run11_20261020": {
+    "mongo_version": "9.0.2",
+    "counts": {
+      "customers": 100000,
+      "orders": 100000,
+      "items": 100000,
+      "payments": 100000,
+      "shipments": 100000
+    },
+    "lookup4_unindexed_ms": {
+      "p50": 6158.8,
+      "rows": 200,
+      "n": 5
+    },
+    "lookup4_indexed_ms": {
+      "p50": 29.7,
+      "rows": 200,
+      "n": 5
+    },
+    "mixed_32t": {
+      "ops": 16000,
+      "wall_s": 4.2,
+      "throughput": 3845.0,
+      "p50_us": 6937.2,
+      "p99_us": 25821.9
+    },
+    "note": "runner 2026-10-20 20:58 UTC+05:30"
+  }
+}

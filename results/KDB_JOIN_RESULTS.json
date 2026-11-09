@@ -1,0 +1,7 @@
+{
+  "dataset": "5-row fraud dataset",
+  "kdb_internal_us": 7.0,
+  "kdb_client_us": 23.399999918183312,
+  "sqlite_us": 4.300000000512227,
+  "duckdb_us": 1297.2999993507983
+}
