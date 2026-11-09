@@ -38,6 +38,12 @@
 #define SHEAF_URING_IDLE_MS 1000u
 #define SHEAF_URING_IO_CHUNK 0x40000000u
 
+/* Same handle layout as platform_posix.c. The definition repeats in
+ * this translation unit because the header keeps SheafFile opaque. */
+struct SheafFile {
+    int fd;
+};
+
 /* One process-wide ring. The single-writer WAL contract makes the
  * lazy init race-free without an atomic: the first append creates
  * the ring before any concurrent append can exist. */
@@ -182,9 +188,9 @@ static int fallback_pwrite(int fd, uint64_t offset,
     return SHEAF_WAL_OK;
 }
 
-int sheaf_platform_write(SheafFile file, uint64_t offset,
-                         const void *data, size_t len) {
-    int fd = (int)(intptr_t)file;
+int sheaf_platform_write(SheafFile* f, uint64_t offset,
+                         const void* data, size_t len) {
+    int fd = f->fd;
     if (g_ring.ready == 0) {
         g_ring.ready = (ring_setup() == 0) ? 1 : -1;
     }
