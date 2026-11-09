@@ -37,8 +37,12 @@ pub fn build(native_root: &Path, out_dir: &Path) {
                 cmd.arg("-target").arg(target);
             }
         }
+        // -I kernel_src finds internal.hpp for the sources that use
+        // quoted includes. The public C ABI headers live in include_dir.
         cmd.arg("-I")
             .arg(&include_dir)
+            .arg("-I")
+            .arg(&kernel_src)
             .arg("-c")
             .arg(src)
             .arg("-o")
