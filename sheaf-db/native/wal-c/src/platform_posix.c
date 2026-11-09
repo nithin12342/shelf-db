@@ -1,15 +1,13 @@
-/* POSIX backend for the write-ahead log (WAL) file interface.
+/*
+ * platform_posix.c - POSIX backend for the WAL file interface.
  *
- * The WAL needs three durability guarantees:
- *   1. A write reaches the kernel in full, at the exact offset.
- *   2. A flush makes the bytes durable on stable storage.
- *   3. A truncate removes a torn tail after a crash.
+ * Maps the wal_internal.h file interface onto open(2), pwrite(2),
+ * pread(2), fsync(2), fstat(2), ftruncate(2), and close(2).
  *
- * This file maps those guarantees onto pwrite(2), fsync(2), and
- * ftruncate(2). The io_uring backend (platform_uring.c) replaces the
- * write path on Linux when SHEAF_WAL_URING selects it. The two
- * backends share this file for open, read, flush, size, truncate,
- * and close, because those calls are not on the hot append path.
+ * The io_uring backend (platform_uring.c) owns the write symbol on
+ * Linux when SHEAF_WAL_URING selects it. This file then compiles its
+ * write out, so the link sees exactly one definition. All other
+ * operations stay here because they are off the hot append path.
  */
 #if !defined(_WIN32)
 
@@ -19,130 +17,103 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <stddef.h>
-#include <stdint.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
+struct SheafFile {
+    int fd;
+};
+
 /* Write chunk cap. A single pwrite of a very large buffer can return
- * a short count on some kernels. Looping in bounded chunks keeps the
- * retry logic simple and avoids implementation-specific limits. */
+ * a short count on some kernels. Bounded chunks keep the loop simple
+ * and avoid implementation-specific limits. */
 #define SHEAF_POSIX_IO_CHUNK 0x40000000u
 
-int sheaf_platform_open(const char *path, SheafFile *out) {
-    if (path == NULL || out == NULL) {
-        return SHEAF_WAL_EINVAL;
-    }
+SheafFile* sheaf_platform_open(const char* path) {
+    if (path == NULL) return NULL;
     int fd = open(path, O_RDWR | O_CREAT, 0644);
-    if (fd < 0) {
-        return SHEAF_WAL_EIO;
+    if (fd < 0) return NULL;
+    SheafFile* f = (SheafFile*)malloc(sizeof(SheafFile));
+    if (f == NULL) {
+        (void)close(fd);
+        return NULL;
     }
-    *out = (SheafFile)(intptr_t)fd;
-    return SHEAF_WAL_OK;
+    f->fd = fd;
+    return f;
 }
 
 /* The io_uring backend owns the write symbol when it is selected at
  * build time. Guard this definition so the link sees exactly one. */
 #if !(defined(__linux__) && defined(SHEAF_WAL_URING))
-int sheaf_platform_write(SheafFile file, uint64_t offset,
-                         const void *data, size_t len) {
-    int fd = (int)(intptr_t)file;
-    const uint8_t *cursor = (const uint8_t *)data;
+int sheaf_platform_write(SheafFile* f, uint64_t offset, const void* buf, size_t len) {
+    const uint8_t* p = (const uint8_t*)buf;
     size_t done = 0;
     while (done < len) {
         size_t chunk = len - done;
-        if (chunk > SHEAF_POSIX_IO_CHUNK) {
-            chunk = SHEAF_POSIX_IO_CHUNK;
-        }
-        ssize_t n = pwrite(fd, cursor + done, chunk, (off_t)(offset + done));
+        if (chunk > SHEAF_POSIX_IO_CHUNK) chunk = SHEAF_POSIX_IO_CHUNK;
+        ssize_t n = pwrite(f->fd, p + done, chunk, (off_t)(offset + done));
         if (n < 0) {
-            if (errno == EINTR) {
-                continue; /* A signal interrupted the write. Retry. */
-            }
+            if (errno == EINTR) continue; /* A signal interrupted us. */
             return SHEAF_WAL_EIO;
         }
-        if (n == 0) {
-            return SHEAF_WAL_EIO; /* No progress means a broken device. */
-        }
+        if (n == 0) return SHEAF_WAL_EIO; /* No progress: broken device. */
         done += (size_t)n;
     }
     return SHEAF_WAL_OK;
 }
 #endif /* !(defined(__linux__) && defined(SHEAF_WAL_URING)) */
 
-int sheaf_platform_read(SheafFile file, uint64_t offset,
-                        void *data, size_t len) {
-    int fd = (int)(intptr_t)file;
-    uint8_t *cursor = (uint8_t *)data;
+/* Exact-length read. A short read returns SHEAF_WAL_EIO per the
+ * interface contract. Recovery checks the file size first, so EOF
+ * inside a record surfaces as a size mismatch before this call. */
+int sheaf_platform_read(SheafFile* f, uint64_t offset, void* buf, size_t len) {
+    uint8_t* p = (uint8_t*)buf;
     size_t done = 0;
     while (done < len) {
         size_t chunk = len - done;
-        if (chunk > SHEAF_POSIX_IO_CHUNK) {
-            chunk = SHEAF_POSIX_IO_CHUNK;
-        }
-        ssize_t n = pread(fd, cursor + done, chunk, (off_t)(offset + done));
+        if (chunk > SHEAF_POSIX_IO_CHUNK) chunk = SHEAF_POSIX_IO_CHUNK;
+        ssize_t n = pread(f->fd, p + done, chunk, (off_t)(offset + done));
         if (n < 0) {
-            if (errno == EINTR) {
-                continue;
-            }
+            if (errno == EINTR) continue;
             return SHEAF_WAL_EIO;
         }
-        if (n == 0) {
-            /* End of file inside a record means a torn tail. The
-             * recovery layer treats this as corruption, not an
-             * I/O failure, so report it as a short read. */
-            return SHEAF_WAL_ECORRUPT;
-        }
+        if (n == 0) return SHEAF_WAL_EIO;
         done += (size_t)n;
     }
     return SHEAF_WAL_OK;
 }
 
-int sheaf_platform_fsync(SheafFile file) {
-    int fd = (int)(intptr_t)file;
-    while (fsync(fd) != 0) {
-        if (errno == EINTR) {
-            continue;
-        }
+int sheaf_platform_fsync(SheafFile* f) {
+    while (fsync(f->fd) != 0) {
+        if (errno == EINTR) continue;
         return SHEAF_WAL_EIO;
     }
     return SHEAF_WAL_OK;
 }
 
-int sheaf_platform_size(SheafFile file, uint64_t *out_size) {
-    if (out_size == NULL) {
-        return SHEAF_WAL_EINVAL;
-    }
-    int fd = (int)(intptr_t)file;
+int64_t sheaf_platform_size(SheafFile* f) {
     struct stat st;
-    if (fstat(fd, &st) != 0) {
-        return SHEAF_WAL_EIO;
-    }
-    if (st.st_size < 0) {
-        return SHEAF_WAL_EIO;
-    }
-    *out_size = (uint64_t)st.st_size;
-    return SHEAF_WAL_OK;
+    if (fstat(f->fd, &st) != 0) return -1;
+    if (st.st_size < 0) return -1;
+    return (int64_t)st.st_size;
 }
 
-int sheaf_platform_truncate(SheafFile file, uint64_t len) {
-    int fd = (int)(intptr_t)file;
-    while (ftruncate(fd, (off_t)len) != 0) {
-        if (errno == EINTR) {
-            continue;
-        }
+int sheaf_platform_truncate(SheafFile* f, uint64_t len) {
+    while (ftruncate(f->fd, (off_t)len) != 0) {
+        if (errno == EINTR) continue;
         return SHEAF_WAL_EIO;
     }
     return SHEAF_WAL_OK;
 }
 
-void sheaf_platform_close(SheafFile file) {
-    int fd = (int)(intptr_t)file;
+void sheaf_platform_close(SheafFile* f) {
+    if (f == NULL) return;
     /* close() can report EINTR, but the descriptor is gone on Linux
      * either way. A retry can close an unrelated reused descriptor.
      * The WAL flushes before close, so no data loss follows. */
-    (void)close(fd);
+    (void)close(f->fd);
+    free(f);
 }
 
 #endif /* !defined(_WIN32) */
