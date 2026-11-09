@@ -124,10 +124,12 @@ size_t sheaf_chebyshev_scratch_floats(const SheafComplexDesc* cx);
  * [lambda_min, lambda_max]. x must hold the initial guess on entry.
  * scratch holds sheaf_chebyshev_scratch_floats(cx) floats.
  *
- * lambda_min must be positive. A sheaf Laplacian has a zero eigenvalue,
- * so callers either solve the Tikhonov-shifted system (L + mu I) with
- * lambda_min = mu, or pass the smallest positive eigenvalue when b lies
- * in range(L). The recurrence is the exact Saad rho form.
+ * lambda_min must be a positive lower bound on the eigenvalues present in
+ * the residual. A sheaf Laplacian has a zero eigenvalue (global sections).
+ * For a consistent system (b in range(L)) the residual has no kernel
+ * component, so callers pass the smallest positive eigenvalue. Passing 0
+ * makes the window ratio 1 and the iteration stalls. The recurrence is
+ * the exact Saad rho form.
  *
  * Returns the iteration count on convergence, or a negative error code.
  */
