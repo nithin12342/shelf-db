@@ -42,6 +42,9 @@ int sheaf_platform_open(const char *path, SheafFile *out) {
     return SHEAF_WAL_OK;
 }
 
+/* The io_uring backend owns the write symbol when it is selected at
+ * build time. Guard this definition so the link sees exactly one. */
+#if !(defined(__linux__) && defined(SHEAF_WAL_URING))
 int sheaf_platform_write(SheafFile file, uint64_t offset,
                          const void *data, size_t len) {
     int fd = (int)(intptr_t)file;
@@ -66,6 +69,7 @@ int sheaf_platform_write(SheafFile file, uint64_t offset,
     }
     return SHEAF_WAL_OK;
 }
+#endif /* !(defined(__linux__) && defined(SHEAF_WAL_URING)) */
 
 int sheaf_platform_read(SheafFile file, uint64_t offset,
                         void *data, size_t len) {
