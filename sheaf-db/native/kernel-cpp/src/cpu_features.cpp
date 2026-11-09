@@ -26,6 +26,12 @@ namespace sheaf::kernel {
 // Fill the capability word from the hardware, not from compile flags.
 // A binary built with AVX-512 support still runs on an AVX2-only CPU
 // because every dispatch wrapper checks this word first.
+//
+// _xgetbv needs the xsave target feature on GNU and clang. The
+// attribute below enables it for this function only.
+#if defined(__GNUC__) || defined(__clang__)
+__attribute__((target("xsave")))
+#endif
 uint32_t probe_caps() {
     uint32_t bits = 0;
 #if SHEAF_X86
