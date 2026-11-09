@@ -1,3 +1,10 @@
+# PUSH RULES (superseded 2026-11-09, kept as the historical record)
+
+> Superseded by user instruction on 2026-11-09: the personal token file is
+> outdated. Push with normal `git push` to the connected remote `origin`.
+> Make one granular commit per file change. Push once after all commits.
+> The rules below no longer apply. They stay here as the incident record.
+
 # PUSH RULES (project-wide, non-negotiable)
 
 | Rule | Detail |
