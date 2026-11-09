@@ -21,13 +21,27 @@ mod wal;
 use std::env;
 use std::path::PathBuf;
 
+/// canonicalize on Windows returns a verbatim `\\?\` path. Clang inside
+/// zig mis-resolves the quoted includes that come from such paths. Strip
+/// the prefix so every tier sees plain paths.
+fn strip_verbatim(p: PathBuf) -> PathBuf {
+    let s = p.to_string_lossy().into_owned();
+    if let Some(stripped) = s.strip_prefix(r"\\?\") {
+        PathBuf::from(stripped)
+    } else {
+        p
+    }
+}
+
 fn main() {
     let manifest = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
     // crates/sheaf-native -> workspace root -> native/
-    let native_root = manifest
-        .join("../../native")
-        .canonicalize()
-        .unwrap_or_else(|_| manifest.join("../../native"));
+    let native_root = strip_verbatim(
+        manifest
+            .join("../../native")
+            .canonicalize()
+            .unwrap_or_else(|_| manifest.join("../../native")),
+    );
     let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
     println!("cargo:rerun-if-changed={}", native_root.display());
