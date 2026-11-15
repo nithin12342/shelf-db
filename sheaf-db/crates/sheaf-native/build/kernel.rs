@@ -29,9 +29,19 @@ pub fn build(native_root: &Path, out_dir: &Path) {
     for src in &sources {
         let obj = out_dir.join(format!("kernel_{}.o", src.file_stem().unwrap().to_string_lossy()));
         let mut cmd = tc::driver_command(&driver);
-        cmd.args(["-O3", "-std=c++23", "-fno-exceptions", "-fno-rtti"]);
-        // zig bundles MinGW/libc++ headers. Pin the GNU ABI on Windows so
-        // the compile does not depend on a Windows SDK installation.
+        // -nostdlib++ stops Zig from writing a libc++.lib default-library
+        // directive into the object. The kernel uses no C++ runtime, and the
+        // MSVC linker cannot find Zig's libc++.lib.
+        cmd.args([
+            "-O3",
+            "-std=c++23",
+            "-fno-exceptions",
+            "-fno-rtti",
+            "-nostdlib++",
+        ]);
+        // Zig must emit the ABI of the Rust linker. The helper returns the
+        // MSVC ABI for an MSVC target, so the linker resolves the runtime
+        // symbols. Zig supplies the headers for that ABI.
         if driver.starts_with("zig") {
             if let Some(target) = tc::zig_target() {
                 cmd.arg("-target").arg(target);
