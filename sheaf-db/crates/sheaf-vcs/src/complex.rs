@@ -260,8 +260,9 @@ mod tests {
         c.add_edge(1, 2, Restriction::identity(1), Restriction::identity(1));
         c.add_edge(2, 0, Restriction::identity(1), Restriction::identity(1));
         let s = c.star(0);
-        // vertex 0, all three edges (ids 3,4,5), neighbors 1 and 2.
-        assert_eq!(s, [0u64, 1, 2, 3, 4, 5].into_iter().collect());
+        // vertex 0, its incident edges 3 (0-1) and 5 (2-0), neighbors 1 and 2.
+        // Edge 4 (1-2) is not incident to vertex 0, so it is excluded.
+        assert_eq!(s, [0u64, 1, 2, 3, 5].into_iter().collect());
     }
 
     #[test]
