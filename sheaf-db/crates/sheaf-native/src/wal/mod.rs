@@ -24,10 +24,14 @@ pub mod fallback;
 pub mod ffi;
 #[cfg(sheaf_native_wal)]
 pub mod native;
+pub mod registered;
 
 pub use fallback::FallbackWal;
 #[cfg(sheaf_native_wal)]
 pub use native::NativeWal;
+pub use registered::{
+    platform_capability, Capability, RegBufError, RegisteredBuffers, ALIGNMENT, MAX_BUFFERS,
+};
 
 use std::path::Path;
 
