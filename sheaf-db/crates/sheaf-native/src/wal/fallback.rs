@@ -116,8 +116,10 @@ pub struct FallbackWal {
 
 impl FallbackWal {
     pub fn open(log: &Path, header: &Path) -> Result<Self, WalError> {
-        let log = OpenOptions::new().read(true).write(true).create(true).open(log)?;
-        let header = OpenOptions::new().read(true).write(true).create(true).open(header)?;
+        // truncate(false): recovery must read the existing log and slots,
+        // so opening never discards prior bytes.
+        let log = OpenOptions::new().read(true).write(true).create(true).truncate(false).open(log)?;
+        let header = OpenOptions::new().read(true).write(true).create(true).truncate(false).open(header)?;
         let mut wal = Self { log, header, epoch: 0, next_seq: 0, end: 0, next_slot: 0 };
         wal.recover()?;
         Ok(wal)
