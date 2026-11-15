@@ -21,6 +21,9 @@
 pub mod kernel;
 pub mod storage;
 pub mod wal;
+pub mod backends;
+pub mod hypercell;
+pub mod committed_records;
 
 #[cfg(sheaf_native_kernel)]
 pub mod abi;
