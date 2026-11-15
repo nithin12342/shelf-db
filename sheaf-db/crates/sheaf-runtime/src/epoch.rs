@@ -145,7 +145,10 @@ mod tests {
         assert!(!reg.reclaimable(0));
         drop(guard);
         assert_eq!(reg.active_readers(), 0);
-        // With no reader, epoch 0 is now safe to reclaim.
+        // Epoch 0 is still current, so it is not reclaimable yet. Advance the
+        // global epoch past it, then it becomes safe to reclaim.
+        assert!(!reg.reclaimable(0));
+        reg.advance();
         assert!(reg.reclaimable(0));
     }
 
