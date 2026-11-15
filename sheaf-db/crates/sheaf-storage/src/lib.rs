@@ -2,6 +2,7 @@
 pub mod bcsf;
 pub mod index;
 pub mod lsp;
+pub mod topology;
 pub use lsp::arrow_ingest::ArrowBuffers;
 pub use lsp::arrow_ingest::ingest_flat;
 pub use lsp::bump_arena::BumpArena;
