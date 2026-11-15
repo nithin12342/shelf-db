@@ -13,6 +13,12 @@ target/
 dist/
 Cargo.lock
 
+# Zig build artifacts
+.zig-cache/
+**/.zig-cache/
+zig-out/
+**/zig-out/
+
 # Standalone rustc tools (built by tools/run_tools.sh, not cargo targets)
 **/tools/*.exe
 *.exe
