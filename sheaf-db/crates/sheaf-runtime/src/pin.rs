@@ -78,6 +78,9 @@ mod tests {
         // because the view still borrows the arena at that epoch.
         assert!(!reg.reclaimable(view.epoch()));
         drop(view);
+        // The lease is gone, but epoch 0 is still current. Advance past it
+        // before the compactor can reclaim the arena.
+        reg.advance();
         assert!(reg.reclaimable(0));
     }
 
