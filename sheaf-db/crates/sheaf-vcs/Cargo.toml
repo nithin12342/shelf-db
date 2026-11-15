@@ -1,0 +1,24 @@
+# sheaf-vcs - the sheaf-based version control engine (spec Pillars 8 and 10).
+#
+# This crate models a repository as a cellular sheaf over a 1-dimensional cell
+# complex. Commits are zero-coboundary global sections. Merge conflicts are
+# cohomological obstructions. Versions form a BLAKE3 content-addressed DAG.
+# Concurrent writes use logical collision avoidance (LCA-CW): disjoint star
+# neighborhoods run in parallel, shared cells append to a chronological chart.
+#
+# SOLID layout:
+#   - complex.rs holds the topology and the coboundary operator.
+#   - section.rs, lca.rs, chart.rs, merkle.rs, diff.rs are focused modules.
+#   - repo.rs orchestrates them behind a small public API.
+#
+# The only external dependency is blake3 for content addressing. All algebra
+# is pure Rust so the crate builds and tests without a native toolchain.
+
+[package]
+name = "sheaf-vcs"
+version = "0.1.0"
+edition = "2021"
+description = "Sheaf-based version control: coboundary commits, cohomological merge, Merkle-Sheaf DAG"
+
+[dependencies]
+blake3 = "1"
