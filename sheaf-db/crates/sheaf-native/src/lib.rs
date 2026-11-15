@@ -19,6 +19,7 @@
 //! tests in tests/ compare them against an independent naive reference.
 
 pub mod kernel;
+pub mod storage;
 
 #[cfg(sheaf_native_kernel)]
 pub mod abi;
@@ -26,4 +27,9 @@ pub mod abi;
 /// True when this build links the compiled C++23 kernel library.
 pub const fn native_kernel_linked() -> bool {
     cfg!(sheaf_native_kernel)
+}
+
+/// True when this build links the compiled Zig storage library.
+pub const fn native_storage_linked() -> bool {
+    cfg!(sheaf_native_storage)
 }
