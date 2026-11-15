@@ -11,22 +11,9 @@ use std::sync::Mutex;
 
 use crate::affinity::PinningPolicy;
 
-/// A topological reference passed between query stages. `partition` selects
-/// the destination core. `cell_id` names the target cell. `payload` carries
-/// the serialized section or delta bytes.
-#[derive(Clone, Debug, PartialEq)]
-pub struct NerveMessage {
-    pub partition: u64,
-    pub cell_id: u64,
-    pub payload: Vec<u8>,
-}
-
-impl NerveMessage {
-    /// Build a reference with an empty payload.
-    pub fn new(partition: u64, cell_id: u64) -> Self {
-        Self { partition, cell_id, payload: Vec::new() }
-    }
-}
+// The message type lives in the port module so both routers share one
+// definition. This re-export keeps the legacy path unchanged.
+pub use crate::nerve_port::NerveMessage;
 
 /// The in-process router. It holds one core-local queue per worker.
 pub struct NerveRouter<P: PinningPolicy> {
