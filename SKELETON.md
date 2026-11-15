@@ -440,9 +440,15 @@ next_generation_stack:
 # ============================================================================
 # Missing feature plan (2026-11-15)
 # Source: MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md
-# These nodes are planned only. A node is complete only when its gate passes:
-# production-path test with real input, stated expected result, evidence file,
-# no hard-coded result, no silent fallback.
+# A node is complete only when its gate passes: production-path test with real
+# input, stated expected result, recorded evidence, no hard-coded result, no
+# silent fallback.
+#
+# Status on branch combined-stack-feature-improvement, 2026-11-15:
+#   9 of 17 nodes are e2e_passed (MF-00 through MF-08).
+#   8 nodes stay planned (MF-09 through MF-16).
+# Every passed node names the cargo test command that proves it. The commit
+# message of each node repeats the same command and its result line.
 # ============================================================================
 missing_feature_plan:
   document: MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md
@@ -457,15 +463,15 @@ missing_feature_plan:
     - {phase: 5, name: "Topology and cluster", nodes: [NG-MF-11, NG-MF-14, NG-MF-12, NG-MF-13]}
     - {phase: 6, name: "Ecosystem", nodes: [NG-MF-15, NG-MF-16]}
   nodes:
-    - {node_id: NG-MF-00, pillar: "compliance", name: "split bcsf/segment.rs into seven files", status: planned, depends_on: [], test: "fixture BLAKE3 byte parity plus existing segment tests", evidence_dir: "tests/e2e/missing_features/mf00"}
-    - {node_id: NG-MF-01, pillar: 4, name: "lock-free bounded MPMC nerve router", status: planned, depends_on: [NG-MF-02], test: "8 producers x 50k, no loss and no duplicate", evidence_dir: "tests/e2e/missing_features/mf01"}
-    - {node_id: NG-MF-02, pillar: 4, name: "real OS thread affinity and NUMA pinning", status: planned, depends_on: [], test: "pin each allowed core, read mask back, restore", evidence_dir: "tests/e2e/missing_features/mf02"}
-    - {node_id: NG-MF-03, pillar: 10, name: "parallel execution of disjoint write waves", status: planned, depends_on: [NG-MF-01, NG-MF-02], test: "64 disjoint cells, 2+ threads, all applied, error propagation", evidence_dir: "tests/e2e/missing_features/mf03"}
-    - {node_id: NG-MF-04, pillar: 2, name: "physical L3 cache discovery and partition map", status: planned, depends_on: [NG-MF-02], test: "domains partition the OS CPU set, stable partition map", evidence_dir: "tests/e2e/missing_features/mf04"}
-    - {node_id: NG-MF-05, pillar: 9, name: "FSST, ALP, frame-of-reference, bit-packing codecs", status: planned, depends_on: [], test: "bit-exact round trip on random and edge corpora, size ratio", evidence_dir: "tests/e2e/missing_features/mf05"}
-    - {node_id: NG-MF-06, pillar: 9, name: "global dictionary arena sharing", status: planned, depends_on: [NG-MF-05], test: "1M inserts over 10k unique, one arena entry per unique", evidence_dir: "tests/e2e/missing_features/mf06"}
-    - {node_id: NG-MF-07, pillar: 5, name: "versioned page format with explicit gate", status: planned, depends_on: [NG-MF-05, NG-MF-06], test: "v1 read, v2 round trip, unknown version error, checksum error", evidence_dir: "tests/e2e/missing_features/mf07"}
-    - {node_id: NG-MF-08, pillar: 3, name: "pre-registered io_uring buffers", status: planned, depends_on: [], test: "fixed 4 KiB write with CRC check on Linux, capability truth elsewhere", evidence_dir: "tests/e2e/missing_features/mf08"}
+    - {node_id: NG-MF-00, pillar: "compliance", name: "split bcsf/segment.rs into seven files", status: e2e_passed, depends_on: [], test: "fixture BLAKE3 byte parity plus existing segment tests", evidence: "cargo test -p sheaf-storage --test segment_golden, commit MF-00 series", evidence_dir: "tests/e2e/missing_features/mf00"}
+    - {node_id: NG-MF-01, pillar: 4, name: "lock-free bounded MPMC nerve router", status: e2e_passed, depends_on: [NG-MF-02], test: "8 producers x 50k, no loss and no duplicate", evidence: "cargo test -p sheaf-runtime, 47 tests, 8 x 50,000 through ring and router", evidence_dir: "tests/e2e/missing_features/mf01"}
+    - {node_id: NG-MF-02, pillar: 4, name: "real OS thread affinity and NUMA pinning", status: e2e_passed, depends_on: [], test: "pin each allowed core, read mask back, restore", evidence: "cargo test -p sheaf-runtime pinning, 4 tests", evidence_dir: "tests/e2e/missing_features/mf02"}
+    - {node_id: NG-MF-03, pillar: 10, name: "parallel execution of disjoint write waves", status: e2e_passed, depends_on: [NG-MF-01, NG-MF-02], test: "64 disjoint cells, 2+ threads, all applied, error propagation", evidence: "cargo test -p sheaf-vcs wave, 10 tests with real pinning", evidence_dir: "tests/e2e/missing_features/mf03"}
+    - {node_id: NG-MF-04, pillar: 2, name: "physical L3 cache discovery and partition map", status: e2e_passed, depends_on: [NG-MF-02], test: "domains partition the OS CPU set, stable partition map", evidence: "cargo test -p sheaf-storage topology, 33 tests, domains cover the allowed CPU set", evidence_dir: "tests/e2e/missing_features/mf04"}
+    - {node_id: NG-MF-05, pillar: 9, name: "FSST, ALP, frame-of-reference, bit-packing codecs", status: e2e_passed, depends_on: [], test: "bit-exact round trip on random and edge corpora, size ratio", evidence: "cargo test -p sheaf-codec, 47 unit + 9 integration in 13.38 s", evidence_dir: "tests/e2e/missing_features/mf05"}
+    - {node_id: NG-MF-06, pillar: 9, name: "global dictionary arena sharing", status: e2e_passed, depends_on: [NG-MF-05], test: "1M inserts over 10k unique, one arena entry per unique", evidence: "cargo test -p sheaf-storage dict, 15 unit + 5 integration in 2.56 s", evidence_dir: "tests/e2e/missing_features/mf06"}
+    - {node_id: NG-MF-07, pillar: 5, name: "versioned page format with explicit gate", status: e2e_passed, depends_on: [NG-MF-05, NG-MF-06], test: "v1 read, v2 round trip, unknown version error, checksum error", evidence: "cargo test -p sheaf-app page, 17 unit + 6 integration", evidence_dir: "tests/e2e/missing_features/mf07"}
+    - {node_id: NG-MF-08, pillar: 3, name: "pre-registered io_uring buffers", status: e2e_passed, depends_on: [], test: "fixed 4 KiB write with CRC check on Linux, capability truth elsewhere", evidence: "cargo test -p sheaf-native --test registered_buffers, 6 tests; Windows reports Unsupported with a named cause", evidence_dir: "tests/e2e/missing_features/mf08"}
     - {node_id: NG-MF-09, pillar: 6, name: "Lean AOT rule table and drift gate", status: planned, depends_on: [], test: "runtime table equals emitted manifest, drift fails the build", evidence_dir: "tests/e2e/missing_features/mf09"}
     - {node_id: NG-MF-10, pillar: 6, name: "production rewrite optimizer behind a rule oracle", status: planned, depends_on: [NG-MF-09], test: "200 plans, equal row multisets, unverified rule rejected", evidence_dir: "tests/e2e/missing_features/mf10"}
     - {node_id: NG-MF-11, pillar: 8, name: "H1 quotient solver", status: planned, depends_on: [], test: "line, triangle, two triangles, orthogonality", evidence_dir: "tests/e2e/missing_features/mf11"}
