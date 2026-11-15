@@ -6,7 +6,7 @@
 
 use sheaf_native::wal::{self, WalBackend, WalError, MAX_PAYLOAD};
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
 
 static COUNTER: AtomicU64 = AtomicU64::new(0);
@@ -44,7 +44,7 @@ fn kinds() -> Vec<usize> {
     v
 }
 
-fn open_with(kind: usize, log: &PathBuf, header: &PathBuf) -> Result<Box<dyn WalBackend>, WalError> {
+fn open_with(kind: usize, log: &Path, header: &Path) -> Result<Box<dyn WalBackend>, WalError> {
     match kind {
         0 => Ok(Box::new(wal::open_fallback(log, header)?)),
         #[cfg(sheaf_native_wal)]
