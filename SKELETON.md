@@ -428,10 +428,10 @@ next_generation_stack:
   toolchains:
     installed: ["zig 0.17.0", "clang 23.1.5 (LLVM, MSVC target)", "gcc 16.2.0 (WinLibs)", "rustc/cargo 1.98.0 x86_64-pc-windows-msvc"]
     pending: ["Lean 4 + Mathlib (proofs/)"]
-    link_note: "Native tiers link on Windows MSVC via clang default x86_64-pc-windows-msvc plus llvm-ar. Archives: sheaf_kernel.lib, sheaf_storage.lib, sheaf_wal.lib. Set SHEAF_KERNEL_CXX=clang++ and SHEAF_WAL_CC=clang with LLVM on PATH."
+    link_note: "Native tiers link on Windows MSVC with zig 0.17.0. build/toolchain.rs pins the Zig target ABI to the Rust linker ABI (windows-msvc), and the kernel build drops the Zig libc++.lib directive. Archives: sheaf_kernel.lib, sheaf_storage.lib, sheaf_wal.lib. SHEAF_KERNEL_CXX and SHEAF_WAL_CC can select clang or gcc instead."
 
   verification:
-    workspace_test: "cargo test --workspace exits 0; 75 test-result-ok groups; no failures"
+    workspace_test: "cargo test --workspace exits 0 on 2026-11-15; 85 test-result-ok groups, 191 tests passed, 0 failed, after the Zig ABI fix"
     new_tier_tests: "sheaf-native 27, sheaf-runtime 22, sheaf-vcs 38, sheaf-proofs 9"
     clippy: "cargo clippy -p sheaf-runtime -p sheaf-vcs -p sheaf-proofs --all-targets -- -D warnings exits 0"
     pending_exit_criteria: "Lean lake build needs Mathlib. Database hardware measurements with strace and perf, plus thread and address sanitizer runs, need a Linux host."
