@@ -1,0 +1,22 @@
+# sheaf-proofs - the formal verification bridge (spec Pillar 6, Phase 4).
+#
+# The Lean 4 tier proves the sheaf axioms and the TIR rewrite rules. The Lean
+# build emits a static rule validity table (see native/proofs-generated). This
+# crate is the Rust mirror of that table plus a planner that applies only
+# verified rewrites. Because every rule is proof-backed, the planner needs no
+# runtime semantic validation check.
+#
+# SOLID layout:
+#   - rules.rs holds the verified rule table (the data the Lean build emits).
+#   - planner.rs applies rewrites gated by the table, behind a small port.
+#
+# The crate has zero external dependencies. The Lean and PyTorch sources live
+# outside the Rust workspace and compile when their toolchains are installed.
+
+[package]
+name = "sheaf-proofs"
+version = "0.1.0"
+edition = "2021"
+description = "Verified TIR rewrite-rule table and proof-gated planner for SheafDB"
+
+[dependencies]
