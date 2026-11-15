@@ -3,6 +3,10 @@
 .env.local
 *.token
 
+# Protected neural-network archive. AGENTS.md forbids reading, indexing,
+# copying, or using its Markdown files, so Git must not track them.
+ARCHIVED_NEURAL_NETWORK_DOCUMENTATION/
+
 # Python cache
 __pycache__/
 *.pyc
