@@ -85,11 +85,13 @@ impl KernelBackend for NativeKernel {
     fn laplacian_apply(
         &self, cx: &ComplexSpec<'_>, s: &[f32], scratch_edges: &mut [f32], out: &mut [f32],
     ) -> Result<(), KernelError> {
+        // Scratch first, matching the fallback order. The C ABI takes raw
+        // pointers, so only this adapter can see the buffer length.
+        if scratch_edges.len() < cx.edge_floats() {
+            return Err(KernelError::ScratchTooSmall);
+        }
         cx.validate()?;
-        if s.len() != cx.vertex_floats()
-            || scratch_edges.len() < cx.edge_floats()
-            || out.len() != cx.vertex_floats()
-        {
+        if s.len() != cx.vertex_floats() || out.len() != cx.vertex_floats() {
             return Err(KernelError::InvalidArgument);
         }
         let d = desc(cx);
