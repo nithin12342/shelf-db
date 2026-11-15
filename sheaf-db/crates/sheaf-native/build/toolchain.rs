@@ -23,10 +23,11 @@ pub fn archive_name(name: &str) -> String {
     }
 }
 
-/// Zig target triple for the Rust target. On Windows we pin the GNU ABI
-/// because zig bundles MinGW headers (windows.h) but not the Windows SDK.
-/// The C ABI objects link into an MSVC process unchanged: x64 calling
-/// convention is identical, and the tiers use no CRT-dependent types.
+/// Zig target triple for the Rust target. The ABI must match the linker that
+/// Rust uses. A GNU object carries MinGW runtime symbols such as
+/// `___chkstk_ms`, and the MSVC linker cannot resolve them. So a
+/// `windows-msvc` Rust target compiles with the `windows-msvc` Zig ABI, and a
+/// GNU target compiles with the GNU ABI. Zig supplies the headers for both.
 pub fn zig_target() -> Option<String> {
     let target = env::var("TARGET").ok()?;
     let mut parts = target.split('-');
@@ -37,7 +38,8 @@ pub fn zig_target() -> Option<String> {
         _ => return None,
     };
     if target.contains("windows") {
-        Some(format!("{arch}-windows-gnu"))
+        let abi = if target.contains("msvc") { "msvc" } else { "gnu" };
+        Some(format!("{arch}-windows-{abi}"))
     } else if target.contains("linux") {
         let env_abi = if target.contains("musl") { "musl" } else { "gnu" };
         Some(format!("{arch}-linux-{env_abi}"))
