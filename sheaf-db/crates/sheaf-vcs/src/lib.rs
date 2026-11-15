@@ -14,6 +14,9 @@
 //! merkle    BLAKE3 content-addressed commit DAG with O(1) branch/tag
 //! diff      algebraic time-travel diff and cohomological merge
 //! repo      the composition root that wires the modules together
+//! write_target  the CellWriteTarget port and a recording adapter
+//! wave_executor parallel wave execution over pinned worker threads
+//! wave_report   per-wave thread identifiers, cell counts, and elapsed time
 //! ```
 
 pub mod chart;
@@ -23,8 +26,14 @@ pub mod lca;
 pub mod merkle;
 pub mod repo;
 pub mod section;
+pub mod wave_executor;
+pub mod wave_report;
+pub mod write_target;
 
 pub use complex::{Complex, Restriction};
 pub use merkle::{Hash, MerkleDag};
 pub use repo::{RepoError, Repository};
 pub use section::Section;
+pub use wave_executor::{WaveError, WaveExecutor};
+pub use wave_report::{WaveReport, WaveStats};
+pub use write_target::{CellWriteTarget, RecordingTarget, WriteError};
