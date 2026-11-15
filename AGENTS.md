@@ -4,7 +4,21 @@ These instructions apply to every response in this project.
 
 The base writing standard is **ASD-STE100 Simplified Technical English**. ASD-STE100 is the controlled language that aerospace companies use for maintenance manuals. ASD Europe published the standard. The current issue is Issue 9, from January 15, 2025. The official text is free at <https://www.asd-ste100.org/>.
 
-The global rules at `~/.config/opencode/instructions.md` hold the full rule set. This file holds the rules for this project.
+The global rules at `~/.config/opencode/AGENTS.md` also apply. This file holds the rules for this project.
+
+## Database scope and protected archive
+
+- This is a database project. Neural-network creation, training, model architectures, training-specific bridges, and training datasets are out of scope.
+- Do not count excluded work as unfinished database functionality. Database mathematics and topological operators remain in scope.
+- The protected archive is `ARCHIVED_NEURAL_NETWORK_DOCUMENTATION/` at the project root.
+- Its absolute path is `C:/Users/thela/OneDrive/Desktop/folder/shelf-db/ARCHIVED_NEURAL_NETWORK_DOCUMENTATION`.
+- Do not read, search, index, summarize, restore, copy, or use Markdown files in that archive.
+- Exclude the archive before every recursive scan, document ingestion, or context-loading operation. The restriction also applies to tools and subagents.
+- Restored mixed database documents outside the archive are approved reading sources. Use their database requirements, not their neural-network requirements.
+- Do not recover excluded neural-network requirements through Git history, compressed bundles, old conversation context, or duplicate files.
+- Start document discovery at `FEATURE_DOCUMENT_CHRONOLOGY/README.md`. Its ordered groups identify authoritative originals and historical copies.
+- The active `AGENTS.md` and `SKELETON.md` take priority over historical copies. Historical results do not prove current implementation status.
+- Preserve this exclusion during instruction-file updates. Only a new explicit user request that reopens archive access can change it.
 
 ---
 
@@ -83,7 +97,7 @@ The global rules at `~/.config/opencode/instructions.md` hold the full rule set.
 1. Push with normal `git push` to the connected remote `origin`. The user retired the `push_personal.py` token flow on 2026-11-09 because the token file is outdated. Push only once, after all granular commits are complete.
 2. Make one separate commit for every file creation and for every file modification. Do not combine several files into one commit. This is the granular commit rule.
 3. Keep `SKELETON.md` up to date. It is the source of truth for this repository.
-4. Follow the engineering method in Part 5 of the global rules file. Load the `intention-engineering` skill first when that skill is available in the session.
+4. Follow the Intention Engineering methodology in the global rules file. Load the `intention-engineering` skill first when that skill is available in the session.
 5. Compare the databases with a Topological Query Language (TQL) query. A TQL query is a declarative query over a cellular complex.
 6. Give the TQL text, the native equivalent, and the measured time for each engine in the comparison.
 7. State a TQL optimizer cost as an estimate. Do not state it as an execution time. The TQL-to-fiber execution bridge (OPT-004) is not built.
@@ -101,15 +115,35 @@ These rules govern the SheafDB next-generation implementation on the `combined-s
 5. Keep the folder structure logical and navigatable. Write comment lines that explain the logic.
 6. Write native code even when its toolchain is not installed yet. The user installs the toolchains later. Keep the Rust workspace buildable without them through fallback backends.
 
+## 3c. Feature completion and test rule (user instruction, 2026-11-15)
+
+These rules apply to every feature on every branch. They also apply to every global and project instruction file.
+
+1. Write a test for each feature. The test must call the production code path with real input.
+2. The test must compare the real output with a stated expected result.
+3. Do not hard-code an output value in the feature code or in the test. A constant must not produce the expected result.
+4. Do not add a silent fallback. A declared fallback must report its use and must return an explicit result.
+5. A platform-gated feature must report `unsupported` with a clear error. It must not return a fake result.
+6. Record the test command and the test output in the commit message or in the evidence file.
+7. A feature with no passing test is not complete. Do not count it as done.
+
 ---
 
-## 4. The document set (read the plan of record first)
+## 4. The document set
+
+Start with `FEATURE_DOCUMENT_CHRONOLOGY/README.md` for the ordered database reading path and the excluded neural-network sections.
+Read requirements before implementation records. Read the performance plan of record before performance changes.
 
 `SKELETON.md` holds the source of truth for the code. These documents hold the analysis. Every
 number in every one of them names a committed result file, or a derivation shown in full.
 
 | Document | What it answers |
 |---|---|
+| `FEATURE_DOCUMENT_CHRONOLOGY/README.md` | Ordered agent reading index, canonical sources, and excluded sections. |
+| `SheafDB_Next_Gen_Technical_Specification.md` | Restored database requirements. Neural-network sections are excluded. |
+| `Sheaf_Markdown_Documentation_Bundle (1)/Cellular_Sheaf_Complete_System_Architecture.md` | Mainly a neural-system proposal. Database storage and shared mathematics are background only. |
+| `SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md` | Restored database schema and query guidance. Training sections are excluded. |
+| `ARCHITECTURAL_IMPROVEMENT_DISCUSSION_2026-10-27.md` | Database architecture decisions and historical context. |
 | `PERFORMANCE_FIX_PLAN_2026-10-22.md` | **The plan of record.** The eight nodes that remove the measured performance waste, with the order as a dependency. |
 | `PERFORMANCE_WASTE_ANALYSIS.md` | Where the time goes, for both comparison tables, with the measured cause of each waste. |
 | `CODE_CHANGES_AND_EXPECTED_GAINS.md` | The six code changes with their measured gains, their files and their gates. |
@@ -130,7 +164,7 @@ number in every one of them names a committed result file, or a derivation shown
 | `BENCHMARK_RESULTS_50_TEST_CASES_2026-10-28.md` | Native CLI fresh benchmark execution across 50 high-variance test cases and five problem workloads. |
 | `CONTINUOUS_STREAMING_READ_WRITE_BENCHMARK_2026-10-28.md` | Continuous concurrent streaming read/write benchmark and incremental fiber build comparison across eight databases. |
 | `SHELFDB_WRITE_PATH_FUNDAMENTAL_ARCHITECTURE_AND_OPTIMIZATION.md` | Complete context injection and technical roadmap for external agents to optimize the ShelfDB write path. |
-| `SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md` | Complete guide to topological schema design, efficient patterns, TQL grammar, and GNN/SNN tensor integration. |
+| `MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md` | The 17-node plan for the 15 open audit features and the 500-line defect, with the test gate for each node. |
 
 **Two rules that came out of the sessions.**
 
