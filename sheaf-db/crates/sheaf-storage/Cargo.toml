@@ -9,3 +9,8 @@ sheaf-kernel = { path = "../sheaf-kernel" }
 core_affinity = "0.8"
 rayon = "1.8"
 memmap2 = "0.9"
+
+[dev-dependencies]
+# The topology tests compare the discovered domains with the CPU set that the
+# thread pinner reports. The runtime tier holds that port.
+sheaf-runtime = { path = "../sheaf-runtime" }
