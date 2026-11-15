@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 sheaf-core = { path = "../sheaf-core" }
 sheaf-kernel = { path = "../sheaf-kernel" }
+blake3 = "1"
 core_affinity = "0.8"
 rayon = "1.8"
 memmap2 = "0.9"
