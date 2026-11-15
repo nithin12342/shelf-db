@@ -64,9 +64,9 @@ pub fn build(native_root: &Path, out_dir: &Path) {
         if use_uring {
             cmd.arg("-DSHEAF_WAL_URING");
         }
-        // zig bundles MinGW/libc headers. Pin the GNU ABI on Windows
-        // so the compile does not depend on a Windows SDK install.
-        // x64 calling convention matches MSVC, so the link holds.
+        // Zig must emit the ABI of the Rust linker. A GNU object needs
+        // MinGW runtime symbols that the MSVC linker cannot resolve, so the
+        // helper returns the MSVC ABI for an MSVC target.
         if driver.starts_with("zig") {
             if let Some(triple) = tc::zig_target() {
                 cmd.arg("-target").arg(triple);
