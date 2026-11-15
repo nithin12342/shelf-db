@@ -164,7 +164,7 @@ number in every one of them names a committed result file, or a derivation shown
 | `BENCHMARK_RESULTS_50_TEST_CASES_2026-10-28.md` | Native CLI fresh benchmark execution across 50 high-variance test cases and five problem workloads. |
 | `CONTINUOUS_STREAMING_READ_WRITE_BENCHMARK_2026-10-28.md` | Continuous concurrent streaming read/write benchmark and incremental fiber build comparison across eight databases. |
 | `SHELFDB_WRITE_PATH_FUNDAMENTAL_ARCHITECTURE_AND_OPTIMIZATION.md` | Complete context injection and technical roadmap for external agents to optimize the ShelfDB write path. |
-| `MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md` | The 17-node plan for the 15 open audit features and the 500-line defect, with the test gate for each node. |
+| `MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md` | The 17-node plan for the open audit gaps, with the test gate for each node. |
 
 **Two rules that came out of the sessions.**
 
