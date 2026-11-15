@@ -1,4 +1,4 @@
-import Sheaf.Restriction
+import Restriction
 
 /-!
 # The sheaf gluing condition (spec Pillar 6)
