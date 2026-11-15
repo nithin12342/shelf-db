@@ -20,6 +20,7 @@
 
 pub mod kernel;
 pub mod storage;
+pub mod wal;
 
 #[cfg(sheaf_native_kernel)]
 pub mod abi;
@@ -32,4 +33,9 @@ pub const fn native_kernel_linked() -> bool {
 /// True when this build links the compiled Zig storage library.
 pub const fn native_storage_linked() -> bool {
     cfg!(sheaf_native_storage)
+}
+
+/// True when this build links the compiled C11 WAL library.
+pub const fn native_wal_linked() -> bool {
+    cfg!(sheaf_native_wal)
 }
