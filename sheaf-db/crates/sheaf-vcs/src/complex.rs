@@ -53,15 +53,15 @@ impl Restriction {
     /// Apply the map to a vertex stalk. Returns an edge stalk of `rows` lanes.
     pub fn apply(&self, x: &[f32]) -> Vec<f32> {
         assert_eq!(x.len(), self.cols, "restriction input dimension mismatch");
-        let mut y = vec![0.0; self.rows];
-        for r in 0..self.rows {
-            let mut acc = 0.0;
-            for c in 0..self.cols {
-                acc += self.data[r * self.cols + c] * x[c];
-            }
-            y[r] = acc;
+        if self.cols == 0 {
+            return vec![0.0; self.rows];
         }
-        y
+        // Each row of the matrix dots with the input stalk. chunks_exact walks
+        // the rows without manual indexing.
+        self.data
+            .chunks_exact(self.cols)
+            .map(|row| row.iter().zip(x).map(|(w, v)| w * v).sum())
+            .collect()
     }
 }
 
