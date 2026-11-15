@@ -22,3 +22,4 @@ description = "Sheaf-based version control: coboundary commits, cohomological me
 
 [dependencies]
 blake3 = "1"
+sheaf-runtime = { path = "../sheaf-runtime" }
