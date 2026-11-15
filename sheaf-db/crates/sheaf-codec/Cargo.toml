@@ -1,0 +1,16 @@
+# sheaf-codec - the columnar codec crate (MF-05, spec Pillar 9).
+#
+# One port (ColumnCodec) and one adapter per encoding. The selector measures
+# every codec that accepts a block and keeps the smallest result, so the winner
+# comes from the data, not from a constant.
+#
+# The crate has no external dependency. Every codec is pure Rust, so the
+# workspace builds and tests on any machine.
+
+[package]
+name = "sheaf-codec"
+version = "0.1.0"
+edition = "2021"
+description = "Columnar codecs: bit packing, frame of reference, ALP floats, and FSST strings"
+
+[dependencies]
