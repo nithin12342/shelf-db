@@ -1,0 +1,21 @@
+# sheaf-runtime - the Rust orchestration and ingress tier (spec Pillar 4).
+#
+# This crate holds the engine lifecycle pieces that the spec assigns to pure
+# Rust: lock-free epoch-based reclamation (EBR), affine pinned stalk views,
+# thread-per-core scheduling, in-process nerve routing, and a TCP ingress.
+#
+# SOLID layout:
+#   - ingress::RequestHandler is the port. The TCP server is one adapter.
+#   - nerve::NerveRouter transfers topological references in-process, so query
+#     stages never cross a loopback socket (spec Pillar 4, nerve routing).
+#
+# The crate has zero external dependencies. It uses only the standard library
+# so the workspace builds and tests on any machine without a native toolchain.
+
+[package]
+name = "sheaf-runtime"
+version = "0.1.0"
+edition = "2021"
+description = "EBR, pinned views, thread-per-core routing, and TCP ingress for SheafDB"
+
+[dependencies]
