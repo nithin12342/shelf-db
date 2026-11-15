@@ -86,12 +86,14 @@ fn torn_uncommitted_tail_is_truncated() {
             // form the torn tail that recovery must remove.
             w.append(2, b"0123456789").unwrap();
         }
+        // open() runs recovery, which truncates the torn tail. The log file
+        // must now hold exactly the committed prefix: 32-byte frame + "kept".
         let mut w = open_with(kind, &t.log(), &t.header()).unwrap();
         let s = w.recover().unwrap();
         assert_eq!(s.epoch, 1, "kind {kind} epoch holds");
         assert_eq!(s.records_recovered, 1, "kind {kind} only committed");
-        assert_eq!(s.truncated_bytes, 42, "kind {kind} tail removed");
-        // The log is now exactly the committed prefix; a second recover is clean.
+        assert_eq!(fs::metadata(t.log()).unwrap().len(), 36, "kind {kind} tail removed");
+        // A second recover is clean because the tail is already gone.
         let again = w.recover().unwrap();
         assert_eq!(again.truncated_bytes, 0, "kind {kind} idempotent");
     }
@@ -114,11 +116,13 @@ fn torn_higher_slot_falls_back_to_previous_epoch() {
         bytes[4096 + 8] ^= 0xFF;
         fs::write(&hp, &bytes).unwrap();
 
+        // open() recovers to slot A and truncates the epoch-2 record. The
+        // log must hold only the epoch-1 prefix: 32-byte frame + "one".
         let mut w = open_with(kind, &t.log(), &t.header()).unwrap();
         let s = w.recover().unwrap();
         assert_eq!(s.epoch, 1, "kind {kind} fell back to A");
         assert_eq!(s.records_recovered, 1, "kind {kind} only epoch-1 record");
-        assert!(s.truncated_bytes > 0, "kind {kind} epoch-2 tail removed");
+        assert_eq!(fs::metadata(t.log()).unwrap().len(), 35, "kind {kind} epoch-2 tail removed");
     }
 }
 
