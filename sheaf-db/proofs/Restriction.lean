@@ -1,4 +1,4 @@
-import Sheaf.Poset
+import Poset
 
 /-!
 # Restriction morphisms and functoriality (spec Pillar 6)
