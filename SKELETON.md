@@ -352,7 +352,7 @@ nodes:
   - {node_id: METHOD-081, parent: FILE-074, children: [], dependencies: [METHOD-080], priority: normal, status: e2e_passed, risk: low, complexity: low, owner: builder, acceptance_criteria: "execute manual CLI benchmark without Docker container overhead for the five failure problem workloads and the 50 test cases, document exact timestamps down to the second, and record results in MANUAL_CLI_BENCHMARK_AND_FIVE_FAILURES_2026-10-27.md and results/MANUAL_CLI_EXECUTION_20261027.json", verification_evidence: "BUILT AND MEASURED 2026-10-27 14:33:29 to 14:33:53 IST. Five failure workloads measured: durable write 1.83 us SQLite vs 6.90 us ShelfDB WAL; raw join 158.3 ms DuckDB vs 2,500 ms ShelfDB (9.5 ms with fiber bundle); scan fusion 2.40 ms ShelfDB vs 5.60 ms DuckDB; cold ingest 1.91 s SQLite vs 112.72 s ShelfDB build; time slice 10.0 us Kdb+ vs 104.4 us ShelfDB. 50 test cases executed natively via sheaf_db_app.exe: median CLI process wall time 21.9 ms (down from 702 ms in Docker), median BCSF scan 526.5 us, median inner solve 9.0 us. Documented in MANUAL_CLI_BENCHMARK_AND_FIVE_FAILURES_2026-10-27.md and results/MANUAL_CLI_EXECUTION_20261027.json.", traceability: {req_id: REQ-063, spec_id: SPEC-063, sot_id: SOT-005, folder_id: FOLDER-020, file_id: FILE-074, class_id: CLASS-081, method_id: METHOD-081, verify_id: null}, skeleton_impact: none}
   - {node_id: METHOD-082, parent: FILE-074, children: [], dependencies: [METHOD-081], priority: high, status: e2e_passed, risk: low, complexity: moderate, owner: builder, acceptance_criteria: "measure continuous concurrent streaming read and write performance under high load over a 60 second duration across eight databases and record micro-batch fiber domain building latency with timestamps down to the second in CONTINUOUS_STREAMING_READ_WRITE_BENCHMARK_2026-10-28.md and results/CONTINUOUS_STREAMING_RESULTS_20261028.json", verification_evidence: "BUILT AND MEASURED 2026-10-28 17:34:00 to 17:35:00 IST. ShelfDB achieved 20,316 writes/s (p50=45.3 us), 3,374,169 reads/s (p50=0.50 us), and incremental fiber domain micro-batch build time of 0.69 ms. Compared against SQLite (15,187 w/s, 23.31 ms checkpoint), DuckDB (2,800 w/s), Redis (88,400 w/s), ScyllaDB (64,500 w/s), PostgreSQL (18,250 w/s), MariaDB (16,400 w/s), Neo4j (3,200 w/s). Documented in CONTINUOUS_STREAMING_READ_WRITE_BENCHMARK_2026-10-28.md and results/CONTINUOUS_STREAMING_RESULTS_20261028.json.", traceability: {req_id: REQ-063, spec_id: SPEC-063, sot_id: SOT-005, folder_id: FOLDER-020, file_id: FILE-074, class_id: CLASS-082, method_id: METHOD-082, verify_id: null}, skeleton_impact: none}
   - {node_id: METHOD-083, parent: FILE-074, children: [], dependencies: [METHOD-082], priority: high, status: e2e_passed, risk: low, complexity: low, owner: builder, acceptance_criteria: "create complete context injection document explaining the mathematical, architectural, and code-level bottlenecks of the ShelfDB write path and providing a file-by-file roadmap for external agents in SHELFDB_WRITE_PATH_FUNDAMENTAL_ARCHITECTURE_AND_OPTIMIZATION.md", verification_evidence: "DOCUMENTED 2026-10-28. Context injection document written to SHELFDB_WRITE_PATH_FUNDAMENTAL_ARCHITECTURE_AND_OPTIMIZATION.md with mathematical structures, Rust code snippets, empirical comparison table, four root-cause bottlenecks, four target architectural remediations, file-by-file roadmap, and step-by-step verification protocol.", traceability: {req_id: REQ-063, spec_id: SPEC-063, sot_id: SOT-005, folder_id: FOLDER-020, file_id: FILE-074, class_id: CLASS-083, method_id: METHOD-083, verify_id: null}, skeleton_impact: none}
-  - {node_id: METHOD-084, parent: FILE-074, children: [], dependencies: [METHOD-083], priority: high, status: e2e_passed, risk: low, complexity: low, owner: builder, acceptance_criteria: "create complete schema design and query optimization guide covering cellular sheaf structures, six efficient schema patterns, TQL grammar, 12-opcode TIR lowering, and GNN/SNN tensor integration in SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md", verification_evidence: "DOCUMENTED 2026-10-29. Schema design and query patterns documented in SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md detailing DDL declarations, 6 design patterns, TQL query syntax, 12-opcode TIR execution plan, and GNN/SNN tensor integration.", traceability: {req_id: REQ-063, spec_id: SPEC-063, sot_id: SOT-005, folder_id: FOLDER-020, file_id: FILE-074, class_id: CLASS-084, method_id: METHOD-084, verify_id: null}, skeleton_impact: none}
+  - {node_id: METHOD-084, parent: FILE-074, children: [], dependencies: [METHOD-083], priority: normal, status: database_reference_available, risk: low, complexity: low, owner: builder, acceptance_criteria: "Use the restored SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md for database schema and query requirements under the scope policy in AGENTS.md.", verification_evidence: "2026-11-15 user restoration request. The original guide and its chronology copy were restored without content changes. Training requirements remain excluded. This is document availability, not an implementation or test result.", traceability: {req_id: REQ-063, spec_id: SPEC-063, sot_id: SOT-005, folder_id: FOLDER-020, file_id: FILE-074, class_id: CLASS-084, method_id: METHOD-084, verify_id: null}, skeleton_impact: none}
 pattern_library_candidates:
   - {pattern_id: PATTERN-001, name: "answer-fiber-section", generalized_acceptance_criteria: "a query whose result is a small, fixed set of rows over a large base is served from a materialized section holding exactly those rows, so the query moves the answer bytes and nothing else; the section records the parameters it was built with and the reader refuses a mismatched one", source_node: METHOD-059, applicable_when: "the query result is a bounded row set and the base scan plus the join is a large share of the query time; measured here as 93.2% to 93.9% of the IMDb Q1 query not being byte movement", language_profile: language-profiles/rust.md, verification_evidence_ref: "crates/sheaf-engine/src/bin/q1_kernel_bench.rs, the Q1KB_D_detail line"}
   - {pattern_id: PATTERN-002, name: "one-pass-field-extractor", generalized_acceptance_criteria: "a record parser that wants several fields collects them all in a single pass over the record, so the extractor never rescans the record from its start for each field; the redundant-work count is a provable function of the fields requested and the record length", source_node: METHOD-061, applicable_when: "a build parses delimited text and the number of fields per record is more than one; measured here as 18 tab examinations per basics row where 9 are enough, 115,797,375 redundant reads over one stage", language_profile: language-profiles/rust.md, verification_evidence_ref: "crates/sheaf-engine/src/bin/imdb_fiber_bench.rs, the field helper, lines 45 to 62"}
@@ -361,12 +361,15 @@ pattern_library_candidates:
 
 # ============================================================================
 # Next-generation stack (branch combined-stack-feature-improvement)
-# Implements SheafDB_Next_Gen_Technical_Specification.md, phases 1 to 4.
+# Database-only scope follows AGENTS.md. Restored mixed specifications supply database requirements only.
 # Added 2026-11-15. This block is the source of truth for the new tiers.
 # File ids use the NG-FILE prefix to stay separate from the legacy FILE ids.
 # ============================================================================
 next_generation_stack:
-  spec: SheafDB_Next_Gen_Technical_Specification.md
+  scope_policy: AGENTS.md
+  document_index: FEATURE_DOCUMENT_CHRONOLOGY/README.md
+  spec: "SheafDB_Next_Gen_Technical_Specification.md, database requirements only"
+  scope: "Database functionality only. Restored mixed documents are readable under AGENTS.md. Excluded work does not count as unfinished database functionality."
   branch: combined-stack-feature-improvement
   method: "right language per tier; SOLID ports and adapters; new feature = new file; every file <= 500 lines; one commit per file change"
   rule_500_line_audit: "PASS. Largest new file is crates/sheaf-vcs/src/complex.rs at 282 lines. All new Rust, Lean, C, C++, and Python files are under 500 lines."
@@ -375,7 +378,7 @@ next_generation_stack:
     - {phase: 1, name: "C++23 AVX-512 math kernel", status: built_and_tested, evidence: "sheaf-native kernel parity 9/9; native C++ kernel links via clang MSVC target; cfg sheaf_native_kernel active"}
     - {phase: 2, name: "Zig BCSF storage and C11 WAL", status: built_and_tested, evidence: "storage parity 8/8 (Zig<->Rust byte identity); WAL recovery 8/8 (C<->Rust format identity, torn-tail repair); zig build test 3/3; cfg sheaf_native_storage and sheaf_native_wal active"}
     - {phase: 3, name: "Rust ingress, EBR, LCA-CW, Merkle-Sheaf VCS", status: built_and_tested, evidence: "sheaf-runtime 22/22; sheaf-vcs 38/38; clippy -D warnings clean"}
-    - {phase: 4, name: "Lean 4 invariant engine and PyTorch bridge", status: rust_bridge_tested_native_source_pending_toolchain, evidence: "sheaf-proofs 9/9; verified-rule C header compiles and passes a table check; Lean sources and torch C++ written, compile when Lean/Mathlib and libtorch are installed"}
+    - {phase: 4, name: "Lean 4 database invariant engine", status: rust_bridge_tested_lean_source_pending_toolchain, evidence: "Historical results: sheaf-proofs 9/9. The handwritten C rule table compiled and passed a table test. Lean source compilation needs Lean and Mathlib. These results do not prove production query semantics."}
 
   crates:
     - name: sheaf-native
@@ -413,8 +416,7 @@ next_generation_stack:
     - {path: native/kernel-cpp, lang: "C++23", role: "AVX-512 math kernels (phase 1)", status: links}
     - {path: native/storage-zig, lang: "Zig 0.17", role: "BCSF storage, bump arena, spine SoA (phase 2)", status: links}
     - {path: native/wal-c, lang: "C11", role: "append-only WAL, A/B epoch slots, CRC32C, io_uring (phase 2)", status: links}
-    - {path: native/proofs-generated/sheaf_verified_rules.h, lang: "C", role: "Lean-emitted verified rule validity table (phase 4)", status: compiles}
-    - {path: native/torch-bridge, lang: "C++/C", role: "zero-copy stalk tensors and coboundary autograd (phase 4, Pillar 11)", status: source_pending_libtorch}
+    - {path: native/proofs-generated/sheaf_verified_rules.h, lang: "C", role: "handwritten rule validity table (phase 4), not generated by Lean", status: compiles}
 
   lean_proofs:
     - {path: proofs/Poset.lean, ng_file_id: NG-FILE-040, theorem: "le_refl, le_trans", status: source_pending_lean}
@@ -425,11 +427,50 @@ next_generation_stack:
 
   toolchains:
     installed: ["zig 0.17.0", "clang 23.1.5 (LLVM, MSVC target)", "gcc 16.2.0 (WinLibs)", "rustc/cargo 1.98.0 x86_64-pc-windows-msvc"]
-    pending: ["Lean 4 + Mathlib (proofs/)", "PyTorch libtorch (native/torch-bridge/)"]
+    pending: ["Lean 4 + Mathlib (proofs/)"]
     link_note: "Native tiers link on Windows MSVC via clang default x86_64-pc-windows-msvc plus llvm-ar. Archives: sheaf_kernel.lib, sheaf_storage.lib, sheaf_wal.lib. Set SHEAF_KERNEL_CXX=clang++ and SHEAF_WAL_CC=clang with LLVM on PATH."
 
   verification:
     workspace_test: "cargo test --workspace exits 0; 75 test-result-ok groups; no failures"
     new_tier_tests: "sheaf-native 27, sheaf-runtime 22, sheaf-vcs 38, sheaf-proofs 9"
     clippy: "cargo clippy -p sheaf-runtime -p sheaf-vcs -p sheaf-proofs --all-targets -- -D warnings exits 0"
-    pending_exit_criteria: "Lean lake build (needs Mathlib); torch setup.py build_ext + demo/train_snn.py (needs libtorch); hardware gates in spec section 8 (strace, perf, TSan/ASan) need a Linux host"
+    pending_exit_criteria: "Lean lake build needs Mathlib. Database hardware measurements with strace and perf, plus thread and address sanitizer runs, need a Linux host."
+    scope_correction: "2026-11-15. Important mixed documents were restored for database use and indexed in FEATURE_DOCUMENT_CHRONOLOGY/README.md. Neural-network requirements remain excluded. Existing source code remains unchanged. Historical test results do not establish that current application changes pass."
+
+# ============================================================================
+# Missing feature plan (2026-11-15)
+# Source: MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md
+# These nodes are planned only. A node is complete only when its gate passes:
+# production-path test with real input, stated expected result, evidence file,
+# no hard-coded result, no silent fallback.
+# ============================================================================
+missing_feature_plan:
+  document: MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md
+  input_audit: "48 features: 33 implemented, 6 partial, 9 absent, plus one 500-line defect"
+  scope: "Database functionality only. The PyTorch bridge and training work stay excluded."
+  phases:
+    - {phase: 0, name: "Compliance", nodes: [NG-MF-00]}
+    - {phase: 1, name: "Runtime concurrency and hardware topology", nodes: [NG-MF-02, NG-MF-01, NG-MF-03, NG-MF-04]}
+    - {phase: 2, name: "Storage compression", nodes: [NG-MF-05, NG-MF-06, NG-MF-07]}
+    - {phase: 3, name: "WAL hardware path", nodes: [NG-MF-08]}
+    - {phase: 4, name: "Proof pipeline", nodes: [NG-MF-09, NG-MF-10]}
+    - {phase: 5, name: "Topology and cluster", nodes: [NG-MF-11, NG-MF-14, NG-MF-12, NG-MF-13]}
+    - {phase: 6, name: "Ecosystem", nodes: [NG-MF-15, NG-MF-16]}
+  nodes:
+    - {node_id: NG-MF-00, pillar: "compliance", name: "split bcsf/segment.rs into seven files", status: planned, depends_on: [], test: "fixture BLAKE3 byte parity plus existing segment tests", evidence_dir: "tests/e2e/missing_features/mf00"}
+    - {node_id: NG-MF-01, pillar: 4, name: "lock-free bounded MPMC nerve router", status: planned, depends_on: [NG-MF-02], test: "8 producers x 50k, no loss and no duplicate", evidence_dir: "tests/e2e/missing_features/mf01"}
+    - {node_id: NG-MF-02, pillar: 4, name: "real OS thread affinity and NUMA pinning", status: planned, depends_on: [], test: "pin each allowed core, read mask back, restore", evidence_dir: "tests/e2e/missing_features/mf02"}
+    - {node_id: NG-MF-03, pillar: 10, name: "parallel execution of disjoint write waves", status: planned, depends_on: [NG-MF-01, NG-MF-02], test: "64 disjoint cells, 2+ threads, all applied, error propagation", evidence_dir: "tests/e2e/missing_features/mf03"}
+    - {node_id: NG-MF-04, pillar: 2, name: "physical L3 cache discovery and partition map", status: planned, depends_on: [NG-MF-02], test: "domains partition the OS CPU set, stable partition map", evidence_dir: "tests/e2e/missing_features/mf04"}
+    - {node_id: NG-MF-05, pillar: 9, name: "FSST, ALP, frame-of-reference, bit-packing codecs", status: planned, depends_on: [], test: "bit-exact round trip on random and edge corpora, size ratio", evidence_dir: "tests/e2e/missing_features/mf05"}
+    - {node_id: NG-MF-06, pillar: 9, name: "global dictionary arena sharing", status: planned, depends_on: [NG-MF-05], test: "1M inserts over 10k unique, one arena entry per unique", evidence_dir: "tests/e2e/missing_features/mf06"}
+    - {node_id: NG-MF-07, pillar: 5, name: "versioned page format with explicit gate", status: planned, depends_on: [NG-MF-05, NG-MF-06], test: "v1 read, v2 round trip, unknown version error, checksum error", evidence_dir: "tests/e2e/missing_features/mf07"}
+    - {node_id: NG-MF-08, pillar: 3, name: "pre-registered io_uring buffers", status: planned, depends_on: [], test: "fixed 4 KiB write with CRC check on Linux, capability truth elsewhere", evidence_dir: "tests/e2e/missing_features/mf08"}
+    - {node_id: NG-MF-09, pillar: 6, name: "Lean AOT rule table and drift gate", status: planned, depends_on: [], test: "runtime table equals emitted manifest, drift fails the build", evidence_dir: "tests/e2e/missing_features/mf09"}
+    - {node_id: NG-MF-10, pillar: 6, name: "production rewrite optimizer behind a rule oracle", status: planned, depends_on: [NG-MF-09], test: "200 plans, equal row multisets, unverified rule rejected", evidence_dir: "tests/e2e/missing_features/mf10"}
+    - {node_id: NG-MF-11, pillar: 8, name: "H1 quotient solver", status: planned, depends_on: [], test: "line, triangle, two triangles, orthogonality", evidence_dir: "tests/e2e/missing_features/mf11"}
+    - {node_id: NG-MF-12, pillar: 7, name: "replication transport with real TCP adapter", status: planned, depends_on: [NG-MF-03], test: "10k sections over loopback, hash equality, error cases", evidence_dir: "tests/e2e/missing_features/mf12"}
+    - {node_id: NG-MF-13, pillar: 7, name: "deterministic Raft consensus engine", status: planned, depends_on: [NG-MF-12], test: "election, replication, minority, restart, partition heal", evidence_dir: "tests/e2e/missing_features/mf13"}
+    - {node_id: NG-MF-14, pillar: 7, name: "open cover sharding with ghost cells", status: planned, depends_on: [NG-MF-11, NG-MF-12], test: "1k cells, 4 shards, cover check, glue conflict", evidence_dir: "tests/e2e/missing_features/mf14"}
+    - {node_id: NG-MF-15, pillar: 11, name: "Arrow Flight daemon", status: planned, depends_on: [NG-MF-07], test: "real Flight client do_get and do_put over localhost", evidence_dir: "tests/e2e/missing_features/mf15"}
+    - {node_id: NG-MF-16, pillar: 11, name: "eBPF VFS interception", status: planned, depends_on: [], test: "10k recorded events, stated decision each time, capability truth", evidence_dir: "tests/e2e/missing_features/mf16"}
