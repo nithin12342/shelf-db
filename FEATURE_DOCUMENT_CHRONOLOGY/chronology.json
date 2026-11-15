@@ -1,0 +1,377 @@
+{
+  "scope": "33 database-relevant chronology copies, including eight restored mixed-scope copies. The user restored access to important database documents on 2026-11-15. Neural-network creation and training remain excluded. This is not an audit of every repository document.",
+  "originals": "Eight originals and eight chronology copies were restored without content changes. Original paths remain stable. Copies are historical evidence, not editable sources of truth. The active AGENTS.md and SKELETON.md take priority over historical snapshots. Relative links inside copies describe original source locations, so use README.md links to the originals.",
+  "filename_rule": "Use the internal document or report timestamp. If absent, use an explicit correction or section timestamp, then a document date. Known offsets are converted to UTC. Never use filesystem times. Execution times are metadata, not document creation times.",
+  "ordering_limit": "Sort dated filenames ascending and read backward. TIME-UNSPECIFIED files are unordered peers within their day. ZONE-UNSPECIFIED times cannot be ordered precisely against UTC. UNDATED files have no position in the timeline. Title-only dates are weaker evidence than dated document fields.",
+  "date_roles": "Document, report, correction, section-added, and section-appended are different events. A section date does not date the whole document. Original filenames can retain conflicting dates after the chronology prefix.",
+  "reading_scope": "Read README.md first, then requirements, plans, implementation records, measurements, and context as needed. Restored mixed documents are approved sources for database content only. Read dated files newest to oldest within each group, respecting uncertain dates. Undated specifications remain required supplements. This inventory excludes the two protected archive snapshots.",
+  "copy_location": "Each source belongs to one group. Its chronology copy is group.folder + '/' + document.prefix + '__' + the source basename. README.md links to canonical originals.",
+  "groups": [
+    {
+      "folder": "01_DATABASE_REQUIREMENTS",
+      "sources": [
+        "SheafDB_Next_Gen_Technical_Specification.md",
+        "Sheaf_Markdown_Documentation_Bundle (1)/SheafDB_Next_Gen_Technical_Specification.md",
+        "Sheaf_Markdown_Documentation_Bundle (1)/Sheaf_VCS_Architecture.md",
+        "SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md",
+        "SHELFDB_WRITE_PATH_FUNDAMENTAL_ARCHITECTURE_AND_OPTIMIZATION.md",
+        "ARCHITECTURAL_IMPROVEMENT_DISCUSSION_2026-10-27.md"
+      ]
+    },
+    {
+      "folder": "02_DATABASE_PLANS",
+      "sources": [
+        "PERFORMANCE_FIX_PLAN_2026-10-22.md",
+        "TQL_COST_OPTIMIZER_PLAN_2026-10-23.md",
+        "FIBER_LIFECYCLE_PLAN.md",
+        "IMPLEMENTATION_PLAN_OPTIMIZE_EXPAND_2026-10-27.md",
+        "IMPLEMENTATION_PLAN_HARDWARE_MAPPED_2026-10-27.md",
+        "HORIZONTAL_SLICING_PLAN_2026-10-27.md",
+        "MANIFEST_ROUTER_RESTRUCTURING_PLAN_2026-10-27.md",
+        "THEORETICAL_BEST_PERFORMANCE_PLAN_2026-10-27.md",
+        "PLAN_2026-11-15_12-09-48.md"
+      ]
+    },
+    {
+      "folder": "03_IMPLEMENTATION_RECORDS",
+      "sources": [
+        "SKELETON.md",
+        "NEXT_GEN_COMPLETION_RECORD_2026-11-09_2103.md",
+        "BCSF_SEGMENT_EFFICIENCY_GAINS_2026-10-29.md",
+        "IMDB_BUILD_ARCHITECTURE_STUDY_2026-10-29.md",
+        "WRITE_PATH_OPTIMIZATION_CHANGES_2026-10-28.md",
+        "IMPLEMENTATION_RESULTS_2026-10-27.md"
+      ]
+    },
+    {
+      "folder": "04_BENCHMARKS_AND_TESTS",
+      "sources": [
+        "TEST_CASE_INVENTORY_AND_REVERIFICATION_2026-10-29.md",
+        "CONTINUOUS_STREAMING_READ_WRITE_BENCHMARK_2026-10-28.md",
+        "BENCHMARK_RESULTS_50_TEST_CASES_2026-10-28.md",
+        "TEST_CASES_CONSOLIDATION_2026-10-28.md",
+        "MANUAL_CLI_BENCHMARK_AND_FIVE_FAILURES_2026-10-27.md",
+        "TQL_APPLICATION_COMPARISON_2026-10-26.md"
+      ]
+    },
+    {
+      "folder": "05_CONTEXT_AND_PROPOSALS",
+      "sources": [
+        "Sheaf_Markdown_Documentation_Bundle (1)/Cellular_Sheaf_Complete_System_Architecture.md",
+        "CONVERSATION_LOG_2026-10-23.md",
+        "CONVERSATION_LOG_2026-10-22.md",
+        "GOOSE_SHEAFDB_EFFICIENCY_GAINS_REPORT_DETAILED_2026-10-29_04-46-04Z.md",
+        "GOOSE_SHEAFDB_EFFICIENCY_GAINS_REPORT_2026-10-29_04-39-55Z.md",
+        "GOOSE_EFFICIENCY_GAINS_REPORT_2026-10-29_04-38-14Z.md"
+      ]
+    }
+  ],
+  "cutoffs": [
+    "The October 22 performance plan closes eight benchmark and bundle tasks. It does not close the storage engine, query compiler, or later application integrations.",
+    "The fiber lifecycle record closes historical task slots, including a recorded failed build-time target. Its text distinguishes benchmark bundles from live storage integration.",
+    "The October 23 optimizer plan remains relevant because the October 27 comparison and October 29 Goose reports still identify the optimizer-to-fiber execution bridge as unbuilt.",
+    "October 27 implementation results close only the specific reported utilities and experiments. Later October 28 reports claim restoration of the fifty-case benchmark, not integration into the new application.",
+    "Goose reports are unimplemented tooling proposals. They are not confirmed database requirements and add no completion credit.",
+    "There is no single defensible cutoff for all requirements. Superseded predictions and rejected experiments are not missing features.",
+    "The 2026-11-15 restoration request reopens mixed-scope documents for database use. Neural-network sections remain excluded, not entire database documents. The complete-system architecture is primarily a neural proposal and supplies shared mathematics and storage background only. Excluded work does not count as unfinished database functionality."
+  ],
+  "documents": [
+    {
+      "source": "PLAN_2026-11-15_12-09-48.md",
+      "prefix": "2026-11-15_12-09-48_ZONE-UNSPECIFIED",
+      "internal_timestamp": "2026-11-15 12:09:48",
+      "role": "document",
+      "evidence_lines": [3],
+      "notes": "Restored historical plan, not an authoritative completion score. The 51 percent estimate weights subjective scores by document length and includes excluded work. Retain database fault and integration proposals. Exclude section 3.3, training work in phase E, and phase H."
+    },
+    {
+      "source": "SKELETON.md",
+      "prefix": "2026-11-15_TIME-UNSPECIFIED_SECTION-ADDED",
+      "internal_timestamp": "2026-11-15",
+      "role": "section-added",
+      "evidence_lines": [365],
+      "notes": "Restored historical snapshot, not the active inventory. Dates the next-generation section only. Original creation is unknown. The active root SKELETON.md takes priority. Neural bridge inventory and gates in this copy are excluded. Evidence lines refer to the snapshot."
+    },
+    {
+      "source": "NEXT_GEN_COMPLETION_RECORD_2026-11-09_2103.md",
+      "prefix": "2026-11-09_15-33-58Z",
+      "internal_timestamp": "2026-11-09 21:03:58 +0530",
+      "role": "document",
+      "evidence_lines": [1],
+      "notes": "Restored historical snapshot at commit 5765339. Retain native tier, fault, and build records. PyTorch references at lines 108 and 112 are historical status, not active work. Later implementation supersedes old statuses."
+    },
+    {
+      "source": "ARCHITECTURAL_IMPROVEMENT_DISCUSSION_2026-10-27.md",
+      "prefix": "2026-10-27_07-08Z_CORRECTION",
+      "internal_timestamp": "2026-10-27 12:38 IST",
+      "role": "correction",
+      "evidence_lines": [5, 6, 7],
+      "events": [
+        {"role": "document-date", "timestamp": "2026-10-27", "line": 5}
+      ],
+      "notes": "Restored database architecture policy. Neural-paper references at lines 148-149 are research background, not training requirements. Minute precision only. IST is interpreted from the companion comparison as UTC+05:30. Original session time is not recorded."
+    },
+    {
+      "source": "SheafDB_Next_Gen_Technical_Specification.md",
+      "prefix": "UNDATED_ROOT",
+      "internal_timestamp": null,
+      "role": "undated-specification",
+      "evidence_lines": [],
+      "notes": "Restored detailed database requirement source. No internal authoring timestamp. Exclude neural tensor/autograd integration at lines 403-414 and the training portion of lines 579-582. Preserve database protocols at lines 417-424 and proof requirements."
+    },
+    {
+      "source": "SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md",
+      "prefix": "UNDATED_ROOT",
+      "internal_timestamp": null,
+      "role": "undated-guide",
+      "evidence_lines": [],
+      "notes": "Restored database schema and query guide. No internal authoring timestamp. Exclude section 8 training guidance and training-specific interpretation of pattern 6. Retain database missing-value masks, continuous data, schema, and query content. Example syntax and performance claims need implementation evidence."
+    },
+    {
+      "source": "Sheaf_Markdown_Documentation_Bundle (1)/SheafDB_Next_Gen_Technical_Specification.md",
+      "prefix": "UNDATED_BUNDLE",
+      "internal_timestamp": null,
+      "role": "undated-specification",
+      "evidence_lines": [],
+      "notes": "Restored condensed database specification, distinct from the root document. No internal authoring timestamp. Exclude the PyTorch autograd phrase at line 199 but retain database protocols in the same bullet."
+    },
+    {
+      "source": "Sheaf_Markdown_Documentation_Bundle (1)/Cellular_Sheaf_Complete_System_Architecture.md",
+      "prefix": "UNDATED_BUNDLE",
+      "internal_timestamp": null,
+      "role": "undated-background",
+      "evidence_lines": [],
+      "notes": "Restored for narrow database and mathematics reference only. Primarily a neural-system proposal, not an active database specification. Shared contracts/storage at lines 13-17 and operators in section 2 are background. Exclude learning objectives, training frameworks, neural accelerator work, datasets, and the model benchmark matrix."
+    },
+    {
+      "source": "GOOSE_SHEAFDB_EFFICIENCY_GAINS_REPORT_DETAILED_2026-10-29_04-46-04Z.md",
+      "prefix": "2026-10-29_04-46-04Z",
+      "internal_timestamp": "2026-10-29T04:46:04Z",
+      "role": "report",
+      "evidence_lines": [3, 163],
+      "notes": "Unimplemented tooling proposal. Explicitly retains the missing optimizer-to-fiber bridge at line 190. No measured Goose gains."
+    },
+    {
+      "source": "GOOSE_SHEAFDB_EFFICIENCY_GAINS_REPORT_2026-10-29_04-39-55Z.md",
+      "prefix": "2026-10-29_04-39-55Z",
+      "internal_timestamp": "2026-10-29T04:39:55Z",
+      "role": "report",
+      "evidence_lines": [3, 70],
+      "notes": "Conditional tooling integration proposal. No implementation or measured gain."
+    },
+    {
+      "source": "GOOSE_EFFICIENCY_GAINS_REPORT_2026-10-29_04-38-14Z.md",
+      "prefix": "2026-10-29_04-38-14Z",
+      "internal_timestamp": "2026-10-29T04:38:14Z",
+      "role": "report",
+      "evidence_lines": [3, 40],
+      "notes": "Compiler and runtime baseline proposal. Explicitly no measured data."
+    },
+    {
+      "source": "BCSF_SEGMENT_EFFICIENCY_GAINS_2026-10-29.md",
+      "prefix": "2026-10-29_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-29",
+      "role": "document-date",
+      "evidence_lines": [3],
+      "notes": "Claims format improvements but explicitly defers compression. Lazy loading and statistics-based scan skipping remain future capabilities. Same-day order is unknown."
+    },
+    {
+      "source": "IMDB_BUILD_ARCHITECTURE_STUDY_2026-10-29.md",
+      "prefix": "2026-10-29_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-29",
+      "role": "document-date",
+      "evidence_lines": [3],
+      "notes": "Corrects bundle-build versus full-ingestion claims. Reverts slower concurrent parsing. Memory-mapped input, row-level changes, and read/parse overlap remain proposals."
+    },
+    {
+      "source": "TEST_CASE_INVENTORY_AND_REVERIFICATION_2026-10-29.md",
+      "prefix": "2026-10-29_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-29",
+      "role": "document-date",
+      "evidence_lines": [3],
+      "notes": "Inventory and session-result claims. Compression utilities and pruning claims do not establish integration or precise order against the same-day segment report."
+    },
+    {
+      "source": "CONTINUOUS_STREAMING_READ_WRITE_BENCHMARK_2026-10-28.md",
+      "prefix": "2026-10-28_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-28",
+      "role": "document-date",
+      "evidence_lines": [5],
+      "events": [
+        {"role": "execution-start", "timestamp": "2026-10-28 19:16:51 IST (UTC+05:30)", "line": 6},
+        {"role": "execution-end", "timestamp": "2026-10-28 19:19:52 IST (UTC+05:30)", "line": 7}
+      ],
+      "notes": "Historical benchmark evidence, not current application-path measurements."
+    },
+    {
+      "source": "BENCHMARK_RESULTS_50_TEST_CASES_2026-10-28.md",
+      "prefix": "2026-10-28_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-28",
+      "role": "document-date",
+      "evidence_lines": [5],
+      "events": [
+        {"role": "execution-start", "timestamp": "2026-10-28 17:54:46 IST (UTC+05:30)", "line": 6},
+        {"role": "execution-end", "timestamp": "2026-10-28 17:55:13 IST (UTC+05:30)", "line": 7}
+      ],
+      "notes": "Claims 45 performance wins and five losses. A result artifact retains an October 27 identifier. Does not close new application testing."
+    },
+    {
+      "source": "TEST_CASES_CONSOLIDATION_2026-10-28.md",
+      "prefix": "2026-10-28_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-28",
+      "role": "document-date",
+      "evidence_lines": [5],
+      "events": [
+        {"role": "environment-record", "timestamp": "2026-10-28 16:51:00 IST (UTC+05:30)", "line": 6},
+        {"role": "same-environment-record-utc", "timestamp": "2026-10-28 11:21:00 UTC", "line": 7}
+      ],
+      "notes": "Test inventory, not an overall execution pass."
+    },
+    {
+      "source": "WRITE_PATH_OPTIMIZATION_CHANGES_2026-10-28.md",
+      "prefix": "2026-10-28_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-28",
+      "role": "document-date",
+      "evidence_lines": [3],
+      "notes": "Claims ring logging, group commit, and parallel sorting. Thread-local staging is called a skeleton. Deferred validation and kernel bypass remain open in this record."
+    },
+    {
+      "source": "MANUAL_CLI_BENCHMARK_AND_FIVE_FAILURES_2026-10-27.md",
+      "prefix": "2026-10-27_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-27",
+      "role": "document-date",
+      "evidence_lines": [3],
+      "events": [
+        {"role": "re-execution-start", "timestamp": "2026-10-28 16:54:30 IST", "line": 4},
+        {"role": "re-execution-end", "timestamp": "2026-10-28 16:54:50 IST", "line": 4}
+      ],
+      "notes": "The later run is not the document creation timestamp. Filename agrees with initial date but does not expose the October 28 run."
+    },
+    {
+      "source": "IMPLEMENTATION_RESULTS_2026-10-27.md",
+      "prefix": "2026-10-27_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-27",
+      "role": "document-date",
+      "evidence_lines": [3],
+      "notes": "Specific utility and benchmark completion claims. Cold-ingest timing, topology construction, and fused join integration remain open. A later section lacks a separate update date."
+    },
+    {
+      "source": "THEORETICAL_BEST_PERFORMANCE_PLAN_2026-10-27.md",
+      "prefix": "2026-10-27_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-27",
+      "role": "plan-date",
+      "evidence_lines": [3],
+      "notes": "Projected write, scan, parser, and arena gains. Completion requires later evidence. Contains an embedded tool-transcript fragment, not an executable instruction."
+    },
+    {
+      "source": "IMPLEMENTATION_PLAN_HARDWARE_MAPPED_2026-10-27.md",
+      "prefix": "2026-10-27_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-27",
+      "role": "plan-date",
+      "evidence_lines": [3],
+      "notes": "Hardware-oriented requirements. Flat-column fallback is a policy tension, not explicit supersession of the sheaf-native rule."
+    },
+    {
+      "source": "IMPLEMENTATION_PLAN_OPTIMIZE_EXPAND_2026-10-27.md",
+      "prefix": "2026-10-27_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-27",
+      "role": "plan-date",
+      "evidence_lines": [3],
+      "notes": "Preserve cellular topology and correctness gates. Optional dynamic joins use sorted-key merging, not relational hash joins."
+    },
+    {
+      "source": "HORIZONTAL_SLICING_PLAN_2026-10-27.md",
+      "prefix": "2026-10-27_TIME-UNSPECIFIED_TITLE-ONLY",
+      "internal_timestamp": "2026-10-27",
+      "role": "title-only-date",
+      "evidence_lines": [1],
+      "notes": "Only the filename-style title supplies the date. Staged execution, bounded queues, backpressure, metrics, and single-thread mode remain requirements. No independent creation field."
+    },
+    {
+      "source": "MANIFEST_ROUTER_RESTRUCTURING_PLAN_2026-10-27.md",
+      "prefix": "2026-10-27_TIME-UNSPECIFIED_TITLE-ONLY",
+      "internal_timestamp": "2026-10-27",
+      "role": "title-only-date",
+      "evidence_lines": [1],
+      "notes": "Only the filename-style title supplies the date. Optional network transport must preserve native multi-writer transactions and avoid framing local calls."
+    },
+    {
+      "source": "TQL_APPLICATION_COMPARISON_2026-10-26.md",
+      "prefix": "2026-10-27_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-27",
+      "role": "document-date",
+      "evidence_lines": [3],
+      "events": [
+        {"role": "measurement-start", "timestamp": "2026-10-26 11:24:59 IST", "line": 4},
+        {"role": "measurement-end", "timestamp": "2026-10-26 14:25:24 IST", "line": 4},
+        {"role": "verification-pass", "timestamp": "2026-10-27 10:41:01 IST", "line": 5},
+        {"role": "full-span-end", "timestamp": "2026-10-27 10:43:32 IST", "line": 6},
+        {"role": "conflicting-full-span-end", "timestamp": "2026-10-27 10:41:01 IST", "line": 267}
+      ],
+      "notes": "Filename says October 26 but document date says October 27. IST explicitly means UTC+05:30. Optimizer-to-fiber execution bridge remains unbuilt."
+    },
+    {
+      "source": "CONVERSATION_LOG_2026-10-23.md",
+      "prefix": "2026-10-23_12-22-00Z_RECORD-GENERATED",
+      "internal_timestamp": "2026-10-23 17:52:00 Asia/Kolkata",
+      "role": "record-generated",
+      "evidence_lines": [56],
+      "events": [
+        {"role": "session", "timestamp": "2026-10-23 15:23:00 local (Asia/Kolkata, UTC+05:30)", "line": 3}
+      ],
+      "notes": "Records statistical optimizer implementation separately from the planned execution bridge. Modeled cost gains are not execution measurements."
+    },
+    {
+      "source": "TQL_COST_OPTIMIZER_PLAN_2026-10-23.md",
+      "prefix": "2026-10-23_TIME-UNSPECIFIED",
+      "internal_timestamp": "2026-10-23",
+      "role": "document-date",
+      "evidence_lines": [3],
+      "notes": "Statistical optimizer plan of record. Execution bridge and persistent catalog statistics retain open requirements beyond completed benchmark work."
+    },
+    {
+      "source": "CONVERSATION_LOG_2026-10-22.md",
+      "prefix": "2026-10-22_07-31-38Z",
+      "internal_timestamp": "2026-10-22 13:01:38 local (Asia/Kolkata, UTC+05:30)",
+      "role": "session-and-record-generated",
+      "evidence_lines": [3, 81],
+      "notes": "Historical corrections to bundle measurements and performance projections. The production reader was already section-scoped."
+    },
+    {
+      "source": "PERFORMANCE_FIX_PLAN_2026-10-22.md",
+      "prefix": "2026-10-22_07-31-38Z",
+      "internal_timestamp": "2026-10-22 13:01:38 Asia/Kolkata (UTC+05:30)",
+      "role": "plan",
+      "evidence_lines": [3],
+      "notes": "The appended closeout at lines 335-361 supersedes the stale planned header. Eight tasks close for benchmark and bundle scope only. Several proposed gains were disproved."
+    },
+    {
+      "source": "FIBER_LIFECYCLE_PLAN.md",
+      "prefix": "2026-10-22_13-01-38_ZONE-UNSPECIFIED_SECTION-APPENDED",
+      "internal_timestamp": "2026-10-22 13:01:38 local",
+      "role": "section-appended",
+      "evidence_lines": [222],
+      "events": [
+        {"role": "part-b-appended", "timestamp": "2026-10-20", "line": 108},
+        {"role": "completion-row-date", "timestamp": "2026-10-21", "line": 42}
+      ],
+      "notes": "Original creation time unknown. The companion performance plan gives Asia/Kolkata, but this local timestamp is not normalized without its own explicit offset. Closures include a failed target recorded rather than delivered. Benchmark fibers are distinguished from live storage at lines 169-176."
+    },
+    {
+      "source": "SHELFDB_WRITE_PATH_FUNDAMENTAL_ARCHITECTURE_AND_OPTIMIZATION.md",
+      "prefix": "UNDATED_ROOT",
+      "internal_timestamp": null,
+      "role": "undated-roadmap",
+      "evidence_lines": [],
+      "notes": "References the October 28 benchmark but supplies no authoring timestamp. Later write-path changes and the architecture study narrow its claims."
+    },
+    {
+      "source": "Sheaf_Markdown_Documentation_Bundle (1)/Sheaf_VCS_Architecture.md",
+      "prefix": "UNDATED_BUNDLE",
+      "internal_timestamp": null,
+      "role": "undated-specification",
+      "evidence_lines": [],
+      "notes": "Version-control requirements. No internal authoring timestamp."
+    }
+  ]
+}
