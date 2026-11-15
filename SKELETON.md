@@ -358,3 +358,78 @@ pattern_library_candidates:
   - {pattern_id: PATTERN-002, name: "one-pass-field-extractor", generalized_acceptance_criteria: "a record parser that wants several fields collects them all in a single pass over the record, so the extractor never rescans the record from its start for each field; the redundant-work count is a provable function of the fields requested and the record length", source_node: METHOD-061, applicable_when: "a build parses delimited text and the number of fields per record is more than one; measured here as 18 tab examinations per basics row where 9 are enough, 115,797,375 redundant reads over one stage", language_profile: language-profiles/rust.md, verification_evidence_ref: "crates/sheaf-engine/src/bin/imdb_fiber_bench.rs, the field helper, lines 45 to 62"}
   - {pattern_id: PATTERN-003, name: "fused-verify-read", generalized_acceptance_criteria: "a section that is verified by a checksum after the read verifies it while the bytes are still in the cache, so the checksum never costs a second pass over the data; the ceiling is the measured checksum share of the load", source_node: METHOD-064, applicable_when: "a load path reads a block and then checksums the whole block; measured here as 23.7% to 32.7% of the section load", language_profile: language-profiles/rust.md, verification_evidence_ref: "crates/sheaf-engine/src/bin/bundle_load_bench.rs, the LOAD_section_split line"}
   - {pattern_id: PATTERN-004, name: "measure-the-production-path", generalized_acceptance_criteria: "a performance claim about a production code path is taken from a measurement of that path, not from a measurement of a harness that exercises it; when the claim is contradicted by the production source, the source wins and the harness is corrected", source_node: METHOD-058, applicable_when: "any claim about a loader, a reader or a writer; the 7.14x whole-file read waste was measured in the analysis tool and the production reader was already section-scoped", language_profile: language-profiles/rust.md, verification_evidence_ref: "crates/sheaf-engine/src/bin/bundle_load_bench.rs and crates/sheaf-engine/src/bin/shared/imdb_fiber.rs, BundleReader::open and BundleReader::section"}
+
+# ============================================================================
+# Next-generation stack (branch combined-stack-feature-improvement)
+# Implements SheafDB_Next_Gen_Technical_Specification.md, phases 1 to 4.
+# Added 2026-11-15. This block is the source of truth for the new tiers.
+# File ids use the NG-FILE prefix to stay separate from the legacy FILE ids.
+# ============================================================================
+next_generation_stack:
+  spec: SheafDB_Next_Gen_Technical_Specification.md
+  branch: combined-stack-feature-improvement
+  method: "right language per tier; SOLID ports and adapters; new feature = new file; every file <= 500 lines; one commit per file change"
+  rule_500_line_audit: "PASS. Largest new file is crates/sheaf-vcs/src/complex.rs at 282 lines. All new Rust, Lean, C, C++, and Python files are under 500 lines."
+
+  phases:
+    - {phase: 1, name: "C++23 AVX-512 math kernel", status: built_and_tested, evidence: "sheaf-native kernel parity 9/9; native C++ kernel links via clang MSVC target; cfg sheaf_native_kernel active"}
+    - {phase: 2, name: "Zig BCSF storage and C11 WAL", status: built_and_tested, evidence: "storage parity 8/8 (Zig<->Rust byte identity); WAL recovery 8/8 (C<->Rust format identity, torn-tail repair); zig build test 3/3; cfg sheaf_native_storage and sheaf_native_wal active"}
+    - {phase: 3, name: "Rust ingress, EBR, LCA-CW, Merkle-Sheaf VCS", status: built_and_tested, evidence: "sheaf-runtime 22/22; sheaf-vcs 38/38; clippy -D warnings clean"}
+    - {phase: 4, name: "Lean 4 invariant engine and PyTorch bridge", status: rust_bridge_tested_native_source_pending_toolchain, evidence: "sheaf-proofs 9/9; verified-rule C header compiles and passes a table check; Lean sources and torch C++ written, compile when Lean/Mathlib and libtorch are installed"}
+
+  crates:
+    - name: sheaf-native
+      role: "FFI boundary and fallback backends for the native hardware tiers (phases 1 and 2)"
+      files:
+        - {path: crates/sheaf-native/src/kernel/mod.rs, ng_file_id: NG-FILE-001, responsibility: "KernelBackend port and backend factory"}
+        - {path: crates/sheaf-native/src/storage/mod.rs, ng_file_id: NG-FILE-002, responsibility: "StorageBackend port, BCSF and spine constants"}
+        - {path: crates/sheaf-native/src/wal/mod.rs, ng_file_id: NG-FILE-003, responsibility: "WalBackend port, recovery stats, backend factory"}
+        - {path: crates/sheaf-native/build.rs, ng_file_id: NG-FILE-004, responsibility: "toolchain detection composition root; sets native cfgs"}
+    - name: sheaf-runtime
+      role: "Rust orchestration and ingress tier (spec Pillar 4)"
+      files:
+        - {path: crates/sheaf-runtime/src/epoch.rs, ng_file_id: NG-FILE-010, responsibility: "lock-free epoch-based reclamation registry and guards"}
+        - {path: crates/sheaf-runtime/src/pin.rs, ng_file_id: NG-FILE-011, responsibility: "affine PinnedStalkView bound to an epoch lease"}
+        - {path: crates/sheaf-runtime/src/affinity.rs, ng_file_id: NG-FILE-012, responsibility: "thread-per-core topology and PinningPolicy port"}
+        - {path: crates/sheaf-runtime/src/nerve.rs, ng_file_id: NG-FILE-013, responsibility: "in-process nerve router with core-local queues"}
+        - {path: crates/sheaf-runtime/src/ingress.rs, ng_file_id: NG-FILE-014, responsibility: "TCP ingress, RequestHandler port, framed transport"}
+    - name: sheaf-vcs
+      role: "sheaf-based version control engine (spec Pillars 8 and 10)"
+      files:
+        - {path: crates/sheaf-vcs/src/complex.rs, ng_file_id: NG-FILE-020, responsibility: "cellular sheaf topology, coboundary, star neighborhoods"}
+        - {path: crates/sheaf-vcs/src/section.rs, ng_file_id: NG-FILE-021, responsibility: "0-cochain algebra and zero-coboundary commit rule"}
+        - {path: crates/sheaf-vcs/src/lca.rs, ng_file_id: NG-FILE-022, responsibility: "LCA-CW star-neighborhood collision inspector and waves"}
+        - {path: crates/sheaf-vcs/src/chart.rs, ng_file_id: NG-FILE-023, responsibility: "append-only chronological time charts, delta folding"}
+        - {path: crates/sheaf-vcs/src/merkle.rs, ng_file_id: NG-FILE-024, responsibility: "BLAKE3 content-addressed commit DAG, O(1) branch/tag"}
+        - {path: crates/sheaf-vcs/src/diff.rs, ng_file_id: NG-FILE-025, responsibility: "algebraic time-travel diff and cohomological merge"}
+        - {path: crates/sheaf-vcs/src/repo.rs, ng_file_id: NG-FILE-026, responsibility: "repository composition root wiring the VCS modules"}
+    - name: sheaf-proofs
+      role: "formal verification bridge (spec Pillar 6)"
+      files:
+        - {path: crates/sheaf-proofs/src/rules.rs, ng_file_id: NG-FILE-030, responsibility: "verified TIR rewrite-rule table, mirror of the Lean header"}
+        - {path: crates/sheaf-proofs/src/planner.rs, ng_file_id: NG-FILE-031, responsibility: "proof-gated rewrites on a linear invariance model"}
+
+  native_tiers:
+    - {path: native/kernel-cpp, lang: "C++23", role: "AVX-512 math kernels (phase 1)", status: links}
+    - {path: native/storage-zig, lang: "Zig 0.17", role: "BCSF storage, bump arena, spine SoA (phase 2)", status: links}
+    - {path: native/wal-c, lang: "C11", role: "append-only WAL, A/B epoch slots, CRC32C, io_uring (phase 2)", status: links}
+    - {path: native/proofs-generated/sheaf_verified_rules.h, lang: "C", role: "Lean-emitted verified rule validity table (phase 4)", status: compiles}
+    - {path: native/torch-bridge, lang: "C++/C", role: "zero-copy stalk tensors and coboundary autograd (phase 4, Pillar 11)", status: source_pending_libtorch}
+
+  lean_proofs:
+    - {path: proofs/Poset.lean, ng_file_id: NG-FILE-040, theorem: "le_refl, le_trans", status: source_pending_lean}
+    - {path: proofs/Restriction.lean, ng_file_id: NG-FILE-041, theorem: "restriction_comp, identity_restriction_elim", status: source_pending_lean}
+    - {path: proofs/Gluing.lean, ng_file_id: NG-FILE-042, theorem: "sheaf_gluing_unique, global_section_ext", status: source_pending_lean}
+    - {path: proofs/Cohomology.lean, ng_file_id: NG-FILE-043, theorem: "merge_conflict_iff_coboundary_nonzero, coboundaryDiff_linear", status: source_pending_lean}
+    - {path: proofs/Optimizer.lean, ng_file_id: NG-FILE-044, theorem: "restriction_pushdown_invariant, colimit_assoc, filter_restrict_commute", status: source_pending_lean}
+
+  toolchains:
+    installed: ["zig 0.17.0", "clang 23.1.5 (LLVM, MSVC target)", "gcc 16.2.0 (WinLibs)", "rustc/cargo 1.98.0 x86_64-pc-windows-msvc"]
+    pending: ["Lean 4 + Mathlib (proofs/)", "PyTorch libtorch (native/torch-bridge/)"]
+    link_note: "Native tiers link on Windows MSVC via clang default x86_64-pc-windows-msvc plus llvm-ar. Archives: sheaf_kernel.lib, sheaf_storage.lib, sheaf_wal.lib. Set SHEAF_KERNEL_CXX=clang++ and SHEAF_WAL_CC=clang with LLVM on PATH."
+
+  verification:
+    workspace_test: "cargo test --workspace exits 0; 75 test-result-ok groups; no failures"
+    new_tier_tests: "sheaf-native 27, sheaf-runtime 22, sheaf-vcs 38, sheaf-proofs 9"
+    clippy: "cargo clippy -p sheaf-runtime -p sheaf-vcs -p sheaf-proofs --all-targets -- -D warnings exits 0"
+    pending_exit_criteria: "Lean lake build (needs Mathlib); torch setup.py build_ext + demo/train_snn.py (needs libtorch); hardware gates in spec section 8 (strace, perf, TSan/ASan) need a Linux host"
