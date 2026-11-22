@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // build.rs - track the Lean-emitted rule table (NF-01).
 //
 // The build script does not invoke Lean. It declares the generated header and
