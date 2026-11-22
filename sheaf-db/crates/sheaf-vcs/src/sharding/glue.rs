@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // glue.rs - checked gluing of ghost copies (NF-08).
 
 use super::cover::Shard;
