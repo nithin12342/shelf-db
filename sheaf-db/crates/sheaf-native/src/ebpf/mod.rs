@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // ebpf/mod.rs - the eBPF VFS interception boundary (NF-11).
 //
 // The policy engine is pure Rust and runs on every host. The loader is a
