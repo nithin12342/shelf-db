@@ -20,4 +20,5 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 #[cfg(not(feature = "grpc"))]
-fn main() {}
+fn main() {
+    println!("cargo:rustc-check-cfg=cfg(sheaf_native_rdma)");}
