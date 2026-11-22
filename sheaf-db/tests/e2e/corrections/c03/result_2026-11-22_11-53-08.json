@@ -1,0 +1,12 @@
+{
+  "node": "C-03",
+  "deviation": "D-03 Rust run-length codec",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "top_commit_at_writing": "9b138cafe5d2cc10c52c507b2e30b77f5d8c2573",
+  "command": "cargo test -p sheaf-native --test rle_parity; cargo test -p sheaf-codec",
+  "result": "1 parity test and 67 codec tests pass, 0 failed.",
+  "native_kernel_linked": true,
+  "source_reported": "cpp23",
+  "recorded_at": "2026-11-22_11-53-08 +05:30"
+}
