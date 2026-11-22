@@ -1,0 +1,17 @@
+{
+  "node": "NF-11",
+  "feature": "F-48 eBPF VFS interception",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed_policy_loader_unsupported",
+  "events": 10000,
+  "tests": 3,
+  "failed": 0,
+  "findings": [
+    "10000 generated VFS events each receive an explicit Allow, DenyProtected, or DenyReadOnly decision.",
+    "The expected decision is computed by an independent reference function in the test.",
+    "The loader reports Unsupported with a named cause and its load call returns that same cause.",
+    "The BPF C skeleton is present but is not compiled: clang BPF target and libbpf are absent on this host."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
