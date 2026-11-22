@@ -104,6 +104,28 @@ extern "C" {
         lambda_max: f32,
         scratch: *mut f32,
     ) -> i32;
+
+    pub fn sheaf_spectral_interval(
+        mu: f64,
+        lambda_max: f64,
+        lower: *mut f64,
+        upper: *mut f64,
+        center: *mut f64,
+        radius: *mut f64,
+        sigma: *mut f64,
+    ) -> i32;
+
+    pub fn sheaf_chebyshev_t(sigma: f64, degree: u32) -> f64;
+
+    pub fn sheaf_h1_solve(
+        cx: *const SheafComplexDesc,
+        b: *const f32,
+        tolerance: f32,
+        max_iterations: u32,
+        x: *mut f32,
+        obstruction: *mut f32,
+        residual_norm: *mut f32,
+    ) -> i32;
 }
 
 /// Opaque handle type reserved for future tiers that expose stateful objects.
