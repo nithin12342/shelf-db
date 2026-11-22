@@ -45,7 +45,11 @@ impl DeltaWal {
     }
 }
 
-pub fn replay_delta(path: &Path) -> std::io::Result<(Vec<(u64, Vec<u8>)>, u64, bool)> {
+/// The replayed records, the next expected sequence, and whether a torn tail
+/// was found. The tuple keeps the replay result explicit.
+pub type DeltaReplay = (Vec<(u64, Vec<u8>)>, u64, bool);
+
+pub fn replay_delta(path: &Path) -> std::io::Result<DeltaReplay> {
     let mut buf = Vec::new();
     File::open(path)?.read_to_end(&mut buf)?;
     let mut out = Vec::new();
