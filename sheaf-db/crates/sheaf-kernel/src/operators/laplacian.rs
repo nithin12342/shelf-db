@@ -165,7 +165,7 @@ impl SheafLaplacian {
 
         std::thread::scope(|s| {
             let mut handles = Vec::new();
-            for (buf, (c, flags)) in active_bufs.iter_mut().zip(op_chunks.into_iter().zip(flag_chunks.into_iter())) {
+            for (buf, (c, flags)) in active_bufs.iter_mut().zip(op_chunks.into_iter().zip(flag_chunks)) {
                 let local = &mut buf[..out_len];
                 handles.push(s.spawn(move || {
                     for (op, is_diag) in c.iter().zip(flags.iter()) {
