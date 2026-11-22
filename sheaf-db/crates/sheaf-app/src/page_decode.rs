@@ -60,8 +60,10 @@ fn decode_v2(
         return Err(PageError::Truncated("row fingerprints"));
     }
     let fingerprints: Vec<u64> = body[..fingerprints_len]
-        .chunks_exact(FINGERPRINT)
-        .map(|chunk| u64::from_le_bytes(chunk.try_into().unwrap()))
+        .as_chunks::<FINGERPRINT>()
+        .0
+        .iter()
+        .map(|chunk| u64::from_le_bytes(*chunk))
         .collect();
     let mut at = fingerprints_len;
 
