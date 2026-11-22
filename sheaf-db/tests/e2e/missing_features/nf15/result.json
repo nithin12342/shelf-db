@@ -1,0 +1,18 @@
+{
+  "node": "NF-15",
+  "feature": "S-02 morphism declaration DDL",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "syntax": "DEFINE MORPHISM Name FROM CellA TO CellB PROJ (a -> b) MATRIX [[1.0, 0.0]];",
+  "tests": 7,
+  "failed": 0,
+  "findings": [
+    "The production path parses, validates, stores, and reports a morphism declaration.",
+    "An unknown source cell, unknown target cell, or unknown column returns a named error.",
+    "A type mismatch and a duplicate name are rejected.",
+    "A morphism survives journal recovery after reopening the database.",
+    "Unquoted identifiers fold to lowercase, matching the CREATE TABLE path."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
