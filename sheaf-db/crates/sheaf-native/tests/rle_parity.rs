@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // rle_parity.rs - C++23 codec parity gate (C-03).
 //
 // The test calls the production port with a 1,000-value block. It compares the
