@@ -1,3 +1,4 @@
+import Mathlib.Basic.ExistsUnique
 import Restriction
 
 /-!
@@ -33,8 +34,8 @@ structure GluingSheaf extends CellularSheaf where
     Uniqueness follows because two global sections with equal restrictions are
     equal pointwise, hence equal by function extensionality. -/
 theorem sheaf_gluing_unique (F : GluingSheaf) (s : (U : PosetCell) → F.Stalk U) :
-    ∃! g : GlobalSection F.toCellularSheaf,
-      ∀ U, restrictTo F.toCellularSheaf g U = s U := by
+    ExistsUnique (fun g : GlobalSection F.toCellularSheaf =>
+      ∀ U, restrictTo F.toCellularSheaf g U = s U) := by
   refine ⟨F.glue s, ?_, ?_⟩
   · intro U
     exact F.glue_restrict s U
