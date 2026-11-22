@@ -14,3 +14,4 @@ edition = "2021"
 description = "Columnar codecs: bit packing, frame of reference, ALP floats, and FSST strings"
 
 [dependencies]
+sheaf-native = { path = "../sheaf-native" }
