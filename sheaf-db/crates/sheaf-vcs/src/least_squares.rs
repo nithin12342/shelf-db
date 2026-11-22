@@ -96,10 +96,6 @@ impl Complex1 {
     }
 }
 
-fn dot(a: &[f32], b: &[f32]) -> f32 {
-    a.iter().zip(b).map(|(x, y)| x * y).sum()
-}
-
 /// Solve delta^T delta x = delta^T b by conjugate gradient.
 pub fn least_squares(
     complex: &Complex1,
@@ -113,37 +109,22 @@ pub fn least_squares(
     if max_iterations == 0 {
         return Err(SolveError::BadIterationLimit);
     }
-    let rhs = complex.coboundary_t(b)?;
-    let mut x = vec![0.0f32; complex.vertices];
-    Complex1::center(&mut x);
-    let mut residual = rhs.clone();
-    Complex1::center(&mut residual);
-    let mut direction = residual.clone();
-    let mut residual_norm = dot(&residual, &residual);
-    for _ in 0..max_iterations {
-        if residual_norm.sqrt() <= tolerance {
-            break;
-        }
-        let applied = complex.laplacian_apply(&direction)?;
-        let denominator = dot(&direction, &applied);
-        if !denominator.is_finite() || denominator <= f32::EPSILON {
-            break;
-        }
-        let alpha = residual_norm / denominator;
-        for (value, step) in x.iter_mut().zip(&direction) {
-            *value += alpha * step;
-        }
-        Complex1::center(&mut x);
-        for (value, step) in residual.iter_mut().zip(&applied) {
-            *value -= alpha * step;
-        }
-        Complex1::center(&mut residual);
-        let next = dot(&residual, &residual);
-        let beta = next / residual_norm;
-        for (step, value) in direction.iter_mut().zip(&residual) {
-            *step = *value + beta * *step;
-        }
-        residual_norm = next;
-    }
-    Ok(x)
+    let sources: Vec<u32> = complex.edges.iter().map(|edge| edge.u as u32).collect();
+    let targets: Vec<u32> = complex.edges.iter().map(|edge| edge.v as u32).collect();
+    let spec = sheaf_native::kernel::ComplexSpec {
+        num_vertices: complex.vertices as u32,
+        stalk_dim: 1,
+        edge_src: &sources,
+        edge_dst: &targets,
+        r_src: None,
+        r_dst: None,
+    };
+    let solution = sheaf_native::math::h1_solve(
+        &spec,
+        b,
+        tolerance,
+        max_iterations.min(u32::MAX as usize) as u32,
+    )
+    .map_err(|_| SolveError::BadCochain)?;
+    Ok(solution.representative)
 }
