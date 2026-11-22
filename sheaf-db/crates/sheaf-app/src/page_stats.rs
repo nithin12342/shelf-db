@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // page_stats.rs - page summaries and scan pruning (NF-12).
 //
 // Every stored page carries one summary per column: the smallest value, the
