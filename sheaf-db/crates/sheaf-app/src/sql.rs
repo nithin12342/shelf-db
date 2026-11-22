@@ -11,6 +11,17 @@ pub(crate) use guard::{keyword, tokens};
 
 pub fn parse(text: &str) -> Result<Vec<Statement>> {
     let tokens = tokens(text)?;
+    // A morphism declaration is not part of the sqlparser grammar. Handle the
+    // one-statement form here with its own strict parser, then report an
+    // explicit error for a mixed request.
+    if tokens.iter().any(|t| keyword(t, "DEFINE")) {
+        if !crate::ddl_morphism::is_declaration(&tokens)
+            || tokens.iter().filter(|t| matches!(t, Token::SemiColon)).count() != 1
+        {
+            return Err("DEFINE MORPHISM must be the only statement in a request".into());
+        }
+        return Ok(vec![Statement::DefineMorphism(crate::ddl_morphism::parse(text)?)]);
+    }
     on_parser_stack(move || {
         let statements = Parser::new(&GenericDialect).with_recursion_limit(256)
             .with_tokens(tokens).parse_statements().map_err(|e| e.to_string())?;
