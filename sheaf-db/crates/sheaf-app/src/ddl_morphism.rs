@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // ddl_morphism.rs - the morphism declaration DDL parser (NF-15, S-02).
 //
 // The schema guide declares a morphism from an existing lower-dimensional cell
