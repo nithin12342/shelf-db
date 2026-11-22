@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // ghost.rs - replicated boundary cells (NF-08).
 
 use super::cover::Cell;
