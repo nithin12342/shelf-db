@@ -1,3 +1,4 @@
+-- Timestamp: 2026-11-22_11-53-08 +05:30
 import RuleTable
 import Std
 
@@ -11,10 +12,10 @@ parses the header and compares it with its own table.
 
 namespace Sheaf.RuleTable.Emit
 
-def renderEntry (entry : Nat × String × String) : String :=
+def renderEntry (entry : Nat Ã— String Ã— String) : String :=
   "  { " ++ toString entry.1 ++ ", \"" ++ entry.2.1 ++ "\", \"" ++ entry.2.2 ++ "\" },"
 
-def renderManifestEntry (entry : Nat × String × String) : String :=
+def renderManifestEntry (entry : Nat Ã— String Ã— String) : String :=
   toString entry.1 ++ " " ++ entry.2.1 ++ " " ++ entry.2.2
 
 def manifest : String :=
