@@ -282,7 +282,7 @@ fn main() {
             },
         );
         let elapsed_ns = t0.elapsed().as_nanos();
-        let exec_us = ((elapsed_ns + 999) / 1000).max(1) as u64;
+        let exec_us = elapsed_ns.div_ceil(1000).max(1) as u64;
         let hpair = gid_to_pair[hcell].clone();
         let mut payload: Vec<(String, String)> = Vec::new();
         let mut projections: Vec<(String, Vec<f32>)> = Vec::new();
@@ -322,7 +322,7 @@ fn main() {
             stalk_projections: projections,
         });
     }
-    let total_us = ((t_start.elapsed().as_nanos() + 999) / 1000).max(1) as u64;
+    let total_us = t_start.elapsed().as_nanos().div_ceil(1000).max(1) as u64;
     let median_us = if !all_results.is_empty() {
         (all_results.iter().map(|r| r.execution_time_us).sum::<u64>() / all_results.len() as u64).max(1)
     } else {
