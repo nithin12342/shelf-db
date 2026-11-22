@@ -1,0 +1,64 @@
+{
+  "node": "C-07",
+  "deviation": "D-07 eBPF VFS mount",
+  "spec_reference": "SheafDB_Next_Gen_Technical_Specification.md line 420 - eBPF-Interception Zero-Copy VFS Mount",
+  "recorded_at": "2026-11-22_13-01-47 +05:30",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "top_commit_at_writing": "f334ee13816830f192c70d9a90e289a9d44063db",
+  "files_and_commits": [
+    {
+      "file": "sheaf-db/scripts/compile_ebpf.sh",
+      "commit": "0e291eec3ca7faa2264f856ddef6e7f20c635ad9",
+      "lines": 63,
+      "change": "new clang BPF build rule with named UNSUPPORTED gates"
+    }
+  ],
+  "host_capability": "Windows host has no clang. The bash command is a WSL launcher with no installed distro, so the script cannot run natively here. Docker Desktop 29.1.5 is running and a Linux container supplied the toolchain.",
+  "container_toolchain": "Ubuntu 22.04, clang 14.0.0-1ubuntu1.1, libbpf-dev, linux-libc-dev, multiarch include /usr/include/x86_64-linux-gnu",
+  "tests": [
+    {
+      "name": "install the BPF toolchain in the Linux container",
+      "command": "docker exec sheaf_bpf_build bash -c 'export DEBIAN_FRONTEND=noninteractive; apt-get install -y -qq clang libbpf-dev linux-libc-dev'",
+      "output": "APT_EXIT=0; Ubuntu clang version 14.0.0-1ubuntu1.1; /usr/include/bpf/bpf_helpers.h",
+      "result": "PASS"
+    },
+    {
+      "name": "compile the repository BPF source through a bind mount",
+      "command": "docker run --rm -v \"C:\\Users\\thela\\OneDrive\\Desktop\\folder\\shelf-db\\sheaf-db:/repo\" -w /repo sheaf_bpf_toolchain:latest bash scripts/compile_ebpf.sh /tmp/sheaf_vfs.bpf.o",
+      "output": "PASS: compiled native/ebpf/sheaf_vfs.bpf.c to /tmp/sheaf_vfs.bpf.o; BIND_RUN_EXIT=0",
+      "result": "PASS"
+    },
+    {
+      "name": "inspect the object produced by the bind-mount run",
+      "command": "docker run --rm -v \"C:\\Users\\thela\\OneDrive\\Desktop\\folder\\shelf-db\\sheaf-db:/repo\" -w /repo sheaf_bpf_toolchain:latest bash -c 'bash scripts/compile_ebpf.sh /tmp/sheaf_vfs.bpf.o && readelf -h /tmp/sheaf_vfs.bpf.o'",
+      "output": "PASS: compiled native/ebpf/sheaf_vfs.bpf.c to /tmp/sheaf_vfs.bpf.o; ELF Header: Class ELF64; Type REL (Relocatable file); Machine Linux BPF; Number of section headers 27; BIND_VERIFY_EXIT=0",
+      "result": "PASS"
+    },
+    {
+      "name": "UNSUPPORTED gate when clang is absent",
+      "command": "docker exec sheaf_bpf_build bash -c 'mkdir -p /minimal/bin; ln -sf /usr/bin/dirname /minimal/bin/dirname; env PATH=/minimal/bin /bin/bash /work/scripts/compile_ebpf.sh /work/ebpf/x.o'",
+      "output": "UNSUPPORTED: eBPF VFS compile cannot run. Missing: clang; UNSUPPORTED_GATE_EXIT=0",
+      "result": "PASS"
+    },
+    {
+      "name": "UNSUPPORTED gate when libbpf headers are absent",
+      "command": "docker exec sheaf_bpf_build bash -c 'mv /usr/include/bpf /usr/include/bpf.hidden; bash /work/scripts/compile_ebpf.sh /work/ebpf/y.o; mv /usr/include/bpf.hidden /usr/include/bpf'",
+      "output": "UNSUPPORTED: eBPF VFS compile cannot run. Missing: libbpf headers (bpf/bpf_helpers.h); HEADERS_GATE_EXIT=0",
+      "result": "PASS"
+    },
+    {
+      "name": "host execution attempt",
+      "command": "bash sheaf-db/scripts/compile_ebpf.sh",
+      "output": "WSL ERROR: CreateProcessCommon:735: execvpe(/bin/bash) failed: No such file or directory; HOST_SCRIPT_EXIT=1",
+      "result": "UNSUPPORTED on this host; the Linux-container run above is the compile gate"
+    }
+  ],
+  "artifact": "sheaf_vfs.bpf.o, 7536 bytes, Machine Linux BPF, sections .maps, license, tracepoint/syscalls/sys_enter_openat",
+  "notes": [
+    "The script checks clang, the clang BPF target, and the libbpf headers before it prints PASS.",
+    "Each absent gate prints an explicit UNSUPPORTED line with the named missing tool and exits without claiming a pass.",
+    "The multiarch include directory is added because clang with -target bpf does not add the host path for asm/types.h.",
+    "native/ebpf/sheaf_vfs.bpf.c and crates/sheaf-native/build.rs were not modified."
+  ]
+}
