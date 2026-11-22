@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // ebpf/loader_unsupported.rs - the VFS loader capability (NF-11).
 //
 // This host has no Linux BPF facility and no clang BPF target. The loader
