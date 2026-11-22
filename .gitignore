@@ -23,6 +23,11 @@ Cargo.lock
 zig-out/
 **/zig-out/
 
+# Lean build artifacts: fetched Mathlib source and compiled proof objects.
+# lake-manifest.json is committed because it pins the exact dependency revisions.
+.lake/
+**/.lake/
+
 # Standalone rustc tools (built by tools/run_tools.sh, not cargo targets)
 **/tools/*.exe
 *.exe
