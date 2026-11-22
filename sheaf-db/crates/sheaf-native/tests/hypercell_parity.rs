@@ -28,11 +28,14 @@ fn oracle(m: &CsrCoboundary, initial: &[f32], lambda: f64) -> Vec<f64> {
         let pivot = (i..n).max_by(|&j, &k| a[j][i].abs().total_cmp(&a[k][i].abs())).unwrap();
         a.swap(i, pivot);
         let scale = a[i][i];
-        for j in i..=n { a[i][j] /= scale; }
-        for k in 0..n {
+        for value in a[i][i..=n].iter_mut() { *value /= scale; }
+        let pivot_row = a[i][i..=n].to_vec();
+        for (k, row) in a.iter_mut().enumerate() {
             if k == i { continue; }
-            let scale = a[k][i];
-            for j in i..=n { a[k][j] -= scale * a[i][j]; }
+            let scale = row[i];
+            for (offset, value) in row[i..=n].iter_mut().enumerate() {
+                *value -= scale * pivot_row[offset];
+            }
         }
     }
     a.iter().map(|r| r[n]).collect()
