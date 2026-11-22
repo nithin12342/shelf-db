@@ -21,6 +21,7 @@ pub mod fallback;
 pub mod ffi;
 #[cfg(sheaf_native_storage)]
 pub mod native;
+pub mod page_scan;
 
 pub use fallback::FallbackStorage;
 #[cfg(sheaf_native_storage)]
@@ -57,6 +58,8 @@ pub enum StorageError {
     InvalidArgument,
     /// The bump arena cannot satisfy the requested size and alignment.
     ArenaExhausted,
+    /// A page frame is truncated or has an overlapping row range.
+    Corrupt,
 }
 
 /// The physical storage port. Implementations are stateless and shareable.
