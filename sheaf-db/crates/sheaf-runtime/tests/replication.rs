@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // replication.rs - integration test for the replication adapters (NF-05, NF-06).
 //
 // The test drives the production adapters: a TcpSender writes real frames over
