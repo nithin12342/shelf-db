@@ -1,0 +1,1 @@
+MATCH ROWS ("customer": "customer") GROUP BY "c_segment" EMIT ROWS { "c_segment", COUNT(*) } ORDER BY "c_segment" ASC;
