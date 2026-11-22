@@ -168,6 +168,25 @@ pub enum Statement {
 pub trait DataSource {
     fn columns(&self, table: &str) -> Result<Vec<Column>>;
     fn rows(&self, table: &str) -> Result<Vec<Row>>;
+    /// Read the table with page-level pruning (NF-12). The default source has
+    /// no page summaries, so it reports zero pages and decodes every row.
+    fn scan(&self, table: &str, columns: &[String], predicates: &[Expr]) -> Result<(Vec<Row>, ScanStats)> {
+        let _ = (columns, predicates);
+        Ok((self.rows(table)?, ScanStats::default()))
+    }
+}
+
+/// What one table scan did with the page summaries (NF-12).
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct ScanStats {
+    /// The pages in the table.
+    pub pages_total: usize,
+    /// The pages skipped before decode because the summary cannot match.
+    pub pages_skipped: usize,
+    /// The rows the decoder returned.
+    pub rows_decoded: usize,
+    /// The number of summary clauses the scan tested. Zero means no pruning.
+    pub page_clauses: usize,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -176,6 +195,12 @@ pub struct ExecutionStats {
     pub candidate_rows: usize,
     pub output_rows: usize,
     pub elapsed_us: u128,
+    /// The pages considered by every scan (NF-12).
+    pub pages_total: usize,
+    /// The pages skipped before decode (NF-12).
+    pub pages_skipped: usize,
+    /// The summary clauses the scans tested (NF-12).
+    pub page_clauses: usize,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
