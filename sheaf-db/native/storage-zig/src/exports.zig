@@ -10,6 +10,7 @@
 const spine = @import("spine_soa.zig");
 const arena = @import("bump_arena.zig");
 const block = @import("bcsf_block.zig");
+const page_scan = @import("page_scan.zig");
 
 // ---- spine ---------------------------------------------------------------
 
@@ -95,4 +96,21 @@ export fn sheaf_bcsf_block_matches(
     const lo = query_min orelse return 0;
     const hi = query_max orelse return 0;
     return if (block.blockMatches(h, lo, hi, dims)) 1 else 0;
+}
+
+// ---- physical page scan ----------------------------------------------------
+
+export fn sheaf_page_row_ranges(
+    s: ?*const spine.SheafSpineSoA,
+    payload: ?[*]const u8,
+    payload_len: usize,
+    offsets: ?[*]u64,
+    lengths: ?[*]u32,
+    capacity: u32,
+) c_int {
+    const p = s orelse return -1;
+    const bytes = payload orelse return -1;
+    const out_offsets = offsets orelse return -1;
+    const out_lengths = lengths orelse return -1;
+    return page_scan.rowRanges(p, bytes, payload_len, out_offsets, out_lengths, capacity);
 }
