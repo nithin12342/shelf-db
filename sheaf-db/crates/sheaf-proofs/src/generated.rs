@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // generated.rs - parse the rule header emitted by `lake exe emitRules` (NF-01).
 //
 // The header is the authority. This module reads it at runtime, so a change to
