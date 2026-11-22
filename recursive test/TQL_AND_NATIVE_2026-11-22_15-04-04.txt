@@ -1,0 +1,79 @@
+TQL and native benchmark query text
+Timestamp: 2026-11-22_15-04-04 +05:30
+Remote: origin https://github.com/nithin12342/shelf-db.git
+Branch: combined-stack-feature-improvement
+Top commit at writing: 8628c2c799f361e98fe11b00ec454ab682c40303
+Source documents: TQL_APPLICATION_COMPARISON_2026-10-26.md, KDB_TIMESERIES_COMPARISON_2026-10-27.md, bench_kdb_join.py
+
+[CASE 1: IMDb join and filter - TQL]
+MATCH HYPERCELL c: Casting OVER (t: Title, p: Person) WHERE t.year > 2000 AND t.rating > 75 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { p.name, t.rating, SECTION_ENERGY };
+
+[CASE 1: native SQL]
+SELECT COUNT(*), AVG(r.averagerating), SUM(r.numvotes) FROM title_basics b JOIN title_ratings r ON r.tconst=b.tconst WHERE b.titletype='movie' AND b.startyear>=2000 AND r.averagerating>=7.5
+
+[CASE 2: fraud network two-hop traversal - TQL]
+MATCH HYPERCELL t: Payment OVER (a: Account, m: Merchant, c: Country) WHERE a.balance > 1000 AND t.risk == 1 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.acct_id, m.category, SECTION_ENERGY };
+
+[CASE 2: native Cypher]
+MATCH (p:Person)<-[:PRINCIPAL]-(t:Title) WITH p, count(t) AS d WHERE d > 1 RETURN sum(d*(d-1)) AS pairs
+
+[CASE 3: TPC-H analytical filter - TQL]
+MATCH HYPERCELL l: LineItem OVER (o: Order, p: PartSupp) WHERE l.shipdate < 19980902 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { l.line_id, l.quantity, SECTION_ENERGY };
+
+[CASE 3: native SQL]
+SELECT AVG(l_extendedprice), SUM(l_extendedprice) FROM lineitem WHERE l_extendedprice > 100.0
+
+[CASE 4: key-value direct point lookup - TQL]
+MATCH HYPERCELL t: Payment OVER (a: Account) WHERE a.acct_id == 1001 SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005) EMIT SECTION { a.acct_id, SECTION_ENERGY };
+
+[CASE 4: native SQL]
+SELECT tconst, avg, votes FROM imdb.by_year WHERE year=2000 AND tconst > 'tt0000' LIMIT 10000
+
+[KDB SHAPE 1: time window filter - TQL]
+MATCH HYPERCELL t: Tick OVER (s: Symbol)
+WHERE t.time >= 20261027090000 AND t.time < 20261027100000
+SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005)
+EMIT SECTION { t.price, t.size, SECTION_ENERGY };
+
+[KDB SHAPE 1: q]
+select avg price, sum size by 0D00:01:00 xbar time from quotes
+
+[KDB SHAPE 1: SQL]
+SELECT time_bucket(INTERVAL '1 minute', ts) AS b, AVG(price), SUM(size)
+FROM quotes GROUP BY 1;
+
+[KDB SHAPE 2: one-hour slice - TQL]
+MATCH HYPERCELL t: Tick OVER (s: Symbol)
+WHERE t.time >= 20261027091500 AND t.time <= 20261027101500
+SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005)
+EMIT SECTION { t.price, t.size, SECTION_ENERGY };
+
+[KDB SHAPE 2: q]
+select avg price, sum size from quotes where time within (2026.10.27D09:15:00.000000000; 2026.10.27D10:15:00.000000000)
+
+[KDB SHAPE 2: SQL]
+SELECT AVG(price), SUM(size) FROM quotes
+WHERE ts BETWEEN TIMESTAMP '2026-10-27 09:15:00' AND TIMESTAMP '2026-10-27 10:15:00';
+
+[KDB SHAPE 3: exact timestamp point lookup - TQL]
+MATCH HYPERCELL t: Tick OVER (s: Symbol)
+WHERE t.time == 20261027094215
+SOLVE HARMONIC (REGULARIZATION: 0.01, MAX_ITERATIONS: 25, ENERGY_THRESHOLD: 0.005)
+EMIT SECTION { t.price, t.size, SECTION_ENERGY };
+
+[KDB SHAPE 3: q]
+select price, size from quotes where time = 2026.10.27D09:42:15.000000000
+
+[KDB SHAPE 3: SQL]
+SELECT price, size FROM quotes WHERE ts = TIMESTAMP '2026-10-27 09:42:15';
+
+[KDB FOUR-TABLE FRAUD JOIN: q]
+select from ((payments lj accounts) lj merchants) lj countries where amount > 2000, risk = 1
+
+[KDB FOUR-TABLE FRAUD JOIN: SQL]
+SELECT p.pay_id, a.name, m.category, c.region, p.amount, p.risk
+FROM payment p
+JOIN account a ON p.acct_id = a.acct_id
+JOIN merchant m ON p.merchant_id = m.merchant_id
+JOIN country c ON p.c_code = c.c_code
+WHERE p.amount > 2000 AND p.risk = 1;
