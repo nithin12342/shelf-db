@@ -131,9 +131,7 @@ impl PageType {
             1 => Ok(PageType::Float),
             2 => Ok(PageType::Text),
             3 => Ok(PageType::Bool),
-            other => Err(PageError::Shape(match other {
-                _ => "unknown page type tag",
-            })),
+            _other => Err(PageError::Shape("unknown page type tag")),
         }
     }
 }
@@ -168,6 +166,11 @@ impl PageHeader {
     /// The header length in bytes for this column count.
     pub fn len(&self) -> usize {
         HEADER_FIXED + self.columns.len() * COLUMN_DESC
+    }
+
+    /// A page header always has a fixed part, so it is never empty.
+    pub fn is_empty(&self) -> bool {
+        false
     }
 
     /// Write the header bytes.
