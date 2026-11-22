@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // sharding/mod.rs - open-cover sharding with ghost cells (NF-08).
 //
 // A cover assigns every cell to at least one shard. A boundary cell is
