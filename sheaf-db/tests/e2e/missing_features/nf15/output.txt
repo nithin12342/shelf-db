@@ -1,0 +1,14 @@
+running 7 tests
+test a_duplicate_name_is_rejected ... ok
+test a_mixed_request_is_rejected ... ok
+test a_morphism_survives_journal_recovery ... ok
+test a_valid_declaration_is_parsed_stored_and_reported ... ok
+test incompatible_column_types_are_rejected ... ok
+test an_unknown_cell_reference_is_rejected ... ok
+test an_unknown_column_reference_is_rejected ... ok
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+Library unit tests: 27 passed; 0 failed
+Other sheaf-app integration targets: 3, 12, 20, 14, 10, 6, 5, 4, 5 passed; 0 failed
+
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.64s
