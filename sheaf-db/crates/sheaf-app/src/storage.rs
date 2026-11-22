@@ -1,16 +1,21 @@
-use crate::model::{Column, DataSource, DataType, Result, Row, Value, MAX_ROWS, MEMORY_LIMIT};
+// storage.rs - the table catalog and the page store (MF-07, NF-12).
+//
+// A table validates its schema and its rows, then splits the rows into pages.
+// Each page keeps a column summary, so a scan can skip a page before decode.
+// The scan reports its page decisions in ScanStats; nothing is silent.
+
+use crate::model::{
+    Column, DataSource, DataType, Expr, Result, Row, ScanStats, Value, MAX_ROWS, MEMORY_LIMIT,
+};
+use crate::page_scan::{scan, Page};
+use crate::page_stats::{PagePlan, PageStats};
 use sheaf_native::storage::{SpineEntry, StorageBackend, SPINE_BYTES, SPINE_CELLS};
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
-struct Page {
-    spine: [u8; SPINE_BYTES],
-    payload: Vec<u8>,
-}
-
 pub struct Table {
     pub columns: Vec<Column>,
-    pages: Vec<Page>,
+    pub pages: Vec<Page>,
     pub count: usize,
     pub bytes: usize,
 }
@@ -99,7 +104,8 @@ impl Table {
             let spine = backend
                 .spine_pack(&entries)
                 .map_err(|e| format!("storage: {e:?}"))?;
-            pages.push(Page { spine, payload });
+            let stats = PageStats::build(&columns, chunk)?;
+            pages.push(Page { spine, payload, stats });
         }
         Ok(Self {
             columns,
@@ -111,43 +117,26 @@ impl Table {
 
     pub fn rows(&self, backend: &dyn StorageBackend) -> Result<Vec<Row>> {
         let mut rows = Vec::with_capacity(self.count);
-        let mut bytes = 0;
+        let mut bytes = 0usize;
         for page in &self.pages {
-            for slot in 0..backend.spine_count(&page.spine) {
-                let entry = backend
-                    .spine_get(&page.spine, slot)
-                    .ok_or("invalid spine entry")?;
-                let offset =
-                    usize::try_from(entry.byte_offset).map_err(|_| "invalid spine offset")?;
-                let size = page
-                    .payload
-                    .get(offset..offset.checked_add(4).ok_or("offset overflow")?)
-                    .ok_or("invalid row offset")?;
-                let len = u32::from_le_bytes(size.try_into().unwrap()) as usize;
-                let end = offset
-                    .checked_add(4)
-                    .and_then(|v| v.checked_add(len))
-                    .ok_or("row length overflow")?;
-                let raw = page
-                    .payload
-                    .get(offset + 4..end)
-                    .ok_or("invalid row length")?;
-                if blake3::hash(raw).as_bytes()[..16] != entry.stalk_hash {
-                    return Err("row checksum mismatch".into());
-                }
-                let row: Row = serde_json::from_slice(raw).map_err(|e| e.to_string())?;
-                validate_row(&self.columns, &row)?;
-                bytes += row.iter().map(Value::bytes).sum::<usize>();
-                if bytes > MEMORY_LIMIT {
-                    return Err("decoded table memory limit exceeded".into());
-                }
-                rows.push(row);
-            }
+            page.decode(backend, &self.columns, &mut rows, &mut bytes)?;
         }
         if rows.len() != self.count {
             return Err("spine row count mismatch".into());
         }
         Ok(rows)
+    }
+
+    /// Read the table with page-level pruning (NF-12). The row filter still runs
+    /// after this call, so a kept page is only a cost, never a wrong answer.
+    pub fn scan(
+        &self,
+        backend: &dyn StorageBackend,
+        columns: &[String],
+        predicates: &[Expr],
+    ) -> Result<(Vec<Row>, ScanStats)> {
+        let plan = PagePlan::compile(predicates, columns);
+        scan(&self.pages, &plan, backend, &self.columns, self.count)
     }
 }
 
@@ -170,5 +159,16 @@ impl DataSource for Snapshot<'_> {
             .get(table)
             .ok_or_else(|| format!("unknown table {table}"))?
             .rows(self.backend)
+    }
+    fn scan(
+        &self,
+        table: &str,
+        columns: &[String],
+        predicates: &[Expr],
+    ) -> Result<(Vec<Row>, ScanStats)> {
+        self.catalog
+            .get(table)
+            .ok_or_else(|| format!("unknown table {table}"))?
+            .scan(self.backend, columns, predicates)
     }
 }
