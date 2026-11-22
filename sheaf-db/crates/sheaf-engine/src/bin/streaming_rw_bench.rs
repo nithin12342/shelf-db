@@ -99,12 +99,12 @@ fn main() {
                 let t0 = Instant::now();
                 {
                     let _ = wal.append(&payload);
-                    if count % 1000 == 0 {
+                    if count.is_multiple_of(1000) {
                         let _ = wal.flush();
                     }
                 }
                 let lat_ns = t0.elapsed().as_nanos() as u64;
-                if count % 10 == 0 {
+                if count.is_multiple_of(10) {
                     lats.push(lat_ns);
                 }
                 count += 1;
@@ -141,7 +141,7 @@ fn main() {
                     std::hint::black_box(acc);
                 }
                 let lat_ns = t0.elapsed().as_nanos() as u64;
-                if count % 10 == 0 {
+                if count.is_multiple_of(10) {
                     lats.push(lat_ns);
                 }
                 count += 1;
