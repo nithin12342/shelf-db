@@ -139,6 +139,15 @@ pub struct Query {
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct MorphismDecl {
+    pub name: String,
+    pub from: String,
+    pub to: String,
+    pub projection: Vec<(String, String)>,
+    pub matrix: Vec<Vec<f64>>,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum Statement {
     Create {
         table: String,
@@ -163,6 +172,8 @@ pub enum Statement {
         query: Query,
         analyze: bool,
     },
+    /// A morphism declaration from the schema guide (NF-15, S-02).
+    DefineMorphism(MorphismDecl),
 }
 
 pub trait DataSource {
