@@ -1,0 +1,9 @@
+cargo test -p sheaf-query
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+test the_production_oracle_is_proof_backed ... ok
+test the_fallback_reports_its_reason ... ok
+test two_hundred_generated_plans_keep_their_value_under_every_rule ... ok
+test an_unverified_rule_is_rejected_before_a_shape_test ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.28s
