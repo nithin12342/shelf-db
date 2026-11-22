@@ -1,0 +1,3 @@
+cargo test -p sheaf-runtime --features grpc --test grpc_parity
+cargo test -p sheaf-runtime
+cargo clippy -p sheaf-runtime --features grpc --no-deps --all-targets -- -D warnings
