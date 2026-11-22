@@ -1,12 +1,9 @@
-// consensus/mod.rs - deterministic Raft consensus (NF-07).
+// consensus/mod.rs - sheaf gluing consensus (C-11).
 //
-// The engine has no wall clock and no real sockets. A Cluster drives elections
-// and replication by delivering messages in a fixed order. The safety rules
-// are explicit: one leader per term, a write commits only on a majority, and
-// a minority cannot commit. These are the rules the tests check.
+// Spec Pillar 7 states that network agreement does not use Raft voting loops.
+// Nodes agree when every boundary section satisfies delta s = 0. The gluing
+// module owns that rule. No leader, term, or vote exists in this tier.
 
 pub mod gluing;
 
 pub use gluing::{Boundary, GluingCluster, GluingError};
-pub use log::{Entry, Log};
-pub use state::{Message, Node, Persisted, Role};
