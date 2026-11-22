@@ -1,0 +1,18 @@
+{
+  "node": "NF-05",
+  "feature": "F-32 TCP replication transport",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "deltas": 10000,
+  "tests": 6,
+  "failed": 0,
+  "findings": [
+    "10000 deltas cross loopback TCP with frame checksums and explicit acknowledgements.",
+    "The receiver fingerprint equals the fingerprint of the state built in generation order.",
+    "A fixed-seed shuffle of all 10000 deltas gives the same fingerprint.",
+    "A repeated sequence is ignored and does not change the applied count.",
+    "A truncated frame returns an explicit framing error."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
