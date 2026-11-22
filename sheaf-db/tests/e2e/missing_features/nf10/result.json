@@ -1,0 +1,18 @@
+{
+  "node": "NF-10",
+  "feature": "F-17 Tonic and Tokio gRPC ingress",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "requests": 100,
+  "feature_flag": "grpc",
+  "tests": 1,
+  "failed": 0,
+  "findings": [
+    "A real Tonic server and client exchange 100 protobuf requests on loopback.",
+    "Every gRPC response equals the response of the framed TCP path for the same RequestHandler.",
+    "The default build without the grpc feature still passes all 63 runtime tests.",
+    "protoc 29.3 is installed locally in sheaf-db/tools/protoc and is git-ignored."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
