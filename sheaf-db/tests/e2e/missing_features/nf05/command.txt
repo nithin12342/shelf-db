@@ -1,0 +1,3 @@
+cargo test -p sheaf-runtime --test replication
+cargo test -p sheaf-runtime
+cargo clippy -p sheaf-runtime --no-deps --all-targets -- -D warnings
