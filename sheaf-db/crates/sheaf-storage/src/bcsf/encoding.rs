@@ -113,7 +113,7 @@ pub fn encode_delta_u32(sorted: &[u32], out: &mut Vec<u8>) {
     if sorted.is_empty() {
         return;
     }
-    out.extend_from_slice(&(sorted[0] as u32).to_le_bytes());
+    out.extend_from_slice(&sorted[0].to_le_bytes());
     let mut prev = sorted[0];
     let mut deltas: Vec<u64> = Vec::with_capacity(sorted.len() - 1);
     for &v in sorted.iter().skip(1) {
