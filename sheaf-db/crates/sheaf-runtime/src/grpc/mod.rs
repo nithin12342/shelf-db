@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // grpc/mod.rs - the gRPC ingress adapter (NF-10).
 //
 // This adapter implements the same request and response contract as the framed
