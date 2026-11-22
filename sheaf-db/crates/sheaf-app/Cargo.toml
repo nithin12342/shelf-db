@@ -13,6 +13,13 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sqlparser = { version = "=0.59.0", default-features = false, features = ["std"] }
 blake3 = "1"
+arrow = { version = "53", optional = true }
+arrow-flight = { version = "53", optional = true }
+tonic = { version = "0.12", optional = true }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time"], optional = true }
+futures = { version = "0.3", optional = true }
 
 [features]
 force-fallback = ["sheaf-native/force-fallback"]
+flight = ["dep:arrow", "dep:arrow-flight", "dep:tonic", "dep:tokio", "dep:futures", "sheaf-runtime/grpc"]
+
