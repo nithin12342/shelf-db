@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // codec.rs - Rust port for the C++23 run-length codec (C-03).
 //
 // The selector in sheaf-codec still chooses the codec. The byte loops live in
