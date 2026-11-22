@@ -1,0 +1,1 @@
+MATCH ROWS ("l": "lineitem") JOIN ROWS ("p": "orders") ON ("l"."l_order" = "p"."o_id") WHERE ("l"."l_quantity" > 40) EMIT ROWS { "l"."l_order", "p"."o_total" };
