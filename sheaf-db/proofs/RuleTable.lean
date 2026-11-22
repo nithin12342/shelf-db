@@ -1,3 +1,4 @@
+-- Timestamp: 2026-11-22_11-53-08 +05:30
 import Optimizer
 import Cohomology
 import Restriction
@@ -15,7 +16,7 @@ drift gate parses the header and compares it with its own rule table.
 namespace Sheaf.RuleTable
 
 /-- One rule: an id, a stable name, and the Lean theorem that proves it. -/
-def entries : List (Nat × String × String) :=
+def entries : List (Nat Ã— String Ã— String) :=
   [ (1, "restriction_pushdown", "restriction_pushdown_invariant")
   , (2, "colimit_assoc", "colimit_assoc")
   , (3, "restriction_comp", "restriction_comp")
