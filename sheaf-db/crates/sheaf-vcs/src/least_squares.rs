@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // least_squares.rs - least-squares solve on a graph Laplacian (NF-04).
 //
 // For a 1-complex, the coboundary delta maps a 0-cochain x to edge values
