@@ -60,6 +60,14 @@ extern "C" {
         count: u32,
     ) -> i32;
     pub fn sheaf_spine_count(spine: *const SheafSpineSoA) -> u32;
+    pub fn sheaf_page_row_ranges(
+        spine: *const SheafSpineSoA,
+        payload: *const u8,
+        payload_len: usize,
+        offsets: *mut u64,
+        lengths: *mut u32,
+        capacity: u32,
+    ) -> i32;
     pub fn sheaf_spine_get(
         spine: *const SheafSpineSoA,
         slot: u32,
