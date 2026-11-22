@@ -1,4 +1,7 @@
 // Compile the execution modules directly so these tests do not require a binary entry point.
+// The path-compiled modules contain items this harness does not call; dead code is expected.
+#![allow(dead_code)]
+
 #[path = "../src/aggregate.rs"]
 mod aggregate;
 #[path = "../src/eval.rs"]
@@ -329,7 +332,7 @@ fn mutation_eval_resolution_and_three_valued_logic() {
     assert!(eval::validate(&agg(Aggregate::Count, None, false), &columns).is_err());
     assert_eq!(eval::eval(&bin(col("a.x"), BinaryOp::Add, int(2)), &columns, &row).unwrap(), Value::Int(5));
     assert_eq!(eval::eval(&Expr::IsNull { expr: Box::new(col("a.flag")), negated: false }, &columns, &row).unwrap(), Value::Bool(true));
-    assert_eq!(eval::truth(Value::Null).unwrap(), false);
+    assert!(!eval::truth(Value::Null).unwrap());
     assert!(eval::truth(Value::Int(1)).is_err());
     let vals = [Value::Bool(false), Value::Bool(true), Value::Null];
     let and = [
