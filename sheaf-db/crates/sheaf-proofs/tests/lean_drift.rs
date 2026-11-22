@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // lean_drift.rs - the AOT rule-table drift gate (NF-01).
 //
 // The test reads the header emitted by `lake exe emitRules`, compares it with
