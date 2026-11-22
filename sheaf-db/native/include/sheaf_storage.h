@@ -115,6 +115,14 @@ int sheaf_bcsf_block_matches(const SheafBcsfBlockHeader* header,
                              const float* query_min, const float* query_max,
                              uint32_t dims);
 
+/*
+ * Physical page scan. Fills one offset and length per live spine slot.
+ * Returns the row count on success and a negative code on a bad frame.
+ */
+int sheaf_page_row_ranges(const void* spine, const uint8_t* payload,
+                          size_t payload_len, uint64_t* offsets,
+                          uint32_t* lengths, uint32_t capacity);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
