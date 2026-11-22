@@ -1,0 +1,1 @@
+MATCH ROWS ("lineitem": "lineitem") WHERE ("l_quantity" < 5) EMIT ROWS { COUNT(*) };
