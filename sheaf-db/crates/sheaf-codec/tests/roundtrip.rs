@@ -11,6 +11,7 @@
 use sheaf_codec::fsst::{train, FsstCodec, MAX_SYMBOLS};
 use sheaf_codec::{
     codec_by_id, decode, select, CodecError, ColumnCodec, ColumnData, ColumnType, DecodedColumn,
+    RLE_ID,
 };
 
 /// The number of random values per type.
@@ -214,7 +215,7 @@ fn a_repeated_corpus_keeps_the_table_under_the_cap_and_the_block_under_raw() {
 
 #[test]
 fn every_unknown_codec_id_is_reported() {
-    for id in [5u8, 6, 77, 200, 255] {
+    for id in [6u8, 77, 200, 255] {
         assert_eq!(
             codec_by_id(id).err(),
             Some(CodecError::UnknownCodec(id)),
@@ -225,6 +226,31 @@ fn every_unknown_codec_id_is_reported() {
             Some(CodecError::UnknownCodec(id))
         );
     }
+}
+
+#[test]
+fn a_constant_block_selects_the_run_length_codec() {
+    let values: Vec<Vec<u8>> = (0..50_000).map(|_| b"same".to_vec()).collect();
+    let choice = select(&ColumnData::Bytes(&values)).expect("select");
+    assert_eq!(choice.codec_id, RLE_ID);
+    assert_eq!(choice.codec_name, "rle");
+    assert_eq!(choice.encoded_bytes(), 9 + 4 + 4 + 4);
+    let decoded = decode(choice.codec_id, &choice.encoded).expect("decode");
+    assert_eq!(decoded.as_bytes().expect("bytes").to_vec(), values);
+}
+
+#[test]
+fn a_constant_numeric_block_stays_smaller_under_frame_of_reference() {
+    let values = vec![42u64; 50_000];
+    let choice = select(&ColumnData::U64(&values)).expect("select");
+    assert_eq!(choice.codec_id, 2);
+    assert_eq!(choice.codec_name, "for");
+    assert!(
+        choice.encoded_bytes() < 21,
+        "frame of reference stores a zero bit width, so it beats run-length here"
+    );
+    let decoded = decode(choice.codec_id, &choice.encoded).expect("decode");
+    assert_eq!(decoded.as_u64().expect("u64"), values.as_slice());
 }
 
 #[test]
