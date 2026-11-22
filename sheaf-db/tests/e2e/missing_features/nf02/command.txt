@@ -1,0 +1,3 @@
+cd sheaf-db/proofs && lake build +Chebyshev
+cd .. && cargo test -p sheaf-kernel --test chebyshev_bounds
+cargo clippy -p sheaf-kernel --no-deps --all-targets -- -D warnings
