@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // grpc/service.rs - the Tonic service and server (NF-10).
 //
 // The service receives a byte payload, calls the production RequestHandler,
