@@ -1,0 +1,1 @@
+MATCH ROWS ("customer": "customer") WHERE ("c_id" = 42) EMIT ROWS { "c_name" };
