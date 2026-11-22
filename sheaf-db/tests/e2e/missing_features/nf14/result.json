@@ -1,0 +1,19 @@
+{
+  "node": "NF-14",
+  "features": ["F-12 io_uring fixed-buffer WAL", "F-13 IORING_SETUP_SQPOLL ring"],
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed_on_windows_unsupported_report",
+  "host_result": "unsupported",
+  "reason": "io_uring is a Linux interface, so this platform uses the normal blocking WAL write path",
+  "linux_execution": "not run on this host",
+  "tests": 1,
+  "failed": 0,
+  "findings": [
+    "The Windows test verifies that platform_capability returns Unsupported with a named cause.",
+    "register and write_fixed return RegBufError::Unsupported with the same cause.",
+    "The PowerShell guard prints UNSUPPORTED for io_uring on Windows.",
+    "The Linux test with CRC32C and IORING_SETUP_SQPOLL is gated by cfg(target_os = \"linux\") and was not executed."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
