@@ -1,0 +1,3 @@
+cargo test -p sheaf-app --features flight --test flight
+cargo test -p sheaf-app
+cargo clippy -p sheaf-app --features flight --no-deps --all-targets -- -D warnings
