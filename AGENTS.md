@@ -127,6 +127,23 @@ These rules apply to every feature on every branch. They also apply to every glo
 6. Record the test command and the test output in the commit message or in the evidence file.
 7. A feature with no passing test is not complete. Do not count it as done.
 
+## 3d. Artifact naming and provenance (user instruction, 2026-11-22)
+
+These rules apply to every document, plan, report, and evidence file in this repository.
+
+1. Put a timestamp in every new file name. The format is `YYYY-MM-DD_HH-MM-SS`.
+2. The timestamp gives the year, month, date, hour, minute, and second.
+3. Put the same timestamp in a header line inside the file, with the local time and the UTC offset.
+4. Name the repository remote in full. The remote for this repository is `origin https://github.com/nithin12342/shelf-db.git`.
+5. Name the branch. The active branch is `combined-stack-feature-improvement`, unless the user selects another branch.
+6. Name the full 40-character commit hash that is the top of that branch when the file is written.
+7. Read the hash from `git rev-parse HEAD` before you write it. Do not name a commit that does not exist.
+8. Source code files keep their language-required names. Put the timestamp in the header comment of each new source file.
+9. The granular commit rule still applies. Make one commit for one file creation or one file modification.
+10. A result that does not name its remote, branch, and top commit is not reproducible. Do not count it as evidence.
+
+**Repository identity at this writing.** Remote `origin https://github.com/nithin12342/shelf-db.git`. Branch `combined-stack-feature-improvement`. Top commit `1aae55de9bbd3e75fdb2a63b26cff7de4b17669b` on 2026-11-22 at 09:02:56 +05:30.
+
 ---
 
 ## 4. The document set
@@ -165,6 +182,9 @@ number in every one of them names a committed result file, or a derivation shown
 | `CONTINUOUS_STREAMING_READ_WRITE_BENCHMARK_2026-10-28.md` | Continuous concurrent streaming read/write benchmark and incremental fiber build comparison across eight databases. |
 | `SHELFDB_WRITE_PATH_FUNDAMENTAL_ARCHITECTURE_AND_OPTIMIZATION.md` | Complete context injection and technical roadmap for external agents to optimize the ShelfDB write path. |
 | `MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md` | The 17-node plan for the open audit gaps, with the test gate for each node. |
+| `results/CONSOLIDATED_FEATURE_INVENTORY_2026-11-22.md` | The derived feature count: 48 in scope, 30 implemented, 11 partial, 7 absent. |
+| `IMPLEMENTATION_PLAN_MISSING_FEATURES_2026-11-22_09-02-56.md` | The 16-node plan that closes the 18 open features from the inventory. |
+| `COMPLETE_EXECUTION_PLAN_2026-11-22_09-02-56.md` | The on-laptop run plan: compile, load a data set, run SQL, convert to TQL, optimize, and measure. |
 
 **Two rules that came out of the sessions.**
 
