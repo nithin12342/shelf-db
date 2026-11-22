@@ -1,0 +1,19 @@
+{
+  "node": "NF-16",
+  "feature": "F-22 exact fingerprint cache key",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "key_bits": 128,
+  "key_bytes": 16,
+  "hash": "BLAKE3 over epoch_id u64 || row_count u64 || schema_version u32 || bundle_kind u32, first 16 bytes",
+  "tests": 3,
+  "failed": 0,
+  "findings": [
+    "The production key equals an independent BLAKE3 computation of the same four fixed-width fields.",
+    "Four field changes give four distinct keys.",
+    "The key is idempotent across calls.",
+    "Clippy -D warnings is clean for sheaf-storage."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
