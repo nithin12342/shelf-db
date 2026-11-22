@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // h1.rs - the first cohomology quotient solver (NF-04).
 //
 // A 1-cochain b splits into an exact part delta(x) and a harmonic part h.
