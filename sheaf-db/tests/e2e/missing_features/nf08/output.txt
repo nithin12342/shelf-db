@@ -1,0 +1,10 @@
+running 5 tests
+test every_cell_belongs_to_at_least_one_shard ... ok
+test boundary_edges_have_ghost_copies ... ok
+test a_forced_glue_conflict_is_reported ... ok
+test zero_shards_and_missing_endpoints_are_rejected ... ok
+test placement_is_stable_across_builds ... ok
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+Library tests: 54 passed; 0 failed.
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.41s
