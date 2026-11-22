@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // gluing.rs - sheaf gluing consensus (C-11).
 //
 // Spec Pillar 7 states that network agreement does not use Raft voting loops.
