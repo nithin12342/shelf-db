@@ -27,12 +27,13 @@ impl StalkArena {
     }
     pub fn morph(&self, cell: usize) -> &[f32] {
         // Fast path: if all cells have morphs, index directly without binary search
-        if !self.morph_cells.is_empty() && self.morph_cells.len() + 1 == self.stalk_offsets.len() {
-            if cell + 1 < self.morph_offsets.len() {
-                let s = self.morph_offsets[cell] as usize;
-                let e = self.morph_offsets[cell + 1] as usize;
-                return &self.morphs[s..e];
-            }
+        if !self.morph_cells.is_empty()
+            && self.morph_cells.len() + 1 == self.stalk_offsets.len()
+            && cell + 1 < self.morph_offsets.len()
+        {
+            let s = self.morph_offsets[cell] as usize;
+            let e = self.morph_offsets[cell + 1] as usize;
+            return &self.morphs[s..e];
         }
         let key = u32::try_from(cell).expect("BCSF cell index overflow u32");
         match self.morph_cells.binary_search(&key) {
