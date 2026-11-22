@@ -16,7 +16,7 @@ The global rules at `~/.config/opencode/AGENTS.md` also apply. This file holds t
 - Exclude the archive before every recursive scan, document ingestion, or context-loading operation. The restriction also applies to tools and subagents.
 - Restored mixed database documents outside the archive are approved reading sources. Use their database requirements, not their neural-network requirements.
 - Do not recover excluded neural-network requirements through Git history, compressed bundles, old conversation context, or duplicate files.
-- Start document discovery at `FEATURE_DOCUMENT_CHRONOLOGY/README.md`. Its ordered groups identify authoritative originals and historical copies.
+- Start document discovery at `FEATURE_DOCUMENT_CHRONOLOGY/chronology.json`. Its ordered groups identify authoritative originals and historical copies.
 - The active `AGENTS.md` and `SKELETON.md` take priority over historical copies. Historical results do not prove current implementation status.
 - Preserve this exclusion during instruction-file updates. Only a new explicit user request that reopens archive access can change it.
 
@@ -95,7 +95,7 @@ The global rules at `~/.config/opencode/AGENTS.md` also apply. This file holds t
 ## 3. Project rules
 
 1. Push with normal `git push` to the connected remote `origin`. The user retired the `push_personal.py` token flow on 2026-11-09 because the token file is outdated. Push only once, after all granular commits are complete.
-2. Make one separate commit for every file creation and for every file modification. Do not combine several files into one commit. This is the granular commit rule.
+2. Make one separate commit for every file creation and for every file modification. Do not combine several files into one commit. This is the granular commit rule. When one file holds changes for several features, make one commit for each feature change in that file. Name the feature and the file in the commit message. One revert must undo one feature change.
 3. Keep `SKELETON.md` up to date. It is the source of truth for this repository.
 4. Follow the Intention Engineering methodology in the global rules file. Load the `intention-engineering` skill first when that skill is available in the session.
 5. Compare the databases with a Topological Query Language (TQL) query. A TQL query is a declarative query over a cellular complex.
@@ -111,9 +111,10 @@ These rules govern the SheafDB next-generation implementation on the `combined-s
 1. No code file exceeds 500 lines.
 2. Add new features as new code files. Do not grow existing files to hold new features.
 3. Use an object-oriented, SOLID structure. Separate interfaces from implementations.
-4. Use the right language at the right tier: C++23 for math kernels, Zig for physical storage, C11 for the WAL and hardware paths, Rust for orchestration and ingress, Lean 4 for proofs.
-5. Keep the folder structure logical and navigatable. Write comment lines that explain the logic.
-6. Write native code even when its toolchain is not installed yet. The user installs the toolchains later. Keep the Rust workspace buildable without them through fallback backends.
+4. Use the right language at the right tier: C++23 for math kernels, Zig for physical storage, C11 for the WAL and hardware paths, Rust for orchestration and ingress, Lean 4 for proofs. Add procedural macros and Rust metaprogramming only for compile-time specialization of those tiers. Do not move native math, storage, or hardware work into Rust because a macro generates it.
+5. Network agreement must use sheaf gluing consensus. Do not use Raft voting loops.
+6. Keep the folder structure logical and navigatable. Write comment lines that explain the logic.
+7. Write native code even when its toolchain is not installed yet. The user installs the toolchains later. Keep the Rust workspace buildable without them through fallback backends.
 
 ## 3c. Feature completion and test rule (user instruction, 2026-11-15)
 
@@ -148,7 +149,7 @@ These rules apply to every document, plan, report, and evidence file in this rep
 
 ## 4. The document set
 
-Start with `FEATURE_DOCUMENT_CHRONOLOGY/README.md` for the ordered database reading path and the excluded neural-network sections.
+Start with `FEATURE_DOCUMENT_CHRONOLOGY/chronology.json` for the ordered database reading path and the excluded neural-network sections.
 Read requirements before implementation records. Read the performance plan of record before performance changes.
 
 `SKELETON.md` holds the source of truth for the code. These documents hold the analysis. Every
@@ -156,7 +157,7 @@ number in every one of them names a committed result file, or a derivation shown
 
 | Document | What it answers |
 |---|---|
-| `FEATURE_DOCUMENT_CHRONOLOGY/README.md` | Ordered agent reading index, canonical sources, and excluded sections. |
+| `FEATURE_DOCUMENT_CHRONOLOGY/chronology.json` | Ordered agent reading index, canonical sources, and excluded sections. |
 | `SheafDB_Next_Gen_Technical_Specification.md` | Restored database requirements. Neural-network sections are excluded. |
 | `Sheaf_Markdown_Documentation_Bundle (1)/Cellular_Sheaf_Complete_System_Architecture.md` | Mainly a neural-system proposal. Database storage and shared mathematics are background only. |
 | `SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md` | Restored database schema and query guidance. Training sections are excluded. |
