@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // rle.cpp - C++23 run-length codec for u64 blocks (C-03).
 //
 // The format matches crates/sheaf-codec/src/rle.rs byte for byte:
