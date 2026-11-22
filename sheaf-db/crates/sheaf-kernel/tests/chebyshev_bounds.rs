@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // chebyshev_bounds.rs - check the Rust estimator against the Lean proofs (NF-02).
 //
 // The test calls the production constructor with 100 deterministic inputs.
