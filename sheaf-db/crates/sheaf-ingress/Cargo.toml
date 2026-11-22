@@ -1,0 +1,17 @@
+[package]
+name = "sheaf-ingress"
+version = "0.1.0"
+edition = "2021"
+description = "Unified gRPC and Arrow Flight ingress adapters"
+
+[dependencies]
+sheaf-runtime = { path = "../sheaf-runtime" }
+sheaf-app = { path = "../sheaf-app" }
+
+[features]
+default = []
+grpc = ["sheaf-runtime/grpc"]
+flight = ["sheaf-app/flight"]
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time"] }
