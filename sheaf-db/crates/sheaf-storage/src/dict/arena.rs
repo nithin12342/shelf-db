@@ -96,7 +96,7 @@ impl ByteArena {
     /// runs past the arena returns InvalidOffset.
     pub fn get(&self, offset: u32) -> Result<&[u8], DictError> {
         let start = offset as usize;
-        if start % ALIGNMENT != 0 {
+        if !start.is_multiple_of(ALIGNMENT) {
             return Err(DictError::InvalidOffset(offset));
         }
         let prefix_end = start.checked_add(LENGTH_PREFIX).ok_or(DictError::InvalidOffset(offset))?;
@@ -121,7 +121,7 @@ impl ByteArena {
 
 /// Round `value` up to the next 64-byte boundary.
 pub(crate) fn align_up(value: usize) -> usize {
-    (value + ALIGNMENT - 1) / ALIGNMENT * ALIGNMENT
+    value.div_ceil(ALIGNMENT) * ALIGNMENT
 }
 
 #[cfg(test)]
@@ -144,7 +144,7 @@ mod tests {
             offsets.push(arena.append(value).expect("append"));
         }
         assert_eq!(offsets, vec![0, 64, 128, 384]);
-        assert!(arena.bytes().len() % ALIGNMENT == 0);
+        assert!(arena.bytes().len().is_multiple_of(ALIGNMENT));
         for (offset, value) in offsets.iter().zip([b"a".as_slice(), b"bb", &[0u8; 200], b""]) {
             assert_eq!(arena.get(*offset).expect("read"), value);
         }
