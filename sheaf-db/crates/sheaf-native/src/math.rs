@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // math.rs - Rust port for the C++23 math kernels (C-02).
 //
 // The C++ tier owns the arithmetic. This module builds the C descriptor from
