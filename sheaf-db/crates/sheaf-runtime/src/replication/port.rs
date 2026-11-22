@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // port.rs - the replication and RDMA ports (NF-05, NF-06).
 //
 // A caller depends on these traits only. The TCP adapter and the unsupported
