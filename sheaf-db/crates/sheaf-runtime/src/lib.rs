@@ -30,6 +30,7 @@ pub mod nerve_port;
 pub mod nerve_queue;
 pub mod pin;
 pub mod pinning;
+pub mod replication;
 
 pub use epoch::{EpochGuard, EpochRegistry};
 pub use nerve_lockfree::LockFreeNerveRouter;
