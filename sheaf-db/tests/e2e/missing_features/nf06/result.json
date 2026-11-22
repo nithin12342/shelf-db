@@ -1,0 +1,17 @@
+{
+  "node": "NF-06",
+  "feature": "F-31 RDMA replication boundary",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "capability": "unsupported",
+  "reason": "no RDMA verbs device or library is available on this host",
+  "tests": 1,
+  "failed": 0,
+  "findings": [
+    "The RDMA adapter reports Capability::Unsupported with a named reason.",
+    "post_write returns an explicit Unsupported error with the same reason.",
+    "The adapter never returns a fake success and never silently falls back to TCP."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
