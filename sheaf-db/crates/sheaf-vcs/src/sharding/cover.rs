@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // cover.rs - the shard cover and its invariants (NF-08).
 
 use super::ghost::GhostCell;
