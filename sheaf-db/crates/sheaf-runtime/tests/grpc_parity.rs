@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // grpc_parity.rs - framed TCP and gRPC return the same response bytes (NF-10).
 //
 // The test drives both adapters with the same production RequestHandler and
