@@ -276,7 +276,7 @@ impl BcsfReader {
         if self.arena.discrete.len() != n * 16 {
             return Err("discrete slab != ncells*16".to_string());
         }
-        let validity_words_needed = (n + 63) / 64;
+        let validity_words_needed = n.div_ceil(64);
         if self.arena.validity.len() < validity_words_needed {
             return Err("validity bitmap too short for ncells".to_string());
         }
