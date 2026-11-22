@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // build.rs - generate the gRPC service when the grpc feature is on (NF-10).
 //
 // The generated code goes to OUT_DIR. The build script finds protoc in the
