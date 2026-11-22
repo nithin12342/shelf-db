@@ -23,6 +23,9 @@ Cargo.lock
 zig-out/
 **/zig-out/
 
+# Local protoc binary and protobuf includes for the gRPC code generator.
+sheaf-db/tools/protoc/
+
 # Lean build artifacts: fetched Mathlib source and compiled proof objects.
 # lake-manifest.json is committed because it pins the exact dependency revisions.
 .lake/
