@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // h1.rs - integration test for the H1 quotient solver (NF-04).
 //
 // Four complexes: a line, a triangle, two glued triangles, and a triangle with
