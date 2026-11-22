@@ -1,0 +1,1 @@
+MATCH ROWS ("o": "orders") JOIN ROWS ("c": "customer") ON ("o"."o_customer" = "c"."c_id") WHERE ("o"."o_total" > 250000) EMIT ROWS { "o"."o_id", "c"."c_name" };
