@@ -11,6 +11,8 @@ pub mod eval;
 pub mod relational_plan;
 pub mod aggregate;
 pub mod executor;
+#[cfg(feature = "flight")]
+pub mod flight;
 pub mod storage;
 pub mod persistence;
 pub mod database;
