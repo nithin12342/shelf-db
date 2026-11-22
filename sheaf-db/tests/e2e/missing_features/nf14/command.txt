@@ -1,0 +1,3 @@
+cargo test -p sheaf-native --test uring_linux -- --nocapture
+.\scripts\verify_uring.ps1
+cargo clippy -p sheaf-native --no-deps --all-targets -- -D warnings
