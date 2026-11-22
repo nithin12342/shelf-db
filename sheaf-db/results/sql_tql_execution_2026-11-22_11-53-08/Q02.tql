@@ -1,0 +1,1 @@
+MATCH ROWS ("orders": "orders") WHERE ("o_total" > 300000) EMIT ROWS { "o_id" };
