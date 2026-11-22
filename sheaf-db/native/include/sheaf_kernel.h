@@ -159,6 +159,13 @@ int sheaf_h1_solve(const SheafComplexDesc* cx, const float* b, float tolerance,
                    uint32_t max_iterations, float* x, float* obstruction,
                    float* residual_norm);
 
+/* Run-length codec for u64 blocks. Returns 0 on success and negative on error. */
+int sheaf_rle_encode_u64(const uint64_t* values, uint32_t count, uint8_t* out,
+                         uint32_t capacity, uint32_t* out_len);
+int sheaf_rle_decode_u64(const uint8_t* bytes, uint32_t len, uint64_t* out,
+                         uint32_t capacity, uint32_t* out_len);
+int sheaf_rle_encoded_bytes_u64(uint32_t count, uint32_t runs);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
