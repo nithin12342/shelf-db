@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // rle.rs - run-length codec (NF-13, spec Pillar 9).
 //
 // A run is one value repeated one or more times. The codec stores each run as a
