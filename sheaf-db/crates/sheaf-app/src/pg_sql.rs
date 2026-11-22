@@ -30,6 +30,7 @@ pub(super) fn execute(application: &Application, text: &str, optimize: bool) -> 
             output = explain(output, *analyze);
             "EXPLAIN".into()
         }
+        Statement::DefineMorphism(_) => "DEFINE MORPHISM".into(),
     };
     codec::result(&output, &tag).map(Some)
 }
