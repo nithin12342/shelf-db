@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.Ring
 
 /-!
 # Cohomological merge obstruction (spec Pillars 6 and 8)
