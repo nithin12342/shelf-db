@@ -1,0 +1,12 @@
+   Compiling sheaf-storage v0.1.0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running tests\cache_key.rs
+running 3 tests
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\lib.rs
+running 52 tests
+test result: ok. 52 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Checking sheaf-storage v0.1.0
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.44s
