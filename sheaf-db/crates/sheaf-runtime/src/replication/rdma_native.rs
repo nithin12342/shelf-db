@@ -4,7 +4,10 @@
 // Remote: origin https://github.com/nithin12342/shelf-db.git
 // Branch: combined-stack-feature-improvement
 // Base commit: 3832065581f3ff4240f4d267c38bcde8fea1c24e
-//
+
+// The ABI constants below are used only when the native RDMA tier is enabled.
+#![allow(dead_code)]
+
 // This file selects one of two paths at build time. When build.rs sets the
 // cfg flag sheaf_native_rdma, the adapter calls the C ABI in native/rdma-c.
 // Without that flag the adapter calls no C function and returns the same named
