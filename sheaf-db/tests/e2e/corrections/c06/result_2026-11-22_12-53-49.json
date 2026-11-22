@@ -1,0 +1,78 @@
+{
+  "node": "C-06",
+  "deviation": "D-06 RDMA replication",
+  "spec_reference": "SheafDB_Next_Gen_Technical_Specification.md line 316 - Zero-Copy RDMA Replication (RoCEv2)",
+  "recorded_at": "2026-11-22_12-53-49 +05:30",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "top_commit_at_writing": "901b701d156f54155ca7050bebab6b6cfb061af9",
+  "unsupported_reason": "libibverbs is not available on this host (SHEAF_HAVE_LIBIBVERBS is not defined)",
+  "verbs_present_no_port_reason": "no Ethernet RDMA RoCEv2 port is present on this host",
+  "files_and_commits": [
+    {
+      "file": "sheaf-db/native/include/sheaf_rdma.h",
+      "commit": "6329a6fe1b9fea3b2a9f4d7d291fd67c4e61273e",
+      "lines": 119
+    },
+    {
+      "file": "sheaf-db/native/rdma-c/src/rdma.c",
+      "commit": "ab58f34ad975678f6a9210fd0bf0062574592397",
+      "lines": 284
+    },
+    {
+      "file": "sheaf-db/crates/sheaf-runtime/src/replication/rdma_native.rs",
+      "commit": "2a4ae2af01cf0943be064f2349a2b6e4c671dae6",
+      "lines": 306
+    },
+    {
+      "file": "sheaf-db/tests/e2e/corrections/c06/rdma_probe_test.c",
+      "commit": "4a233babd71ddf8396fd4d54ab8a48a03daf1164",
+      "lines": 86
+    },
+    {
+      "file": "sheaf-db/tests/e2e/corrections/c06/rdma_probe_test.c",
+      "change": "assert the named reason declared by each build configuration",
+      "commit": "901b701d156f54155ca7050bebab6b6cfb061af9",
+      "lines": 86
+    }
+  ],
+  "tests": [
+    {
+      "name": "C11 probe and post-write test, host MinGW-W64 GCC 16.2.0, no libibverbs",
+      "command": "gcc -std=c11 -Wall -Wextra -Werror -I sheaf-db/native/include sheaf-db/native/rdma-c/src/rdma.c sheaf-db/tests/e2e/corrections/c06/rdma_probe_test.c -o C:/Users/thela/AppData/Local/Temp/opencode/c06_rdma_probe.exe",
+      "output": "capability=0; reason=libibverbs is not available on this host (SHEAF_HAVE_LIBIBVERBS is not defined); PASS capability_none; PASS named_reason; PASS endpoint_open_ecap; PASS endpoint_open_null_output; PASS post_write_ecap_no_fake_success; PASS out_of_range_einval; C06 RDMA PROBE: PASS; TEST_EXIT=0",
+      "result": "PASS"
+    },
+    {
+      "name": "C11 probe and post-write test, Ubuntu 22.04 container clang 14, no libibverbs",
+      "command": "docker exec sheaf_bpf_build bash -c 'clang -std=c11 -Wall -Wextra -Werror -I/work/include /work/rdma/rdma.c /work/test/rdma_probe_test.c -o /work/test/probe_noverbs && /work/test/probe_noverbs'",
+      "output": "capability=0; reason=libibverbs is not available on this host (SHEAF_HAVE_LIBIBVERBS is not defined); PASS x6; C06 RDMA PROBE: PASS; NOVERBS_EXIT=0",
+      "result": "PASS"
+    },
+    {
+      "name": "C11 verbs-enabled compile and run, no RoCEv2 NIC present",
+      "command": "docker exec sheaf_bpf_build bash -c 'clang -std=c11 -Wall -Wextra -Werror -DSHEAF_HAVE_LIBIBVERBS -I/work/include -c /work/rdma/rdma.c -o /work/rdma/rdma_verbs.o && echo VERBS_COMPILE=PASS && clang -std=c11 -Wall -Wextra -Werror -DSHEAF_HAVE_LIBIBVERBS -I/work/include /work/rdma/rdma.c /work/test/rdma_probe_test.c -libverbs -o /work/test/probe_verbs && /work/test/probe_verbs'",
+      "output": "VERBS_COMPILE=PASS; capability=0; reason=no Ethernet RDMA RoCEv2 port is present on this host; PASS x6; C06 RDMA PROBE: PASS; VERBS_EXIT=0",
+      "result": "PASS"
+    },
+    {
+      "name": "Rust adapter, cfg sheaf_native_rdma not set, real SectionDelta input",
+      "command": "rustc --edition 2021 C:/Users/thela/AppData/Local/Temp/opencode/c06_rust_check.rs -o C:/Users/thela/AppData/Local/Temp/opencode/c06_rust_check.exe && C:/Users/thela/AppData/Local/Temp/opencode/c06_rust_check.exe",
+      "output": "C06 RUST ADAPTER: PASS; reason=libibverbs is not available on this host (SHEAF_HAVE_LIBIBVERBS is not defined); RUN_EXIT=0",
+      "result": "PASS"
+    },
+    {
+      "name": "Rust adapter, cfg sheaf_native_rdma set, type-check of the C ABI call path",
+      "command": "rustc --edition 2021 --cfg sheaf_native_rdma --crate-type=lib --emit=metadata C:/Users/thela/AppData/Local/Temp/opencode/c06_rust_check.rs -o C:/Users/thela/AppData/Local/Temp/opencode/c06_rust_check_cfgon.rmeta",
+      "output": "one warning from the ephemeral harness only (unused import port::*); CFG_ON_COMPILE_EXIT=0",
+      "result": "PASS"
+    }
+  ],
+  "line_gate": "119, 284, 306, 86 lines. Every new file is at or below 500 lines.",
+  "notes": [
+    "The C probe reports CAP_NONE on this host and post_write returns ECAP. No function returns OK without a posted verbs work request.",
+    "The Rust adapter calls no C symbol when cfg sheaf_native_rdma is not set and returns the same named reason.",
+    "lib.rs was not modified. The parent session wires the module and declares the custom cfg in build.rs.",
+    "A real RoCEv2 transfer needs a NIC and a connected queue pair. This host has neither. The gate proves the named unsupported result and that both compile configurations are clean."
+  ]
+}
