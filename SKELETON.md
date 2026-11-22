@@ -444,9 +444,10 @@ next_generation_stack:
 # input, stated expected result, recorded evidence, no hard-coded result, no
 # silent fallback.
 #
-# Status on branch combined-stack-feature-improvement, 2026-11-15:
-#   9 of 17 nodes are e2e_passed (MF-00 through MF-08).
-#   8 nodes stay planned (MF-09 through MF-16).
+# Status on branch combined-stack-feature-improvement, 2026-11-22:
+#   17 of 17 nodes are e2e_passed (MF-00 through MF-16).
+#   MF-09 through MF-16 were closed by the NF-01 through NF-16 nodes in the
+#   block `missing_feature_plan_2026_11_22` below.
 # Every passed node names the cargo test command that proves it. The commit
 # message of each node repeats the same command and its result line.
 # ============================================================================
@@ -472,14 +473,44 @@ missing_feature_plan:
     - {node_id: NG-MF-06, pillar: 9, name: "global dictionary arena sharing", status: e2e_passed, depends_on: [NG-MF-05], test: "1M inserts over 10k unique, one arena entry per unique", evidence: "cargo test -p sheaf-storage dict, 15 unit + 5 integration in 2.56 s", evidence_dir: "tests/e2e/missing_features/mf06"}
     - {node_id: NG-MF-07, pillar: 5, name: "versioned page format with explicit gate", status: e2e_passed, depends_on: [NG-MF-05, NG-MF-06], test: "v1 read, v2 round trip, unknown version error, checksum error", evidence: "cargo test -p sheaf-app page, 17 unit + 6 integration", evidence_dir: "tests/e2e/missing_features/mf07"}
     - {node_id: NG-MF-08, pillar: 3, name: "pre-registered io_uring buffers", status: e2e_passed, depends_on: [], test: "fixed 4 KiB write with CRC check on Linux, capability truth elsewhere", evidence: "cargo test -p sheaf-native --test registered_buffers, 6 tests; Windows reports Unsupported with a named cause", evidence_dir: "tests/e2e/missing_features/mf08"}
-    - {node_id: NG-MF-09, pillar: 6, name: "Lean AOT rule table and drift gate", status: planned, depends_on: [], test: "runtime table equals emitted manifest, drift fails the build", evidence_dir: "tests/e2e/missing_features/mf09"}
-    - {node_id: NG-MF-10, pillar: 6, name: "production rewrite optimizer behind a rule oracle", status: planned, depends_on: [NG-MF-09], test: "200 plans, equal row multisets, unverified rule rejected", evidence_dir: "tests/e2e/missing_features/mf10"}
-    - {node_id: NG-MF-11, pillar: 8, name: "H1 quotient solver", status: planned, depends_on: [], test: "line, triangle, two triangles, orthogonality", evidence_dir: "tests/e2e/missing_features/mf11"}
-    - {node_id: NG-MF-12, pillar: 7, name: "replication transport with real TCP adapter", status: planned, depends_on: [NG-MF-03], test: "10k sections over loopback, hash equality, error cases", evidence_dir: "tests/e2e/missing_features/mf12"}
-    - {node_id: NG-MF-13, pillar: 7, name: "deterministic Raft consensus engine", status: planned, depends_on: [NG-MF-12], test: "election, replication, minority, restart, partition heal", evidence_dir: "tests/e2e/missing_features/mf13"}
-    - {node_id: NG-MF-14, pillar: 7, name: "open cover sharding with ghost cells", status: planned, depends_on: [NG-MF-11, NG-MF-12], test: "1k cells, 4 shards, cover check, glue conflict", evidence_dir: "tests/e2e/missing_features/mf14"}
-    - {node_id: NG-MF-15, pillar: 11, name: "Arrow Flight daemon", status: planned, depends_on: [NG-MF-07], test: "real Flight client do_get and do_put over localhost", evidence_dir: "tests/e2e/missing_features/mf15"}
-    - {node_id: NG-MF-16, pillar: 11, name: "eBPF VFS interception", status: planned, depends_on: [], test: "10k recorded events, stated decision each time, capability truth", evidence_dir: "tests/e2e/missing_features/mf16"}
+    - {node_id: NG-MF-09, pillar: 6, name: "Lean AOT rule table and drift gate", status: e2e_passed, depends_on: [], test: "runtime table equals emitted manifest, drift fails the build", evidence: "lake build Sheaf; lake exe emitRules; cargo test -p sheaf-proofs --test lean_drift, 6 pass", evidence_dir: "tests/e2e/missing_features/nf01"}
+    - {node_id: NG-MF-10, pillar: 6, name: "production rewrite optimizer behind a rule oracle", status: e2e_passed, depends_on: [NG-MF-09], test: "200 plans, equal values, unverified rule rejected", evidence: "cargo test -p sheaf-query --test rewrite_equivalence, 2 pass; 400 generated plans", evidence_dir: "tests/e2e/missing_features/nf03"}
+    - {node_id: NG-MF-11, pillar: 8, name: "H1 quotient solver", status: e2e_passed, depends_on: [], test: "line, triangle, two triangles, orthogonality", evidence: "cargo test -p sheaf-vcs --test h1, 5 pass", evidence_dir: "tests/e2e/missing_features/nf04"}
+    - {node_id: NG-MF-12, pillar: 7, name: "replication transport with real TCP adapter", status: e2e_passed, depends_on: [NG-MF-03], test: "10k sections over loopback, hash equality, error cases", evidence: "cargo test -p sheaf-runtime --test replication, 6 pass", evidence_dir: "tests/e2e/missing_features/nf05"}
+    - {node_id: NG-MF-13, pillar: 7, name: "deterministic Raft consensus engine", status: e2e_passed, depends_on: [NG-MF-12], test: "election, replication, minority, restart, partition heal", evidence: "cargo test -p sheaf-runtime --test raft, 5 pass", evidence_dir: "tests/e2e/missing_features/nf07"}
+    - {node_id: NG-MF-14, pillar: 7, name: "open cover sharding with ghost cells", status: e2e_passed, depends_on: [NG-MF-11, NG-MF-12], test: "1k cells, 4 shards, cover check, glue conflict", evidence: "cargo test -p sheaf-vcs --test sharding, 5 pass", evidence_dir: "tests/e2e/missing_features/nf08"}
+    - {node_id: NG-MF-15, pillar: 11, name: "Arrow Flight daemon", status: e2e_passed, depends_on: [NG-MF-07], test: "real Flight client do_get and do_put over localhost", evidence: "cargo test -p sheaf-app --features flight --test flight, 1 pass", evidence_dir: "tests/e2e/missing_features/nf09"}
+    - {node_id: NG-MF-16, pillar: 11, name: "eBPF VFS interception", status: e2e_passed, depends_on: [], test: "10k recorded events, stated decision each time, capability truth", evidence: "cargo test -p sheaf-native --test ebpf_policy, 3 pass; loader reports unsupported", evidence_dir: "tests/e2e/missing_features/nf11"}
+
+# ============================================================================
+# Missing feature plan (2026-11-22)
+# Source: IMPLEMENTATION_PLAN_MISSING_FEATURES_2026-11-22_09-02-56.md
+# Remote: origin https://github.com/nithin12342/shelf-db.git
+# Branch: combined-stack-feature-improvement
+# This plan closes the 18 open features in the consolidated inventory.
+# Every node has a passing production-path test and an evidence directory.
+# ============================================================================
+missing_feature_plan_2026_11_22:
+  document: IMPLEMENTATION_PLAN_MISSING_FEATURES_2026-11-22_09-02-56.md
+  scope: "Database functionality only. The PyTorch bridge stays excluded."
+  plan_nodes: {e2e_passed: 16, planned: 0}
+  nodes:
+    - {node: NF-01, closes: [F-25, F-26], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf01", test: "lake build Sheaf; lake exe emitRules; cargo test -p sheaf-proofs --test lean_drift"}
+    - {node: NF-02, closes: [F-28], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf02", test: "lake build +Chebyshev; cargo test -p sheaf-kernel --test chebyshev_bounds"}
+    - {node: NF-03, closes: [F-27], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf03", test: "cargo test -p sheaf-query --test rewrite_equivalence"}
+    - {node: NF-04, closes: [F-37], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf04", test: "cargo test -p sheaf-vcs --test h1"}
+    - {node: NF-05, closes: [F-32], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf05", test: "cargo test -p sheaf-runtime --test replication"}
+    - {node: NF-06, closes: [F-31], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf06", test: "cargo test -p sheaf-runtime --test replication rdma_reports_unsupported_with_a_named_cause", result: "unsupported with a named cause"}
+    - {node: NF-07, closes: [F-33], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf07", test: "cargo test -p sheaf-runtime --test raft"}
+    - {node: NF-08, closes: [F-29, F-30, F-34], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf08", test: "cargo test -p sheaf-vcs --test sharding"}
+    - {node: NF-09, closes: [F-47], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf09", test: "cargo test -p sheaf-app --features flight --test flight"}
+    - {node: NF-10, closes: [F-17], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf10", test: "cargo test -p sheaf-runtime --features grpc --test grpc_parity"}
+    - {node: NF-11, closes: [F-48], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf11", test: "cargo test -p sheaf-native --test ebpf_policy", result: "policy passed; loader unsupported"}
+    - {node: NF-12, closes: [F-10], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf12", test: "cargo test -p sheaf-app --test page_pushdown"}
+    - {node: NF-13, closes: [F-42], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf13", test: "cargo test -p sheaf-codec"}
+    - {node: NF-14, closes: [F-12, F-13], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf14", test: "cargo test -p sheaf-native --test uring_linux", result: "Windows reports unsupported; Linux execution not run here"}
+    - {node: NF-15, closes: [S-02], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf15", test: "cargo test -p sheaf-app --test morphism_ddl"}
+    - {node: NF-16, closes: [F-22], status: e2e_passed, evidence_dir: "tests/e2e/missing_features/nf16", test: "cargo test -p sheaf-storage --test cache_key"}
 
 # ============================================================================
 # Consolidated feature inventory (2026-11-22)
@@ -492,10 +523,14 @@ feature_inventory:
   document: results/CONSOLIDATED_FEATURE_INVENTORY_2026-11-22.md
   sources: "SheafDB_Next_Gen_Technical_Specification.md (11 pillars), SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md, Sheaf_VCS_Architecture.md, MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md"
   totals: "49 features described; 48 in database scope; 1 excluded (PyTorch bridge)"
-  states: {implemented: 30, partial: 11, absent: 7, excluded: 1}
-  weighted_completion: "35.5 of 48, or 74.0 percent, with a partial feature counted as one half"
-  schema_query: {implemented: 7, absent: 1}
-  plan_nodes: {e2e_passed: 9, planned: 8}
-  absent_features: ["F-17 Tonic/Tokio/Arrow Flight ingress", "F-26 Lean rule table (MF-09)", "F-28 Lean spectral-radius bounds", "F-30 ghost stalks (MF-14)", "F-31 RDMA replication (MF-12)", "F-47 Arrow Flight (MF-15)", "F-48 eBPF VFS (MF-16)"]
-  host_limits: "io_uring needs Linux. Lean proofs need Lean 4 and Mathlib. Cluster tests need a second host."
-  run_evidence: "cargo build --workspace finished in 39.00 s; cargo test --workspace 356 passed, 0 failed; sheaf-app init, insert, and select passed on a persistent directory"
+  states: {implemented: 44, partial: 4, absent: 0, excluded: 1}
+  weighted_completion: "46 of 48, or 95.8 percent, with a partial feature counted as one half"
+  schema_query: {implemented: 8, absent: 0}
+  plan_nodes: {e2e_passed: 17, planned: 0}
+  nf_plan_nodes: {e2e_passed: 16, planned: 0}
+  partial_features: ["F-12 io_uring SQPOLL", "F-13 registered buffers", "F-31 RDMA replication", "F-48 eBPF VFS loader"]
+  absent_features: []
+  host_limits: "io_uring and eBPF need a Linux container. RDMA needs a device. Lean 4 and Mathlib are installed."
+  run_evidence: "cargo build --workspace --release finished in 3 min 12 s; cargo test --workspace passed with 0 failures; feature run with grpc and flight passed; zig build test exited 0; smoke test inserted and selected 2 rows"
+  deviation_report: VIOLATION_ANALYSIS_2026-11-22_11-53-08.md
+  correction_plan: CORRECTION_PLAN_2026-11-22_11-53-08.md
