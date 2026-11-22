@@ -23,6 +23,8 @@
 pub mod affinity;
 pub mod consensus;
 pub mod epoch;
+#[cfg(feature = "grpc")]
+pub mod grpc;
 pub mod ingress;
 pub mod nerve;
 pub mod nerve_lockfree;
