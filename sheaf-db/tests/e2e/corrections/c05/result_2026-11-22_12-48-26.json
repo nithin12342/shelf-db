@@ -1,0 +1,36 @@
+{
+  "node": "C-05",
+  "deviation": "D-05 WAL integrity: spec line 241 requires a BLAKE3 checksum in every framed record",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "top_commit_at_writing": "d85c50ec17c334ae2d336fc97df8f8d37d764c38",
+  "base_commit_at_start": "3832065581f3ff4240f4d267c38bcde8fea1c24e",
+  "timestamp": "2026-11-22_12-48-26 +05:30",
+  "goal": "Make one changed payload byte fail the BLAKE3 record check, and change nothing else in the WAL CRC32C path.",
+  "files_changed": [
+    "sheaf-db/native/wal-c/src/frame_blake3.c (new, 283 lines)",
+    "sheaf-db/native/include/sheaf_wal.h (public declarations)",
+    "sheaf-db/native/wal-c/tests/frame_blake3_test.c (new, C11 test)",
+    "sheaf-db/tests/e2e/corrections/c05/result_2026-11-22_12-48-26.json (this record)"
+  ],
+  "commits": [
+    "9655c7e64b2f74a3fbc2ed91071cba748d5ce41c C-05: add C11 BLAKE3 frame mode in frame_blake3.c",
+    "3bfc03eae1365a9754b0559f4d28d000a0504495 C-05: declare BLAKE3 frame mode in sheaf_wal.h",
+    "701b69b6893251a7592d331dcaf60c26a9b49052 C-05: add C11 unit test for BLAKE3 frame mode"
+  ],
+  "blake3_implementation": "Compact C11 scalar BLAKE3-256 derived from the official BLAKE3 reference implementation (BLAKE3-team/BLAKE3, c/ directory, CC0 public domain). It keeps the portable round function, the seven message schedules, 64-byte blocks, 1024-byte chunks, and the binary tree roll-up. It drops SIMD dispatch, keyed hashing, and derive-key. All helpers are static so the new translation unit adds only the three public ABI symbols.",
+  "crc32c_fast_check_kept": true,
+  "record_wire_layout": "60-byte BLAKE3 record header: magic, seq, epoch, payload_len, 32-byte BLAKE3 digest of payload, 32-bit CRC32C of bytes [0..56).",
+  "gate": "One changed payload byte fails the BLAKE3 record check.",
+  "gate_result": "PASS",
+  "test_command_direct": "gcc -std=c11 -Wall -Wextra -pedantic -Werror -I native/include native/wal-c/src/frame.c native/wal-c/src/frame_blake3.c native/wal-c/tests/frame_blake3_test.c -o C:\\Users\\thela\\AppData\\Local\\Temp\\opencode\\c05_frame_blake3_test_werror.exe && C:\\Users\\thela\\AppData\\Local\\Temp\\opencode\\c05_frame_blake3_test_werror.exe",
+  "test_output_direct": "C-05 BLAKE3 frame test (C11, public C ABI)\nPASS blake3 empty vector\nPASS blake3 abc vector\nPASS blake3 1024-byte full chunk vector\nPASS blake3 1025-byte two-chunk vector\nPASS blake3 4096-byte four-chunk vector\nPASS unchanged payload passes BLAKE3 record check\nPASS seq and epoch round trip\nPASS one changed payload byte fails BLAKE3 record check\nPASS BLAKE3 digest differs for the changed payload\nPASS payload length mismatch fails\nfailures=0\nWERROR_COMPILE_EXIT=0 WERROR_TEST_EXIT=0",
+  "test_command_build_script_flags": "zig cc -O2 -std=c11 -I native/include -I native/wal-c -I native/wal-c/src -c <each wal-c/src/*.c> -o <out>/wal_<stem>.o ; zig ar rcs <out>/libsheaf_wal.a <objects> ; zig cc -std=c11 -I native/include native/wal-c/tests/frame_blake3_test.c <out>/libsheaf_wal.a -o <out>/test_from_archive.exe ; <out>/test_from_archive.exe",
+  "test_output_build_script_flags": "ARCHIVE_EXIT=0 LINK_EXIT=0 ; same 10 PASS lines ; failures=0 ; ARCHIVE_TEST_EXIT=0",
+  "test_command_standalone_object": "zig cc -O2 -std=c11 -I native/include -I native/wal-c -I native/wal-c/src -c native/wal-c/src/frame_blake3.c -o C:\\Users\\thela\\AppData\\Local\\Temp\\opencode\\c05_frame_blake3_zig.o",
+  "test_output_standalone_object": "ZIG_COMPILE_EXIT=0",
+  "independent_reference_vectors": "Empty and abc are the published BLAKE3 test vectors. The 1024, 1025, and 4096 byte vectors were computed with blake3 crate 1.8.7 over data[i] = i % 251. They are external references, not outputs hard-coded into the feature.",
+  "production_build_note": "cargo build -p sheaf-native exits 101 on a pre-existing, unrelated Zig storage tier error in native/storage-zig/src/page_scan.zig line 28 (coercion from slice to *const [4]u8). That file is outside the C-05 scope and belongs to node C-04. To prove the production WAL path, the C11 WAL sources were compiled with the exact build/wal.rs flags using zig cc, archived with zig ar, and the public-ABI test was linked against libsheaf_wal.a and passed. No Rust lib.rs was modified.",
+  "no_push": true,
+  "recorded_at": "2026-11-22_12-48-26 +05:30"
+}
