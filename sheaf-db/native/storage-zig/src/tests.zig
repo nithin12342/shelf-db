@@ -8,4 +8,5 @@ comptime {
     _ = @import("spine_soa.zig");
     _ = @import("bump_arena.zig");
     _ = @import("bcsf_block.zig");
+    _ = @import("page_scan.zig");
 }
