@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // bounds.rs - the Chebyshev spectral interval used by the kernel (NF-02).
 //
 // The interval is [mu, 1.05 * lambda_max + mu]. The Lean file
