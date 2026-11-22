@@ -1,4 +1,4 @@
-import Mathlib
+import Init
 
 /-!
 # Poset cells and the face order (spec Pillar 6)
@@ -35,6 +35,10 @@ theorem le_trans {U V W : PosetCell} (h1 : U ≤ V) (h2 : V ≤ W) : U ≤ W :=
     index are equal. -/
 theorem ext {U V : PosetCell} (hd : U.dim = V.dim) (hi : U.index = V.index) :
     U = V := by
-  cases U; cases V; simp_all
+  cases U
+  cases V
+  cases hd
+  cases hi
+  rfl
 
 end Sheaf
