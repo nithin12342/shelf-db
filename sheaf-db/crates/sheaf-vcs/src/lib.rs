@@ -28,6 +28,7 @@ pub mod least_squares;
 pub mod merkle;
 pub mod repo;
 pub mod section;
+pub mod sharding;
 pub mod wave_executor;
 pub mod wave_report;
 pub mod write_target;
