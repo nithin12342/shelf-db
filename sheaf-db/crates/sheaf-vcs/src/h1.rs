@@ -6,7 +6,7 @@
 // to im(delta), so delta^T h is zero. A nonzero h means the boundary data
 // cannot come from any global section.
 
-use crate::least_squares::{least_squares, Complex1, SolveError};
+use crate::least_squares::{Complex1, SolveError};
 
 /// The quotient of a 1-cochain into an exact part and a harmonic class.
 #[derive(Clone, Debug)]
@@ -33,11 +33,28 @@ pub fn solve_h1(
     tolerance: f32,
     max_iterations: usize,
 ) -> Result<H1Solution, SolveError> {
-    let representative = least_squares(complex, b, tolerance, max_iterations)?;
-    let exact = complex.coboundary(&representative)?;
-    let obstruction: Vec<f32> = b.iter().zip(&exact).map(|(value, part)| value - part).collect();
-    let residual_norm = obstruction.iter().map(|value| value * value).sum::<f32>().sqrt();
-    Ok(H1Solution { representative, obstruction, residual_norm })
+    let sources: Vec<u32> = complex.edges.iter().map(|edge| edge.u as u32).collect();
+    let targets: Vec<u32> = complex.edges.iter().map(|edge| edge.v as u32).collect();
+    let spec = sheaf_native::kernel::ComplexSpec {
+        num_vertices: complex.vertices as u32,
+        stalk_dim: 1,
+        edge_src: &sources,
+        edge_dst: &targets,
+        r_src: None,
+        r_dst: None,
+    };
+    let native = sheaf_native::math::h1_solve(
+        &spec,
+        b,
+        tolerance,
+        max_iterations.min(u32::MAX as usize) as u32,
+    )
+    .map_err(|_| SolveError::BadCochain)?;
+    Ok(H1Solution {
+        representative: native.representative,
+        obstruction: native.obstruction,
+        residual_norm: native.residual_norm,
+    })
 }
 
 #[cfg(test)]
