@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // A BPF program skeleton for VFS interception (NF-11).
 //
 // This source is not compiled on this Windows host: clang with the BPF target
