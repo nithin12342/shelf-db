@@ -1,0 +1,9 @@
+running 3 tests
+test ten_thousand_events_get_an_explicit_decision ... ok
+test a_read_write_policy_allows_all_writes_outside_protected_prefixes ... ok
+test the_loader_reports_unsupported_with_a_named_cause ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.12s
+
+The BPF C program is not compiled on this host: clang with the BPF target and libbpf are absent.
