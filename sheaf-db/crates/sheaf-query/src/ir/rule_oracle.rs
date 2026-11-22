@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // rule_oracle.rs - the proof-gated rule adapter for sheaf-query (NF-03).
 //
 // sheaf-proofs owns the port and the generated adapter. This module supplies
