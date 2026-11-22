@@ -9,6 +9,7 @@ pub mod frame;
 pub mod port;
 pub mod rdma_port;
 pub mod rdma_unsupported;
+pub mod rdma_native;
 pub mod tcp_adapter;
 
 use std::collections::{BTreeMap, HashSet};
