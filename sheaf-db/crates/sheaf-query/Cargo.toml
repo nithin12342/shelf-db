@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 sheaf-core = { path = "../sheaf-core" }
+sheaf-proofs = { path = "../sheaf-proofs" }
