@@ -9,8 +9,10 @@ pub mod assign;
 pub mod cover;
 pub mod ghost;
 pub mod glue;
+pub mod objective;
 
 pub use assign::assign_vertex;
 pub use cover::{Cover, Shard, ShardError};
 pub use ghost::GhostCell;
 pub use glue::{GlueConflict, glue};
+pub use objective::{cut_weight, minimize_cut, modulo_placement};
