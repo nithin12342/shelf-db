@@ -534,3 +534,10 @@ feature_inventory:
   run_evidence: "cargo build --workspace --release finished in 3 min 12 s; cargo test --workspace passed with 0 failures; feature run with grpc and flight passed; zig build test exited 0; smoke test inserted and selected 2 rows"
   deviation_report: VIOLATION_ANALYSIS_2026-11-22_11-53-08.md
   correction_plan: CORRECTION_PLAN_2026-11-22_11-53-08.md
+  correction_nodes: {total: 12, closed: 11, scope_deferred: 1}
+  closed_nodes: [C-01, C-02, C-03, C-04, C-05, C-06, C-07, C-08, C-09, C-10, C-11]
+  deferred_nodes: [C-12]
+  defer_reason: "Mojo belongs to the excluded neural-network phase. A new instruction must reopen that scope."
+  execution_evidence: EXECUTION_RESULTS_2026-11-22_11-53-08.md
+  execution_result: "12 SQL queries, 12 TQL parity passes, 1 baseline limit report, 6 fiber bundle gates passed"
+  final_gates: "cargo test --workspace with grpc and flight: 459 passes, 0 failures; clippy -D warnings clean; zig build test clean; Lean build clean"
