@@ -126,6 +126,22 @@ extern "C" {
         obstruction: *mut f32,
         residual_norm: *mut f32,
     ) -> i32;
+
+    pub fn sheaf_rle_encode_u64(
+        values: *const u64,
+        count: u32,
+        out: *mut u8,
+        capacity: u32,
+        out_len: *mut u32,
+    ) -> i32;
+
+    pub fn sheaf_rle_decode_u64(
+        bytes: *const u8,
+        len: u32,
+        out: *mut u64,
+        capacity: u32,
+        out_len: *mut u32,
+    ) -> i32;
 }
 
 /// Opaque handle type reserved for future tiers that expose stateful objects.
