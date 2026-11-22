@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // flight/server.rs - the Tonic-backed Arrow Flight server (NF-09).
 //
 // do_get and do_put are implemented on the real gRPC path. The other Flight
