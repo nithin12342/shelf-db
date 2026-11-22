@@ -14,6 +14,7 @@ pub mod executor;
 pub mod storage;
 pub mod persistence;
 pub mod database;
+pub mod ddl_morphism;
 pub mod service;
 pub mod topological;
 
