@@ -5,10 +5,8 @@
 // are explicit: one leader per term, a write commits only on a majority, and
 // a minority cannot commit. These are the rules the tests check.
 
-pub mod cluster;
-pub mod log;
-pub mod state;
+pub mod gluing;
 
-pub use cluster::{Cluster, ConsensusError};
+pub use gluing::{Boundary, GluingCluster, GluingError};
 pub use log::{Entry, Log};
 pub use state::{Message, Node, Persisted, Role};
