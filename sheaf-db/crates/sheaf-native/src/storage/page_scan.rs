@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // page_scan.rs - physical page row ranges (C-04).
 //
 // The Zig storage tier owns this loop. The Rust fallback walks the same spine
