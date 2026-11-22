@@ -1,0 +1,10 @@
+running 5 tests
+test a_committed_entry_is_replicated_to_a_majority ... ok
+test a_healed_partition_commits_again ... ok
+test a_minority_partition_cannot_commit ... ok
+test a_restart_preserves_the_term_vote_and_log ... ok
+test an_election_produces_exactly_one_leader_per_term ... ok
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Library tests: 52 passed; 0 failed.
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.28s
