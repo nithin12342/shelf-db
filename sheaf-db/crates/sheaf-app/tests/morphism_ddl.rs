@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // morphism_ddl.rs - integration test for morphism declaration DDL (NF-15).
 //
 // The test calls the production path: Database::run_sql parses the statement,
