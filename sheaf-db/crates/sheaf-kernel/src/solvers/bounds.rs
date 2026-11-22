@@ -9,9 +9,6 @@
 
 use std::fmt;
 
-/// The safety margin applied to the power-iteration estimate.
-pub const SAFETY: f64 = 1.05;
-
 /// Why the interval cannot be built.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum BoundsError {
@@ -51,12 +48,15 @@ impl SpectralInterval {
         if !lambda_max.is_finite() || lambda_max <= 0.0 {
             return Err(BoundsError::InvalidLambda);
         }
-        let lower = mu;
-        let upper = SAFETY * lambda_max + mu;
-        let center = (upper + lower) / 2.0;
-        let radius = (upper - lower) / 2.0;
-        let sigma = center / radius;
-        Ok(Self { lower, upper, center, radius, sigma })
+        let native = sheaf_native::math::spectral_interval(mu, lambda_max)
+            .map_err(|_| BoundsError::InvalidShift)?;
+        Ok(Self {
+            lower: native.lower,
+            upper: native.upper,
+            center: native.center,
+            radius: native.radius,
+            sigma: native.sigma,
+        })
     }
 
     /// True when a value lies in the proven interval.
@@ -66,21 +66,7 @@ impl SpectralInterval {
 
     /// The Chebyshev polynomial T_degree(sigma), by the Lean recurrence.
     pub fn chebyshev_t(&self, degree: usize) -> f64 {
-        let x = self.sigma;
-        let mut previous = 1.0f64;
-        let mut current = x;
-        match degree {
-            0 => previous,
-            1 => current,
-            _ => {
-                for _ in 1..degree {
-                    let next = 2.0 * x * current - previous;
-                    previous = current;
-                    current = next;
-                }
-                current
-            }
-        }
+        sheaf_native::math::chebyshev_t(self.sigma, degree as u32)
     }
 
     /// The residual bound 1 / T_degree(sigma). It decreases with degree.
