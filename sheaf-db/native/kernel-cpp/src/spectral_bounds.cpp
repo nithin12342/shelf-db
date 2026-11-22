@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // spectral_bounds.cpp - C++23 spectral interval and H1 quotient solve (C-02).
 //
 // This file owns the arithmetic that NF-02 and NF-04 placed in Rust. The Rust
