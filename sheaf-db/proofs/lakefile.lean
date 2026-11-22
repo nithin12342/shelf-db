@@ -21,4 +21,7 @@ require mathlib from git "https://github.com/leanprover-community/mathlib4"
 
 lean_lib Sheaf where
   srcDir := "."
-  roots := #[`Poset, `Restriction, `Gluing, `Cohomology, `Optimizer]
+  roots := #[`Poset, `Restriction, `Gluing, `Cohomology, `Optimizer, `RuleTable]
+
+lean_exe emitRules where
+  root := `EmitRules
