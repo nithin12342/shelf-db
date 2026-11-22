@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // page_pushdown.rs - integration test for page-level scan pruning (NF-12).
 //
 // The test drives the production path. Database::run_sql parses the SQL,
