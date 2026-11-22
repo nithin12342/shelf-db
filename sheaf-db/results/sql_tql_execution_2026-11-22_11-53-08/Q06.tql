@@ -1,0 +1,1 @@
+MATCH ROWS ("lineitem": "lineitem") GROUP BY "l_return" EMIT ROWS { "l_return", SUM("l_price") };
