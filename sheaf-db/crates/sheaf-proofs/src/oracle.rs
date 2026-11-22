@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // oracle.rs - the proof-backed rule oracle and its declared fallback (NF-01).
 //
 // A rewrite is applied only when the oracle marks its rule verified. The
