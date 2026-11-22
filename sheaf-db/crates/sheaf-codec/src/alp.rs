@@ -221,6 +221,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(clippy::approx_constant)] // 3.14159 is a decimal input, not the PI constant.
     fn decimal_values_round_trip_exactly() {
         let values = vec![0.1f32, 0.2, 3.14159, -2.5, 1e-6, 1234.5];
         let got = round_trip(&values);
