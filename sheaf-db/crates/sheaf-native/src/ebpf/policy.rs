@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // ebpf/policy.rs - the VFS policy engine (NF-11).
 //
 // Every recorded VFS event gets one explicit decision. A path in a protected
