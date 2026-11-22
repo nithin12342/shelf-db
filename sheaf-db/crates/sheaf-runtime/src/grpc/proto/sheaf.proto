@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package sheaf;
+
+// The same request and response bytes as the framed TCP ingress (NF-10).
+service QueryService {
+  rpc Execute (QueryRequest) returns (QueryReply);
+}
+
+message QueryRequest {
+  bytes payload = 1;
+}
+
+message QueryReply {
+  bytes payload = 1;
+}
