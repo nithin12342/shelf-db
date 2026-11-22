@@ -10,8 +10,9 @@
  *   - Recovery picks the valid slot with the highest epoch, scans records
  *     up to its valid_end, and truncates any torn tail.
  *
- * Framing uses CRC32C for fast sector integrity. BLAKE3 content addressing
- * lives in the Rust commit layer (sheaf-vcs), which hashes whole sections.
+ * Framing uses CRC32C for fast sector integrity. A BLAKE3 frame mode also
+ * puts a BLAKE3-256 checksum in every framed record (spec Pillar 3, line
+ * 241). BLAKE3 content addressing for whole sections stays in sheaf-vcs.
  *
  * Platform backends (one is compiled per build):
  *   - Windows: WriteFile + FlushFileBuffers, FILE_FLAG_WRITE_THROUGH.
@@ -42,6 +43,11 @@ extern "C" {
  * budgets (4 KB .. 64 KB) so a record append is power-fail atomic on
  * drives that advertise AWUPF >= this size. */
 #define SHEAF_WAL_MAX_PAYLOAD 65536u
+
+/* BLAKE3 frame mode constants. CRC32C stays as the fast sector and header
+ * check. The BLAKE3-256 digest covers each record payload. */
+#define SHEAF_BLAKE3_DIGEST_BYTES 32u
+#define SHEAF_BLAKE3_RECORD_HEADER_BYTES 60u
 
 typedef struct SheafWal SheafWal;
 
@@ -84,6 +90,25 @@ uint64_t sheaf_wal_epoch(const SheafWal* wal);
 
 /* Flush and release. Null is ignored. */
 void sheaf_wal_close(SheafWal* wal);
+
+/* ---- BLAKE3 frame mode (frame_blake3.c) ---------------------------------- */
+
+/* Compute the BLAKE3-256 digest of data[0..len) into out[32]. */
+void sheaf_blake3(const uint8_t* data, size_t len,
+                  uint8_t out[SHEAF_BLAKE3_DIGEST_BYTES]);
+
+/* Serialize a BLAKE3 framed record header. The 32-byte digest covers
+ * payload[0..len). The trailing CRC32C covers bytes [0..56) of the header. */
+void sheaf_frame_blake3_encode(uint8_t out[SHEAF_BLAKE3_RECORD_HEADER_BYTES],
+                               uint64_t seq, uint64_t epoch,
+                               const uint8_t* payload, uint32_t len);
+
+/* Validate a BLAKE3 framed record against a payload. The check covers the
+ * magic, the header CRC32C, the payload length, and the BLAKE3 digest.
+ * Returns SHEAF_WAL_OK or SHEAF_WAL_ECORRUPT. seq and epoch may be null. */
+int sheaf_frame_blake3_decode(const uint8_t in[SHEAF_BLAKE3_RECORD_HEADER_BYTES],
+                              uint64_t* seq, uint64_t* epoch,
+                              const uint8_t* payload, uint32_t len);
 
 #ifdef __cplusplus
 } /* extern "C" */
