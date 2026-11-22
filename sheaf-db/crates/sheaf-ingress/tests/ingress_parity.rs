@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // ingress_parity.rs - the unified ingress crate gate (C-09).
 //
 // The test checks that both adapters are reachable through one crate and that
