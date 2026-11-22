@@ -1,0 +1,18 @@
+{
+  "node": "NF-12",
+  "feature": "F-10 live predicate pushdown",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "dataset": "1600 synthetic rows, 100 pages of 16 rows",
+  "tests": 5,
+  "failed": 0,
+  "findings": [
+    "WHERE id < 160 keeps 10 pages and skips 90; the decoder reads 160 rows instead of 1600.",
+    "WHERE flag IS NULL skips the 50 pages that hold no null; IS NOT NULL skips the other 50.",
+    "WHERE label = 'g9' skips all 100 pages and returns 0 rows.",
+    "A compound arithmetic predicate compiles to 0 clauses and keeps every page; the row filter still returns the correct rows.",
+    "The optimized and baseline paths return identical row sets."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
