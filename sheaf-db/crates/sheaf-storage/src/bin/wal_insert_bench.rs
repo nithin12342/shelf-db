@@ -153,7 +153,7 @@ fn main() {
                 payload[1..9].copy_from_slice(&rng.to_le_bytes());
                 ring.append(&payload).unwrap();
                 local += 1;
-                if local % 1000 == 0 {
+                if local.is_multiple_of(1000) {
                     ring.flush().unwrap();
                 }
             }
