@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // math_parity.rs - C++23 math kernel parity gate (C-02).
 //
 // The test drives the production math port with real input. It compares the
