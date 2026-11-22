@@ -137,6 +137,28 @@ int sheaf_chebyshev_solve(const SheafComplexDesc* cx, const float* b,
                           float* x, uint32_t max_iters, float tol,
                           float lambda_min, float lambda_max, float* scratch);
 
+/*
+ * Spectral interval for Chebyshev acceleration. The interval is
+ * [mu, 1.05 * lambda_max + mu]. Every output pointer must be non-null.
+ * Returns 0 on success and -1 for a bad argument.
+ */
+int sheaf_spectral_interval(double mu, double lambda_max, double* lower,
+                            double* upper, double* center, double* radius,
+                            double* sigma);
+
+/* The Chebyshev polynomial T_degree evaluated at sigma. */
+double sheaf_chebyshev_t(double sigma, uint32_t degree);
+
+/*
+ * Split a 1-cochain b into an exact part delta(x) and a harmonic part.
+ * x, obstruction, and residual_norm must point to caller storage.
+ * x holds num_vertices * stalk_dim floats, and obstruction holds
+ * num_edges * stalk_dim floats. Returns 0 on success and -1 for bad input.
+ */
+int sheaf_h1_solve(const SheafComplexDesc* cx, const float* b, float tolerance,
+                   uint32_t max_iterations, float* x, float* obstruction,
+                   float* residual_norm);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
