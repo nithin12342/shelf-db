@@ -1,0 +1,2 @@
+cargo test -p sheaf-vcs --test sharding
+cargo clippy -p sheaf-vcs --no-deps --all-targets -- -D warnings
