@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // rewrite_equivalence.rs - proof-gated rewrite equivalence (NF-03).
 //
 // The test generates 200 expressions, applies every emitted rule where the
