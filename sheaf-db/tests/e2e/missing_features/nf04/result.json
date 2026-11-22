@@ -1,0 +1,16 @@
+{
+  "node": "NF-04",
+  "feature": "F-37 H1 quotient solver",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "tests": 5,
+  "failed": 0,
+  "findings": [
+    "The least-squares representative solves delta^T delta x = delta^T b by conjugate gradient with mean-centring.",
+    "Line, triangle, and two-glued-triangle exact cochains give zero obstruction and recover the centred source.",
+    "A triangle with nonzero cycle sum reports a nonzero harmonic class with delta^T h equal to zero.",
+    "Bad tolerance, bad iteration limit, bad cochain width, and bad edge endpoints are explicit errors."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
