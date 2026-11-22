@@ -1,0 +1,3 @@
+cargo test -p sheaf-storage --test cache_key
+cargo test -p sheaf-storage
+cargo clippy -p sheaf-storage --no-deps --all-targets -- -D warnings
