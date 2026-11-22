@@ -1,0 +1,17 @@
+{
+  "node": "NF-07",
+  "feature": "F-33 deterministic Raft consensus",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "tests": 5,
+  "failed": 0,
+  "findings": [
+    "An election gives one leader per term with a majority of votes.",
+    "A committed entry is present on all five nodes.",
+    "A two-node minority returns NoQuorum and leaves no committed entry.",
+    "A failed write is rolled back on every follower, so a healed partition commits a clean first entry.",
+    "Restart preserves term, vote, log, and commit index and returns the node to follower."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
