@@ -1,0 +1,7 @@
+cd sheaf-db/proofs
+lake build Sheaf
+lake exe emitRules
+cd ..
+cargo test -p sheaf-proofs
+cargo clippy -p sheaf-proofs --no-deps --all-targets -- -D warnings
+gcc -std=c11 -Wall -Wextra -Werror check.c -o check.exe
