@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // rdma_unsupported.rs - the explicit RDMA boundary (NF-06).
 //
 // This host has no remote direct memory access device or verbs library. The
