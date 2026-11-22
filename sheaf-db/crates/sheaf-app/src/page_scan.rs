@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // page_scan.rs - the stored page container and the pruned scan (NF-12).
 //
 // A table is a list of pages. Each page holds a packed spine and a payload of
