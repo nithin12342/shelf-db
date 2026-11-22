@@ -12,7 +12,12 @@
 //! planner  proof-gated rewrites on a linear plan model
 //! ```
 
+pub mod generated;
+pub mod oracle;
 pub mod planner;
 pub mod rules;
 
+pub use oracle::{
+    FallbackReason, GeneratedRules, HandwrittenRules, RuleId, RuleOracle,
+};
 pub use rules::{is_verified, lookup, VerifiedRule, VERIFIED_RULES};
