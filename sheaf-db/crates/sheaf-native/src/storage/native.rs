@@ -16,7 +16,7 @@ pub struct NativeStorage;
 
 // Copy the packed bytes into an aligned spine local. read_unaligned avoids
 // forming a 64-byte-aligned reference from a 1-aligned byte array.
-fn spine_local(packed: &[u8; SPINE_BYTES]) -> ffi::SheafSpineSoA {
+pub(crate) fn spine_local(packed: &[u8; SPINE_BYTES]) -> ffi::SheafSpineSoA {
     // SAFETY: SheafSpineSoA is 512 bytes of plain integers; any bit pattern
     // is valid, and read_unaligned imposes no alignment requirement.
     unsafe { std::ptr::read_unaligned(packed.as_ptr() as *const ffi::SheafSpineSoA) }
