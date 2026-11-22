@@ -19,6 +19,7 @@
 //! tests in tests/ compare them against an independent naive reference.
 
 pub mod kernel;
+pub mod ebpf;
 pub mod storage;
 pub mod wal;
 pub mod backends;
