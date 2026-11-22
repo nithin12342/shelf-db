@@ -1,0 +1,2 @@
+cargo test -p sheaf-codec
+cargo clippy -p sheaf-codec --all-targets -- -D warnings
