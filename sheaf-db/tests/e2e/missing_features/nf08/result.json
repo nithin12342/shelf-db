@@ -1,0 +1,18 @@
+{
+  "node": "NF-08",
+  "features": ["F-29 open-cover sharding", "F-30 ghost cells", "F-34 glue conflict report"],
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "dataset": "1000 cells over 4 shards",
+  "tests": 5,
+  "failed": 0,
+  "findings": [
+    "Every cell belongs to at least one shard.",
+    "Boundary edges get ghost copies in adjacent shards and each ghost equals its owner.",
+    "A forced value disagreement produces an explicit GlueConflict.",
+    "Zero shards and missing endpoints are rejected with named errors.",
+    "Placement is stable across repeated builds."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
