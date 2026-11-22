@@ -481,7 +481,7 @@ mod tests {
             let mut line = vec![0u8; len];
             for b in line.iter_mut() {
                 rng_state = rng_state.wrapping_mul(6364136223846793005).wrapping_add(1);
-                *b = if rng_state % 5 == 0 { b'\t' } else { b'a' + (rng_state % 20) as u8 };
+                *b = if rng_state.is_multiple_of(5) { b'\t' } else { b'a' + (rng_state % 20) as u8 };
             }
             let want: Vec<u8> = (0..5).collect();
             let mut a = FieldScratch::new();
