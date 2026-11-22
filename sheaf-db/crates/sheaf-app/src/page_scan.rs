@@ -11,7 +11,7 @@
 use crate::model::*;
 use crate::page_stats::{PagePlan, PageStats};
 use crate::storage::validate_row;
-use sheaf_native::storage::{StorageBackend, SPINE_BYTES};
+use sheaf_native::storage::{StorageBackend, SPINE_BYTES, SPINE_CELLS};
 
 /// One stored page: the spine, the payload, and the column summary.
 pub struct Page {
@@ -29,14 +29,19 @@ impl Page {
         rows: &mut Vec<Row>,
         bytes: &mut usize,
     ) -> Result<()> {
-        for slot in 0..backend.spine_count(&self.spine) {
+        let mut offsets = [0u64; SPINE_CELLS];
+        let mut lengths = [0u32; SPINE_CELLS];
+        let count = sheaf_native::storage::page_scan::page_ranges(
+            &self.spine,
+            &self.payload,
+            &mut offsets,
+            &mut lengths,
+        )
+        .map_err(|error| format!("page scan: {error:?}"))?;
+        for slot in 0..count {
             let entry = backend.spine_get(&self.spine, slot).ok_or("invalid spine entry")?;
-            let offset = usize::try_from(entry.byte_offset).map_err(|_| "invalid spine offset")?;
-            let size = self
-                .payload
-                .get(offset..offset.checked_add(4).ok_or("offset overflow")?)
-                .ok_or("invalid row offset")?;
-            let len = u32::from_le_bytes(size.try_into().unwrap()) as usize;
+            let offset = usize::try_from(offsets[slot]).map_err(|_| "invalid spine offset")?;
+            let len = lengths[slot] as usize;
             let end = offset
                 .checked_add(4)
                 .and_then(|value| value.checked_add(len))
