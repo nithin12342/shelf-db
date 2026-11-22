@@ -236,10 +236,7 @@ impl PartitionIndex {
                     if pos > 0 {
                         return Some((keys[pos - 1], values[pos - 1]));
                     }
-                    match next {
-                        Some(n) => cur = *n,
-                        None => return None,
-                    }
+                    cur = *next.as_ref()?;
                 }
             }
         }
