@@ -1,0 +1,1 @@
+MATCH ROWS ("orders": "orders") EMIT ROWS { MIN("o_total"), MAX("o_total") };
