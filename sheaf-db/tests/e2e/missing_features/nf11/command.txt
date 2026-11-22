@@ -1,0 +1,2 @@
+cargo test -p sheaf-native --test ebpf_policy
+cargo clippy -p sheaf-native --no-deps --all-targets -- -D warnings
