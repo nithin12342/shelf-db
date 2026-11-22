@@ -163,7 +163,7 @@ impl RegisteredBuffers {
         if buffer_bytes == 0 {
             return Err(RegBufError::InvalidArgument("the buffer size must be above zero"));
         }
-        if buffer_bytes as usize % ALIGNMENT != 0 {
+        if !(buffer_bytes as usize).is_multiple_of(ALIGNMENT) {
             return Err(RegBufError::InvalidArgument(
                 "the buffer size must be a multiple of 64 bytes",
             ));
