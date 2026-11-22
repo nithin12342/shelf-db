@@ -19,3 +19,4 @@ edition = "2021"
 description = "EBR, pinned views, thread-per-core routing, and TCP ingress for SheafDB"
 
 [dependencies]
+blake3 = "1"
