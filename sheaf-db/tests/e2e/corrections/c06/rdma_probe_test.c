@@ -38,7 +38,15 @@ int main(void)
     printf("capability=%u\n", capability);
     printf("reason=%s\n", reason);
     check(capability == SHEAF_RDMA_CAP_NONE, "capability_none");
-    check(strcmp(reason, SHEAF_RDMA_REASON_NO_VERBS) == 0, "named_reason");
+
+    /* Each build declares its own named reason. Read the expected one from
+     * the header so the test stays correct in both configurations. */
+#if defined(SHEAF_HAVE_LIBIBVERBS)
+    const char* expected_reason = SHEAF_RDMA_REASON_NO_DEVICE;
+#else
+    const char* expected_reason = SHEAF_RDMA_REASON_NO_VERBS;
+#endif
+    check(strcmp(reason, expected_reason) == 0, "named_reason");
 
     SheafRdmaEndpoint* opened = (SheafRdmaEndpoint*)0x1;
     int code = sheaf_rdma_endpoint_open(&opened);
