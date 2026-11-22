@@ -1,0 +1,1 @@
+MATCH ROWS ("c": "customer") JOIN ROWS ("o": "orders") ON ("c"."c_id" = "o"."o_customer") EMIT ROWS { "c"."c_name", "o"."o_total" } ORDER BY "o"."o_total" DESC LIMIT 10;
