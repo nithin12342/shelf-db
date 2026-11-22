@@ -21,6 +21,7 @@
 //! the spec.
 
 pub mod affinity;
+pub mod consensus;
 pub mod epoch;
 pub mod ingress;
 pub mod nerve;
