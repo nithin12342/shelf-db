@@ -22,7 +22,9 @@
 pub mod chart;
 pub mod complex;
 pub mod diff;
+pub mod h1;
 pub mod lca;
+pub mod least_squares;
 pub mod merkle;
 pub mod repo;
 pub mod section;
