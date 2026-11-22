@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // cache_key.rs - exact 128-bit bundle cache key (NF-16, spec Pillar 5).
 //
 // The cache key is BLAKE3 over four fixed-width fields, truncated to 128 bits:
