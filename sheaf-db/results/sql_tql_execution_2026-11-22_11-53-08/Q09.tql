@@ -1,0 +1,1 @@
+MATCH ROWS ("orders": "orders") EMIT ROWS { "o_id", "o_total" } ORDER BY "o_total" DESC LIMIT 20;
