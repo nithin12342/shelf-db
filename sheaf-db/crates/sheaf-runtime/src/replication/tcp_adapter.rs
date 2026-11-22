@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // tcp_adapter.rs - the loopback TCP replication adapter (NF-05).
 //
 // Each send writes one length-prefixed frame and waits for an acknowledgement
