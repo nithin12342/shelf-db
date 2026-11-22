@@ -1,0 +1,2 @@
+cargo test -p sheaf-runtime --test raft
+cargo clippy -p sheaf-runtime --no-deps --all-targets -- -D warnings
