@@ -1,0 +1,10 @@
+running 1 test
+test grpc_and_framed_tcp_return_identical_bytes ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+
+Default build without the grpc feature:
+test result: ok. 52 passed; 0 failed
+test result: ok. 5 passed; 0 failed
+test result: ok. 6 passed; 0 failed
+
+clippy with --features grpc: Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.55s
