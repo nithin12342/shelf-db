@@ -88,17 +88,22 @@ pub fn build(cells: &[Cell], edges: &[(u64, u64)], shard_count: usize) -> Result
             return Err(ShardError::DuplicateCell);
         }
     }
+    // The canonical cover places cells with the seeded cut-weight objective
+    // from spec Pillar 7. Modulo placement stays only as a comparison helper.
+    let vertex_ids: Vec<u64> = vertices.keys().copied().collect();
+    let placement = super::objective::minimize_cut(&vertex_ids, edges, shard_count);
+
     let mut shards: Vec<Shard> = (0..shard_count).map(|id| Shard { id, ..Shard::default() }).collect();
     for vertex in vertices.values() {
-        let shard = super::assign::assign_vertex(vertex.id, shard_count);
+        let shard = placement[&vertex.id];
         shards[shard].cells.insert(vertex.id, vertex.clone());
     }
     for (u, v) in edges {
         let left = vertices.get(u).ok_or(ShardError::MissingEndpoint)?;
         let right = vertices.get(v).ok_or(ShardError::MissingEndpoint)?;
         let edge = edge_cells.get(&edge_id(*u, *v)).cloned().ok_or(ShardError::MissingEndpoint)?;
-        let left_shard = super::assign::assign_vertex(*u, shard_count);
-        let right_shard = super::assign::assign_vertex(*v, shard_count);
+        let left_shard = placement[u];
+        let right_shard = placement[v];
         if left_shard == right_shard {
             shards[left_shard].cells.insert(edge.id, edge.clone());
         } else {
