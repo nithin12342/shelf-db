@@ -30,16 +30,15 @@ pub struct RunLengthCodec;
 
 impl RunLengthCodec {
     fn encode_u64(&self, values: &[u64]) -> Vec<u8> {
-        let runs = runs_u64(values);
-        let mut out = Vec::with_capacity(HEADER_LEN + runs.len() * 12);
-        out.push(TAG_U64);
-        out.extend_from_slice(&(values.len() as u32).to_le_bytes());
-        out.extend_from_slice(&(runs.len() as u32).to_le_bytes());
-        for (len, value) in runs {
-            out.extend_from_slice(&len.to_le_bytes());
-            out.extend_from_slice(&value.to_le_bytes());
+        if values.is_empty() {
+            let mut out = Vec::with_capacity(HEADER_LEN);
+            out.push(TAG_U64);
+            out.extend_from_slice(&0u32.to_le_bytes());
+            out.extend_from_slice(&0u32.to_le_bytes());
+            return out;
         }
-        out
+        let (bytes, _source) = sheaf_native::codec::rle_encode_u64(values).expect("valid u64 block");
+        bytes
     }
 
     fn encode_i64(&self, values: &[i64]) -> Vec<u8> {
@@ -160,19 +159,29 @@ impl ColumnCodec for RunLengthCodec {
         let mut at = HEADER_LEN;
         match tag {
             TAG_U64 => {
-                let mut out = Vec::with_capacity(count);
-                for _ in 0..run_count {
-                    let len = take_u32(bytes, at)? as usize;
-                    at += 4;
-                    let end = at + 8;
-                    if end > bytes.len() {
-                        return Err(CodecError::Corrupt("truncated rle u64 value"));
-                    }
-                    let value = u64::from_le_bytes(bytes[at..end].try_into().unwrap());
-                    at = end;
-                    push_run(&mut out, len, count, value)?;
+                if count == 0 {
+                    return finish(Vec::<u64>::new(), 0, "rle u64 count");
                 }
-                finish(out, count, "rle u64 count")
+                let (values, _source) = match sheaf_native::codec::rle_decode_u64(bytes, count) {
+                    Ok(result) => result,
+                    Err(_) => {
+                        if bytes.len() < HEADER_LEN + run_count * 12 {
+                            return Err(CodecError::Corrupt("truncated rle u64 value"));
+                        }
+                        let mut sum = 0usize;
+                        let mut cursor = HEADER_LEN;
+                        for _ in 0..run_count {
+                            let length = take_u32(bytes, cursor)? as usize;
+                            cursor += 12;
+                            sum += length;
+                        }
+                        if sum > count {
+                            return Err(CodecError::Corrupt("rle run length passes the block count"));
+                        }
+                        return Err(CodecError::Corrupt("rle u64 count"));
+                    }
+                };
+                finish(values, count, "rle u64 count")
             }
             TAG_I64 => {
                 let mut out = Vec::with_capacity(count);
