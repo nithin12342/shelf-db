@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // page_scan.zig - physical page row ranges in the Zig storage tier (C-04).
 //
 // The Rust app owns the query predicate and JSON decoding. This module owns
