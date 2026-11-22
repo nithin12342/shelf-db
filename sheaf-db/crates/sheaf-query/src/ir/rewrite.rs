@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // rewrite.rs - proof-gated rewrites on a linear stalk expression (NF-03).
 //
 // The expression is the scalar model used by proofs/Optimizer.lean. A rewrite
