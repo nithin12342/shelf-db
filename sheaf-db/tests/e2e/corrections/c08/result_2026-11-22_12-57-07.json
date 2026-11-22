@@ -1,0 +1,62 @@
+{
+  "node": "C-08",
+  "deviation": "spec line 314: canonical open poset cover with slices that minimize incidence cut weight",
+  "timestamp_header": "2026-11-22_12-57-07 +05:30",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "top_commit_at_writing": "d85c50ec17c334ae2d336fc97df8f8d37d764c38",
+  "test_commands": [
+    "cargo test -p sheaf-vcs --test sharding -- --nocapture",
+    "cargo test -p sheaf-vcs",
+    "cargo clippy -p sheaf-vcs -- -D warnings"
+  ],
+  "test_output": {
+    "sharding_integration": "running 6 tests; 6 passed; 0 failed; 0 ignored; 0 measured; finished in 0.20s",
+    "objective_evidence_line": "C08 CUT WEIGHTS objective=3 modulo=999",
+    "full_crate": "57 unit tests pass, 5 h1 tests pass, 6 sharding tests pass; 68 passed; 0 failed",
+    "clippy": "Finished dev profile; 0 warnings with -D warnings"
+  },
+  "fixture": {
+    "kind": "deterministic 1000-vertex path graph",
+    "vertices": 1000,
+    "edges": 999,
+    "shards": 4,
+    "fixed_seed_hex": "0x9E3779B97F4A7C15"
+  },
+  "cut_weight": {
+    "objective": 3,
+    "modulo_baseline": 999,
+    "strictly_lower": true,
+    "cover_ghost_count": 3
+  },
+  "files_changed": [
+    "sheaf-db/crates/sheaf-vcs/src/sharding/objective.rs",
+    "sheaf-db/crates/sheaf-vcs/src/sharding/mod.rs",
+    "sheaf-db/crates/sheaf-vcs/src/sharding/cover.rs",
+    "sheaf-db/crates/sheaf-vcs/tests/sharding.rs",
+    "sheaf-db/tests/e2e/corrections/c08/result_2026-11-22_12-57-07.json"
+  ],
+  "commits": [
+    {
+      "file": "sheaf-db/crates/sheaf-vcs/src/sharding/objective.rs",
+      "base_hash": "8fb75d33242f6ab0691332abded5267c7ea82d13",
+      "commit_hash": "23c3ac8f0c1213e5e1dc415f612c1b94fd606299"
+    },
+    {
+      "file": "sheaf-db/crates/sheaf-vcs/src/sharding/mod.rs",
+      "base_hash": "23c3ac8f0c1213e5e1dc415f612c1b94fd606299",
+      "commit_hash": "72cb4f8e14b3e7d274d33f879688562d0ab953a9"
+    },
+    {
+      "file": "sheaf-db/crates/sheaf-vcs/src/sharding/cover.rs",
+      "base_hash": "9655c7e64b2f74a3fbc2ed91071cba748d5ce41c",
+      "commit_hash": "90b94f5d482da3133fb707a41744388184b9fd1f"
+    },
+    {
+      "file": "sheaf-db/crates/sheaf-vcs/tests/sharding.rs",
+      "base_hash": "701b69b6893251a7592d331dcaf60c26a9b49052",
+      "commit_hash": "d85c50ec17c334ae2d336fc97df8f8d37d764c38"
+    }
+  ],
+  "recorded_at": "2026-11-22_12-57-07 +05:30"
+}
