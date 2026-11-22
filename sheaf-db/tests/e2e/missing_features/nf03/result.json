@@ -1,0 +1,17 @@
+{
+  "node": "NF-03",
+  "feature": "F-27 Lean-gated rewrite optimizer",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "corpus": 400,
+  "tests": 2,
+  "failed": 0,
+  "findings": [
+    "Every rewrite is checked against the Lean-emitted rule table before its shape is tested.",
+    "400 generated expressions exercise all five emitted scalar rules with unchanged values on five inputs.",
+    "An unverified rule returns RewriteError::Unverified.",
+    "The fallback oracle reports its reason through the port."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
