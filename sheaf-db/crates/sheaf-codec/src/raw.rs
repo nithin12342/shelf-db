@@ -87,7 +87,7 @@ impl ColumnCodec for RawCodec {
                     return Err(CodecError::Corrupt("raw u64 length does not match the count"));
                 }
                 Ok(DecodedColumn::U64(
-                    body.chunks_exact(8).map(|c| u64::from_le_bytes(c.try_into().unwrap())).collect(),
+                    body.as_chunks::<8>().0.iter().map(|c| u64::from_le_bytes(*c)).collect(),
                 ))
             }
             TAG_I64 => {
@@ -95,7 +95,7 @@ impl ColumnCodec for RawCodec {
                     return Err(CodecError::Corrupt("raw i64 length does not match the count"));
                 }
                 Ok(DecodedColumn::I64(
-                    body.chunks_exact(8).map(|c| i64::from_le_bytes(c.try_into().unwrap())).collect(),
+                    body.as_chunks::<8>().0.iter().map(|c| i64::from_le_bytes(*c)).collect(),
                 ))
             }
             TAG_F32 => {
@@ -103,8 +103,10 @@ impl ColumnCodec for RawCodec {
                     return Err(CodecError::Corrupt("raw f32 length does not match the count"));
                 }
                 Ok(DecodedColumn::F32(
-                    body.chunks_exact(4)
-                        .map(|c| f32::from_bits(u32::from_le_bytes(c.try_into().unwrap())))
+                    body.as_chunks::<4>()
+                        .0
+                        .iter()
+                        .map(|c| f32::from_bits(u32::from_le_bytes(*c)))
                         .collect(),
                 ))
             }
