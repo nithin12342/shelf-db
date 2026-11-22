@@ -1,0 +1,10 @@
+running 5 tests
+test a_line_represents_an_exact_cochain_with_zero_obstruction ... ok
+test a_triangle_with_zero_cycle_sum_is_exact ... ok
+test two_glued_triangles_represent_an_exact_cochain ... ok
+test a_nonzero_cycle_sum_reports_a_harmonic_obstruction ... ok
+test bad_inputs_are_rejected ... ok
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+Library tests: 51 passed; 0 failed.
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.27s
