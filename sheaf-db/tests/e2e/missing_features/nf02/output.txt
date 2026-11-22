@@ -1,0 +1,10 @@
+Built Chebyshev (2.8s)
+Build completed successfully (1850 jobs).
+
+cargo test -p sheaf-kernel --test chebyshev_bounds
+test one_hundred_intervals_satisfy_the_proven_invariants ... ok
+test the_chebyshev_values_are_positive_and_increasing ... ok
+test the_residual_bound_decreases_with_degree ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.73s
