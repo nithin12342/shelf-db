@@ -1,0 +1,11 @@
+{
+  "node": "C-12",
+  "deviation": "D-11 Mojo out of scope",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "top_commit_at_writing": "a4328dc5890d93cf97a89c26c46a6ecfe33b82d2",
+  "decision": "not implemented",
+  "reason": "The approved plan places Mojo in the neural-network phase. The global instruction excludes neural-network work from this database project.",
+  "action_required": "A new explicit user instruction must reopen the neural scope and update AGENTS.md section 3b.",
+  "recorded_at": "2026-11-22_11-53-08 +05:30"
+}
