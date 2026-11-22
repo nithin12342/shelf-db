@@ -32,6 +32,12 @@ fn desc(cx: &ComplexSpec<'_>) -> abi::SheafComplexDesc {
     }
 }
 
+/// Public wrapper used by the math port. The returned descriptor borrows the
+/// slices inside `cx` and must not outlive the call.
+pub(crate) fn descriptor(cx: &ComplexSpec<'_>) -> abi::SheafComplexDesc {
+    desc(cx)
+}
+
 fn map_err(code: i32) -> KernelError {
     match code {
         abi::SHEAF_KERNEL_ESCRATCH => KernelError::ScratchTooSmall,
