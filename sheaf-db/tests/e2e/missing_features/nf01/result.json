@@ -1,0 +1,21 @@
+{
+  "node": "NF-01",
+  "features": ["F-25 Lean rule table", "F-26 Lean AOT rule table"],
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "state": "e2e_passed",
+  "lean_version": "4.37.0-rc1",
+  "mathlib_revision": "a495318fed6482b3c90df686de5131b46a70fd5b",
+  "rule_count": 6,
+  "digest": 252,
+  "tests": 6,
+  "failed": 0,
+  "findings": [
+    "lake build Sheaf completes: 1693 jobs.",
+    "lake exe emitRules emits a text manifest and a C header with 6 rules and checksum 252.",
+    "The Rust table matches the emitted header by id, name, and theorem name.",
+    "gcc -Wall -Wextra -Werror compiles the emitted header and the compiled check exits 0.",
+    "The handwritten adapter reports its fallback reason explicitly."
+  ],
+  "recorded_at": "2026-11-22_09-02-56 +05:30"
+}
