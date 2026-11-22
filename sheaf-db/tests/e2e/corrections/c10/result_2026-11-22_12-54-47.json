@@ -1,0 +1,79 @@
+{
+  "node": "C-10",
+  "feature": "Rust procedural macros and metaprogramming for compile-time specialization of the native tiers",
+  "timestamp_header": "2026-11-22_12-54-47 +05:30",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "top_commit_at_writing": "71ebb41fe3fcb564cba60e96c8b5e12a8a7755a5",
+  "crate": "sheaf-db/crates/sheaf-kernel-macros",
+  "crate_kind": "proc-macro = true, own workspace root, offline deps syn 2.0.119 quote 1.0.47 proc-macro2 1.0.107",
+  "files_created": [
+    "sheaf-db/crates/sheaf-kernel-macros/Cargo.toml",
+    "sheaf-db/crates/sheaf-kernel-macros/src/lib.rs",
+    "sheaf-db/crates/sheaf-kernel-macros/tests/proc_macro_test.rs"
+  ],
+  "macros": [
+    {
+      "name": "sheaf_unroll",
+      "signature": "#[sheaf_unroll(lanes = N)]",
+      "behavior": "Emits the annotated function unchanged and adds a module with compile-time constants LANES, APPLIED and lane_count(). Runtime results do not change."
+    },
+    {
+      "name": "rule_table",
+      "signature": "#[rule_table]",
+      "behavior": "Reads sheaf-db/native/proofs-generated/sheaf_verified_rules.generated.h with include_str! at compile time, parses six rule ids, names and theorems, and emits a static table. No runtime parsing. A const assertion checks the header length seen by the consumer."
+    }
+  ],
+  "command": "cargo test --offline --manifest-path 'C:\\Users\\thela\\OneDrive\\Desktop\\folder\\shelf-db\\sheaf-db\\crates\\sheaf-kernel-macros\\Cargo.toml'",
+  "working_directory": "C:\\Users\\thela\\OneDrive\\Desktop\\folder\\shelf-db",
+  "cargo_exit_code": 0,
+  "test_output": [
+    "Finished `test` profile [unoptimized + debuginfo] target(s) in 0.15s",
+    "Running unittests src\\lib.rs",
+    "running 0 tests",
+    "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+    "Running tests\\proc_macro_test.rs",
+    "running 3 tests",
+    "test rule_table_matches_generated_header ... ok",
+    "test unroll_macro_emits_compile_time_metadata ... ok",
+    "test unroll_macro_keeps_runtime_result ... ok",
+    "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+    "Doc-tests sheaf_kernel_macros",
+    "running 0 tests",
+    "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+  ],
+  "test_result": "3 integration tests pass, 0 failed. Unit and doc targets pass with 0 tests. Compile-time assertions pass.",
+  "commits": [
+    {
+      "short_hash": "ae6f8e9",
+      "full_hash": "ae6f8e949313bd1d2641d0f23ac06d8f6dc7c9a1",
+      "base_hash_at_commit": "901b701d156f54155ca7050bebab6b6cfb061af9",
+      "file": "sheaf-db/crates/sheaf-kernel-macros/Cargo.toml",
+      "subject": "C-10: add sheaf-kernel-macros Cargo.toml proc-macro crate"
+    },
+    {
+      "short_hash": "62e7f47",
+      "full_hash": "62e7f471e6493c6e2f1de9bdc7edcd5120d3bc8b",
+      "base_hash_at_commit": "ae6f8e949313bd1d2641d0f23ac06d8f6dc7c9a1",
+      "file": "sheaf-db/crates/sheaf-kernel-macros/src/lib.rs",
+      "subject": "C-10: implement sheaf_unroll and rule_table macros in lib.rs"
+    },
+    {
+      "short_hash": "71ebb41",
+      "full_hash": "71ebb41fe3fcb564cba60e96c8b5e12a8a7755a5",
+      "base_hash_at_commit": "62e7f471e6493c6e2f1de9bdc7edcd5120d3bc8b",
+      "file": "sheaf-db/crates/sheaf-kernel-macros/tests/proc_macro_test.rs",
+      "subject": "C-10: add proc_macro_test.rs integration test"
+    }
+  ],
+  "scope_checks": {
+    "existing_crate_cargo_toml_modified": false,
+    "existing_lib_rs_modified": false,
+    "skeleton_md_modified": false,
+    "parent_workspace_cargo_toml_modified": false,
+    "pushed": false,
+    "archive_read_or_scanned_for_content": false
+  },
+  "notes": "The new crate declares its own [workspace] table so the parent workspace file needs no change. Cargo.lock and target/ are ignored by the repository .gitignore. The protected neural-network archive was not read for content.",
+  "recorded_at": "2026-11-22_12-54-47 +05:30"
+}
