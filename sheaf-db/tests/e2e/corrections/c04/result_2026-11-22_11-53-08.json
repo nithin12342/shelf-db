@@ -1,0 +1,12 @@
+{
+  "node": "C-04",
+  "deviation": "D-04 Rust physical page scan",
+  "remote": "origin https://github.com/nithin12342/shelf-db.git",
+  "branch": "combined-stack-feature-improvement",
+  "top_commit_at_writing": "d85c50ec17c334ae2d336fc97df8f8d37d764c38",
+  "command": "cd native/storage-zig && zig build test; cd ../.. && cargo test -p sheaf-app --test page_pushdown",
+  "result": "Zig inline test passes. 5 page pushdown tests pass, 0 failed.",
+  "native_storage_linked": true,
+  "source_reported": "zig",
+  "recorded_at": "2026-11-22_11-53-08 +05:30"
+}
