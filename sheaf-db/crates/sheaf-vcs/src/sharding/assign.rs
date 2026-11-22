@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // assign.rs - deterministic cell placement (NF-08).
 
 /// Assign a cell to a shard. The rule is stable and needs no shared state.
