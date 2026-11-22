@@ -3,7 +3,7 @@ use crate::persistence::Journal;
 use crate::storage::{Catalog, Snapshot, Table};
 use sheaf_native::storage::StorageBackend;
 use sheaf_runtime::EpochRegistry;
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet};
 use std::path::Path;
 use std::sync::Arc;
 
@@ -12,6 +12,8 @@ pub struct Database {
     backend: Box<dyn StorageBackend>,
     journal: Option<Journal>,
     epochs: EpochRegistry,
+    /// Morphism declarations from the schema-guide DDL (NF-15).
+    morphisms: BTreeMap<String, MorphismDecl>,
 }
 
 impl Database {
@@ -21,6 +23,7 @@ impl Database {
             backend: sheaf_native::backends::storage(),
             journal: None,
             epochs: EpochRegistry::new(64),
+            morphisms: BTreeMap::new(),
         }
     }
 
@@ -28,9 +31,7 @@ impl Database {
         let mut database = Self::memory();
         let journal = Journal::open(path)?;
         journal.replay(|statement| {
-            let (catalog, _) = database.prepare(&statement)?;
-            database.catalog = catalog;
-            database.epochs.advance();
+            database.apply_replay(&statement)?;
             Ok(())
         })?;
         database.journal = Some(journal);
@@ -112,6 +113,33 @@ impl Database {
 
     pub fn execute(&mut self, statement: &Statement, optimize: bool) -> Result<QueryOutput> {
         match statement {
+            Statement::DefineMorphism(declaration) => {
+                self.install_morphism(declaration.clone())?;
+                if let Some(journal) = &mut self.journal {
+                    journal.commit(statement)?;
+                }
+                self.epochs.advance();
+                let width = declaration.matrix.first().map_or(0, Vec::len);
+                Ok(QueryOutput {
+                    columns: vec!["name".into(), "from".into(), "to".into()],
+                    rows: vec![vec![
+                        Value::Text(declaration.name.clone()),
+                        Value::Text(declaration.from.clone()),
+                        Value::Text(declaration.to.clone()),
+                    ]],
+                    affected: 1,
+                    plan: vec![format!(
+                        "Define morphism {} from {} to {}: {} projections, {}x{} matrix",
+                        declaration.name,
+                        declaration.from,
+                        declaration.to,
+                        declaration.projection.len(),
+                        declaration.matrix.len(),
+                        width
+                    )],
+                    ..Default::default()
+                })
+            }
             Statement::Query(query) => self.query(query, optimize),
             Statement::Explain { query, analyze } => {
                 if *analyze {
@@ -140,6 +168,89 @@ impl Database {
                 })
             }
         }
+    }
+
+    /// Apply a journaled statement during recovery. A morphism declaration is
+    /// installed in the morphism map; every other statement goes through
+    /// `prepare`, which rebuilds the catalog.
+    fn apply_replay(&mut self, statement: &Statement) -> Result<()> {
+        match statement {
+            Statement::DefineMorphism(declaration) => self.install_morphism(declaration.clone())?,
+            other => {
+                let (catalog, _) = self.prepare(other)?;
+                self.catalog = catalog;
+            }
+        }
+        self.epochs.advance();
+        Ok(())
+    }
+
+    /// Validate and install a morphism. Both cells, every projected column,
+    /// and the matrix shape are checked before the declaration is stored.
+    fn install_morphism(&mut self, declaration: MorphismDecl) -> Result<()> {
+        // SQL folds unquoted identifiers to lowercase. The DDL follows that
+        // rule, so `FROM Account` finds a table created as `Account`.
+        let mut declaration = declaration;
+        declaration.from = declaration.from.to_lowercase();
+        declaration.to = declaration.to.to_lowercase();
+        for (source, target) in &mut declaration.projection {
+            *source = source.to_lowercase();
+            *target = target.to_lowercase();
+        }
+        if declaration.name.is_empty() {
+            return Err("morphism name is empty".into());
+        }
+        if self.morphisms.contains_key(&declaration.name) {
+            return Err(format!("morphism already exists: {}", declaration.name));
+        }
+        let source = self
+            .catalog
+            .get(&declaration.from)
+            .ok_or_else(|| format!("unknown source cell {}", declaration.from))?;
+        let target = self
+            .catalog
+            .get(&declaration.to)
+            .ok_or_else(|| format!("unknown target cell {}", declaration.to))?;
+        let mut seen_sources = HashSet::new();
+        let mut seen_targets = HashSet::new();
+        for (from_column, to_column) in &declaration.projection {
+            let left = source
+                .columns
+                .iter()
+                .find(|column| &column.name == from_column)
+                .ok_or_else(|| format!("unknown source column {from_column}"))?;
+            let right = target
+                .columns
+                .iter()
+                .find(|column| &column.name == to_column)
+                .ok_or_else(|| format!("unknown target column {to_column}"))?;
+            if left.data_type != right.data_type {
+                return Err(format!("morphism column types differ: {from_column} -> {to_column}"));
+            }
+            if !seen_sources.insert(from_column) || !seen_targets.insert(to_column) {
+                return Err("morphism projection uses a column more than once".into());
+            }
+        }
+        let width = declaration.matrix.first().map_or(0, Vec::len);
+        if width == 0
+            || declaration.matrix.iter().any(|row| {
+                row.len() != width || row.iter().any(|value| !value.is_finite())
+            })
+        {
+            return Err("morphism matrix requires a finite rectangular shape".into());
+        }
+        self.morphisms.insert(declaration.name.clone(), declaration);
+        Ok(())
+    }
+
+    /// A stored morphism declaration, by name.
+    pub fn morphism(&self, name: &str) -> Option<&MorphismDecl> {
+        self.morphisms.get(name)
+    }
+
+    /// How many morphism declarations are stored.
+    pub fn morphism_count(&self) -> usize {
+        self.morphisms.len()
     }
 
     fn prepare(&self, statement: &Statement) -> Result<(Catalog, usize)> {
