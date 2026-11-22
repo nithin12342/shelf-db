@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // frame.rs - replication frames with a checksum (NF-05).
 //
 // Frame layout, all little-endian:
