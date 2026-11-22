@@ -1,0 +1,2 @@
+cargo test -p sheaf-vcs --test h1
+cargo clippy -p sheaf-vcs --no-deps --all-targets -- -D warnings
