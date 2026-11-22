@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.Ring
 
 /-!
 # Verified TIR rewrite rules (spec Pillar 6)
