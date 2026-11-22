@@ -1,0 +1,3 @@
+cargo test -p sheaf-app
+cargo test -p sheaf-app --test morphism_ddl
+cargo clippy -p sheaf-app --no-deps --all-targets -- -D warnings
