@@ -12,7 +12,12 @@ struct Loaded {
 }
 
 fn load(source: &impl DataSource, scan: &ScanPlan, budget: &mut Budget, stats: &mut ExecutionStats) -> Result<Loaded> {
-    let mut rows = source.rows(&scan.relation.table)?;
+    // The source prunes pages before decode. The row filter below still runs,
+    // so a kept page is only a cost and a skipped page never loses a match.
+    let (mut rows, page_stats) = source.scan(&scan.relation.table, &scan.columns, &scan.predicates)?;
+    stats.pages_total = stats.pages_total.saturating_add(page_stats.pages_total);
+    stats.pages_skipped = stats.pages_skipped.saturating_add(page_stats.pages_skipped);
+    stats.page_clauses = stats.page_clauses.saturating_add(page_stats.page_clauses);
     budget.reserve(limits::source_bytes(&rows)?)?;
     stats.scanned_rows = stats.scanned_rows.checked_add(rows.len()).ok_or("Scan count overflow")?;
     for row in &rows {
