@@ -1,0 +1,10 @@
+   Compiling sheaf-codec v0.1.0
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running unittests src\lib.rs
+running 56 tests
+test result: ok. 56 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+     Running tests\roundtrip.rs
+running 11 tests
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.07s
+    Checking sheaf-codec v0.1.0
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.08s
