@@ -1,0 +1,11 @@
+running 6 tests
+test a_reordered_delivery_reaches_the_same_final_state ... ok
+test a_repeated_delivery_is_ignored ... ok
+test a_truncated_frame_is_an_explicit_error ... ok
+test a_wrong_direction_is_not_a_silent_success ... ok
+test rdma_reports_unsupported_with_a_named_cause ... ok
+test ten_thousand_deltas_over_loopback_reach_the_same_state ... ok
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.14s
+
+Library tests: 50 passed; 0 failed.
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.05s
