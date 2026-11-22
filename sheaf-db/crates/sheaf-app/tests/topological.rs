@@ -30,9 +30,9 @@ fn program(faces: usize, dimension: usize) -> (String, CsrCoboundary, Vec<f32>) 
     let overs = (0..faces).map(|f| format!("p{f}: F{f}")).collect::<Vec<_>>().join(", ");
     source += &format!("MATCH HYPERCELL h: H OVER ({overs}) WHERE NOT p0.label == \"no\" AND h.tag == \"hyper\" RESTRICT TO BOUNDARY (p0) SOLVE HARMONIC (REGULARIZATION: 0.25, MAX_ITERATIONS: 128, ENERGY_THRESHOLD: 1000.0) EMIT SECTION {{ p0.label, p1.label, h.tag, SECTION_ENERGY, COHOMOLOGY_STATE }};");
     let mut csr = CsrCoboundary { cols: initial.len(), row_offsets: vec![0], columns: vec![], weights: vec![] };
-    for row in 0..dimension {
-        for face in 0..faces {
-            for (col, weight) in matrices[face][row].iter().enumerate() {
+    for (row, _first) in matrices[0].iter().enumerate() {
+        for (face, symbols) in matrices.iter().enumerate() {
+            for (col, weight) in symbols[row].iter().enumerate() {
                 csr.columns.push(starts[face] + col);
                 csr.weights.push(if face % 2 == 0 { *weight } else { -*weight });
             }
