@@ -2,6 +2,8 @@ pub mod model;
 pub mod page_decode;
 pub mod page_encode;
 pub mod page_format;
+pub mod page_scan;
+pub mod page_stats;
 pub mod sql;
 pub mod sql_expr;
 pub mod tql;
