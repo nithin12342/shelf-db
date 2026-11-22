@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // flight/mod.rs - the Arrow Flight daemon (NF-09).
 //
 // The service returns columnar result sets through Arrow Flight. The same
