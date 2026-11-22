@@ -1,6 +1,7 @@
 // crates/sheaf-storage/src/lsp/mod.rs
 pub mod arrow_ingest;
 pub mod bump_arena;
+pub mod cache_key;
 pub mod compactor;
 pub mod io_uring_wal;
 pub mod colimit;
