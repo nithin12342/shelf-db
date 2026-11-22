@@ -1,0 +1,14 @@
+Built RuleTable (3.4s)
+Build completed successfully (1693 jobs).
+emitted 6 rules, digest 252
+
+cargo test -p sheaf-proofs
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.55s
+
+The emitted header matches the Rust mirror: 6 rules, ids 1..6.
+The checksum recomputed from the header rows equals the emitted digest 252.
+The text manifest matches the header row for row.
+gcc -std=c11 -Wall -Wextra -Werror compiled the header and the check ran with exit 0.
+The fallback reports fallback_reason = "the Lean rule table was not emitted for this build".
+clippy: Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.39s
