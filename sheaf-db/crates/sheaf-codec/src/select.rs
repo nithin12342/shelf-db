@@ -13,6 +13,7 @@ use crate::error::CodecError;
 use crate::for_::FrameOfReferenceCodec;
 use crate::fsst::FsstCodec;
 use crate::raw::RawCodec;
+use crate::rle::RunLengthCodec;
 use crate::traits::{ColumnCodec, ColumnData, ColumnType, DecodedColumn};
 
 static RAW: RawCodec = RawCodec;
@@ -20,9 +21,10 @@ static BITPACK: BitPackCodec = BitPackCodec;
 static FOR: FrameOfReferenceCodec = FrameOfReferenceCodec;
 static ALP: AlpCodec = AlpCodec;
 static FSST: FsstCodec = FsstCodec;
+static RLE: RunLengthCodec = RunLengthCodec;
 
 /// The registry, in ascending id order.
-static REGISTRY: [&'static dyn ColumnCodec; 5] = [&RAW, &BITPACK, &FOR, &ALP, &FSST];
+static REGISTRY: [&'static dyn ColumnCodec; 6] = [&RAW, &BITPACK, &FOR, &ALP, &FSST, &RLE];
 
 /// Every registered codec, in ascending id order.
 pub fn codecs() -> &'static [&'static dyn ColumnCodec] {
@@ -128,7 +130,7 @@ mod tests {
     #[test]
     fn the_registry_is_in_ascending_id_order() {
         let ids: Vec<u8> = codecs().iter().map(|c| c.id()).collect();
-        assert_eq!(ids, vec![0, 1, 2, 3, 4]);
+        assert_eq!(ids, vec![0, 1, 2, 3, 4, 5]);
         let mut sorted = ids.clone();
         sorted.sort_unstable();
         assert_eq!(ids, sorted);
@@ -188,9 +190,10 @@ mod tests {
     }
 
     #[test]
-    fn a_repeated_string_block_goes_to_fsst() {
-        let phrase = b"sheaf database column store ".to_vec();
-        let values: Vec<Vec<u8>> = (0..100).map(|_| phrase.clone()).collect();
+    fn a_similar_string_block_goes_to_fsst() {
+        let values: Vec<Vec<u8>> = (0..100)
+            .map(|i| format!("sheaf database column {i}").into_bytes())
+            .collect();
         let choice = select(&ColumnData::Bytes(&values)).expect("select");
         assert_eq!(choice.codec_name, "fsst");
         assert!(choice.saved_bytes() > 0);
@@ -199,10 +202,21 @@ mod tests {
     }
 
     #[test]
+    fn a_constant_string_block_goes_to_rle() {
+        let phrase = b"sheaf database column store ".to_vec();
+        let values: Vec<Vec<u8>> = (0..100).map(|_| phrase.clone()).collect();
+        let choice = select(&ColumnData::Bytes(&values)).expect("select");
+        assert_eq!(choice.codec_name, "rle");
+        assert_eq!(choice.encoded_bytes(), 9 + 4 + 4 + phrase.len());
+        let decoded = decode(choice.codec_id, &choice.encoded).expect("decode");
+        assert_eq!(decoded.as_bytes().expect("bytes").to_vec(), values);
+    }
+
+    #[test]
     fn accepted_types_are_reported_per_codec() {
-        assert_eq!(codecs_for(ColumnType::U64), vec![0, 1, 2]);
-        assert_eq!(codecs_for(ColumnType::I64), vec![0, 2]);
-        assert_eq!(codecs_for(ColumnType::F32), vec![0, 3]);
-        assert_eq!(codecs_for(ColumnType::Bytes), vec![0, 4]);
+        assert_eq!(codecs_for(ColumnType::U64), vec![0, 1, 2, 5]);
+        assert_eq!(codecs_for(ColumnType::I64), vec![0, 2, 5]);
+        assert_eq!(codecs_for(ColumnType::F32), vec![0, 3, 5]);
+        assert_eq!(codecs_for(ColumnType::Bytes), vec![0, 4, 5]);
     }
 }
