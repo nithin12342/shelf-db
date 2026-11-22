@@ -1,0 +1,6 @@
+running 1 test
+test rdma_reports_unsupported_with_a_named_cause ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+Capability::Unsupported { reason: "no RDMA verbs device or library is available on this host" }
+post_write returned Unsupported with the same named cause.
