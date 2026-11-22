@@ -1,3 +1,4 @@
+// Timestamp: 2026-11-22_11-53-08 +05:30
 // flight.rs - integration test for the Arrow Flight daemon (NF-09).
 //
 // The test loads rows through the production SQL path, serves them through
