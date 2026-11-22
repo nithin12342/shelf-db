@@ -480,3 +480,22 @@ missing_feature_plan:
     - {node_id: NG-MF-14, pillar: 7, name: "open cover sharding with ghost cells", status: planned, depends_on: [NG-MF-11, NG-MF-12], test: "1k cells, 4 shards, cover check, glue conflict", evidence_dir: "tests/e2e/missing_features/mf14"}
     - {node_id: NG-MF-15, pillar: 11, name: "Arrow Flight daemon", status: planned, depends_on: [NG-MF-07], test: "real Flight client do_get and do_put over localhost", evidence_dir: "tests/e2e/missing_features/mf15"}
     - {node_id: NG-MF-16, pillar: 11, name: "eBPF VFS interception", status: planned, depends_on: [], test: "10k recorded events, stated decision each time, capability truth", evidence_dir: "tests/e2e/missing_features/mf16"}
+
+# ============================================================================
+# Consolidated feature inventory (2026-11-22)
+# Source: results/CONSOLIDATED_FEATURE_INVENTORY_2026-11-22.md
+# Derived from the requirement text, not from the 48-feature audit line.
+# A feature is implemented only when production code exists and a passing test
+# calls that path with real input.
+# ============================================================================
+feature_inventory:
+  document: results/CONSOLIDATED_FEATURE_INVENTORY_2026-11-22.md
+  sources: "SheafDB_Next_Gen_Technical_Specification.md (11 pillars), SHELFDB_SCHEMA_DESIGN_AND_QUERY_PATTERNS.md, Sheaf_VCS_Architecture.md, MISSING_FEATURE_IMPLEMENTATION_PLAN_2026-11-15.md"
+  totals: "49 features described; 48 in database scope; 1 excluded (PyTorch bridge)"
+  states: {implemented: 30, partial: 11, absent: 7, excluded: 1}
+  weighted_completion: "35.5 of 48, or 74.0 percent, with a partial feature counted as one half"
+  schema_query: {implemented: 7, absent: 1}
+  plan_nodes: {e2e_passed: 9, planned: 8}
+  absent_features: ["F-17 Tonic/Tokio/Arrow Flight ingress", "F-26 Lean rule table (MF-09)", "F-28 Lean spectral-radius bounds", "F-30 ghost stalks (MF-14)", "F-31 RDMA replication (MF-12)", "F-47 Arrow Flight (MF-15)", "F-48 eBPF VFS (MF-16)"]
+  host_limits: "io_uring needs Linux. Lean proofs need Lean 4 and Mathlib. Cluster tests need a second host."
+  run_evidence: "cargo build --workspace finished in 39.00 s; cargo test --workspace 356 passed, 0 failed; sheaf-app init, insert, and select passed on a persistent directory"
