@@ -1,0 +1,2 @@
+cargo test -p sheaf-query
+cargo clippy -p sheaf-query --no-deps --all-targets -- -D warnings
