@@ -541,3 +541,31 @@ feature_inventory:
   execution_evidence: EXECUTION_RESULTS_2026-11-22_11-53-08.md
   execution_result: "12 SQL queries, 12 TQL parity passes, 1 baseline limit report, 6 fiber bundle gates passed"
   final_gates: "cargo test --workspace with grpc and flight: 459 passes, 0 failures; clippy -D warnings clean; zig build test clean; Lean build clean"
+
+# ============================================================================
+# New work plans (2026-11-28)
+# Source: DATASET_BUNDLE_INVESTIGATION_2026-11-28_14-19-54.md
+# These plans are not execution records. A node closes only after a gate passes.
+# ============================================================================
+new_work_plans:
+  requirements:
+    - {id: REQ-060, text: "Run a detailed database benchmark on one low-power laptop", spec_id: SPEC-060}
+    - {id: REQ-061, text: "Plan GPU support on Colab and Kaggle T4 runtimes", spec_id: SPEC-061}
+  local_benchmark_plan:
+    document: BENCHMARK_EXECUTION_PLAN_2026-11-28_14-19-54.md
+    status: planned
+    host: "AMD Ryzen 3 7000 series with Radeon integrated graphics"
+    resource_limits: "one container, one central processing unit, 2 GB memory, one benchmark thread"
+    engine_count: 14
+  gpu_support_plan:
+    document: GPU_SUPPORT_PLAN_2026-11-28_14-19-54.md
+    status: planned
+    nodes: {total: 8, planned: 8}
+    cloud_targets: [Colab T4, Kaggle T4]
+    guard: "No cloud runtime was created and no notebook was pushed at plan time"
+  bundle_investigation:
+    document: DATASET_BUNDLE_INVESTIGATION_2026-11-28_14-19-54.md
+    archive: shelf_db_all_datasets.zip
+    compressed_bytes: 3574056605
+    uncompressed_bytes: 5603510557
+    extraction: "README and Markdown only; large data files stay in the archive"
