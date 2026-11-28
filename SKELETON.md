@@ -569,3 +569,16 @@ new_work_plans:
     compressed_bytes: 3574056605
     uncompressed_bytes: 5603510557
     extraction: "README and Markdown only; large data files stay in the archive"
+
+per_database_benchmark_plans:
+  root: BENCHMARK_PLANS_2026-11-28_14-38-34
+  master_index: BENCHMARK_PLANS_2026-11-28_14-38-34/00_INDEX/MASTER_INDEX_2026-11-28_14-38-34.md
+  execution_sequence: BENCHMARK_PLANS_2026-11-28_14-38-34/00_INDEX/DATASET_USAGE_AND_EXECUTION_SEQUENCE_2026-11-28_14-38-34.md
+  status: planned
+  database_count: 13
+  method: "one subagent per database; one plan per database, data set, and benchmark pair"
+  consolidated_index: BENCHMARK_PLANS_2026-11-28_14-38-34/00_INDEX/CONSOLIDATED_DATABASE_TEST_CASE_INDEX_2026-11-28_14-38-34.md
+  plan_file_count: 59
+  host: "AMD Ryzen 3 7000 series laptop with Radeon integrated graphics"
+  resource_limits: "one container, one central processing unit, 2 GB memory, one benchmark thread"
+  rule: "Use original benchmark cases and exact query text; record names only when no query text exists"
